@@ -1,6 +1,6 @@
 {
   "name": "slick/di",
-  "description": "Slick dependency injection container.",
+  "description": "Slick package for dependency injection container.",
   "keywords": [
     "slick",
     "dependency injection",

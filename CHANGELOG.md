@@ -6,3 +6,4 @@ All Notable changes to `Slick/di` will be documented in this file
 
 ### Added
 - First release of Di package
+
