@@ -145,7 +145,7 @@ class Container implements ContainerInterface
             }
 
             $definition = ($value instanceof DefinitionInterface)
-                ? $value
+                ? $value->setName($definition)
                 : $definition = $this->createValueDefinition(
                     (string) $definition,
                     $value
