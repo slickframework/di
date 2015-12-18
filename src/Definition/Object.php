@@ -150,7 +150,7 @@ class Object extends AbstractDefinition implements ObjectDefinitionInterface
             );
         }
 
-        $this->methods[$name] = $arguments;
+        $this->methods[] = compact('name', 'arguments');
         return $this;
     }
 

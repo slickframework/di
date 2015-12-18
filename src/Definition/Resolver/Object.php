@@ -58,7 +58,8 @@ class Object extends Base implements ObjectResolver
      */
     private function setMethods()
     {
-        foreach ($this->definition->getMethods() as $name => $params) {
+        foreach ($this->definition->getMethods() as $data) {
+            list($name, $params) = array_values($data);
             call_user_func_array(
                 [$this->definition->getInstance(), $name],
                 $this->checkValues($params)

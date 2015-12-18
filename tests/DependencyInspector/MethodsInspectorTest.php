@@ -82,7 +82,8 @@ class MethodsInspectorTest extends TestCase
     public function getNormalDependencyMethod()
     {
         $methods = $this->definition->getMethods();
-        $this->assertTrue(array_key_exists('setObject', $methods));
+       $this->assertEquals('setObject', $methods[0]['name']);
+
     }
 
     public function testMethodIgnored()
@@ -100,7 +101,12 @@ class MethodsInspectorTest extends TestCase
     public function testWithDefaultParameter()
     {
         $methods = $this->definition->getMethods();
-        $this->assertTrue(array_key_exists('setWithDefault', $methods));
+        $this->assertTrue(
+            in_array(
+                ['name' => 'setWithDefault', 'arguments' => ['parameter' => null]],
+                $methods
+            )
+        );
     }
 
     public function testIgnoreAnnotation()
