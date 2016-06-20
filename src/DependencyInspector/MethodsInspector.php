@@ -128,10 +128,15 @@ class MethodsInspector extends Base
      */
     protected function checkMethod($method)
     {
+        $isAccessible = Inspector::forClass($this->definition->getClassName())
+            ->getReflection()
+            ->getMethod($method)
+            ->isPublic();
         $isIgnore = $this->checkMethodAnnotation($method, '@ignoreInject');
         $isInject = $this->checkMethodAnnotation($method, '@inject');
+        $isPublicSetter = $isAccessible && preg_match('/^set(.*)/i', $method);
         if (
-            (!$isIgnore && preg_match('/^set(.*)/i', $method)) ||
+            (!$isIgnore && $isPublicSetter) ||
             $isInject
         ) {
             $arguments = (new MethodInspector(
