@@ -300,6 +300,11 @@ class Car
 use to determine the dependency. In the above example, `config` array was stored with
 `car.config` key and will be injected in `Car` creation.
 
+To skip dependency injection on methods or properties you need to set `@ignoreInject`
+annotation. This annotation tells dependency container to ignore the automatic dependency
+injection on public properties or public methods. This annotation does not work with 
+constructor methods.
+
 <div class="alert alert-warning" role="alert">
     <h4>
         <i class="fa fa-warning "></i>
