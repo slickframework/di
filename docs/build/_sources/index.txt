@@ -63,7 +63,6 @@ User guide
 ----------
 
 .. toctree::
-    :hidden:
     :maxdepth: 2
 
     manual/overview

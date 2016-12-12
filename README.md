@@ -2,9 +2,9 @@
 
 [![Latest Version](https://img.shields.io/github/release/slickframework/di.svg?style=flat-square)](https://github.com/slickframework/di/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/slickframework/di/develop.svg?style=flat-square)](https://travis-ci.org/slickframework/di)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/slickframework/di/develop.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di/code-structure?branch=develop)
-[![Quality Score](https://img.shields.io/scrutinizer/g/slickframework/di/develop.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di?branch=develop)
+[![Build Status](https://img.shields.io/travis/slickframework/di/master.svg?style=flat-square)](https://travis-ci.org/slickframework/di)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/slickframework/di/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di/code-structure?branch=master)
+[![Quality Score](https://img.shields.io/scrutinizer/g/slickframework/di/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/slick/di.svg?style=flat-square)](https://packagist.org/packages/slick/di)
 
 `slick/di` is an easy dependency injection container for PHP 5.5+. It aims to be very
@@ -31,47 +31,47 @@ To create a dependency container lets create a ``services.php`` file with all ou
 dependency definitions:
 
 ``` php
-    use Slick\Configuration\Configuration:
-    use Slick\Di\Definition\ObjectDefinition;
+use Slick\Configuration\Configuration:
+use Slick\Di\Definition\ObjectDefinition;
 
-    /**
-     * Dependency injection object definition example
-     */
-    return [
-        'config' => function() {
-            return Configuration::get('config');
-        },
-        Engine::class => ObjectDefinition::create(Engine::class)
-            ->setConstructArgs(['@config'])
-            ->setMethod('setMode', ['simple'])
-    ];
+/**
+ * Dependency injection object definition example
+ */
+return [
+    'config' => function() {
+        return Configuration::get('config');
+    },
+    Engine::class => ObjectDefinition::create(Engine::class)
+        ->setConstructArgs(['@config'])
+        ->setMethod('setMode', ['simple'])
+];
 ```
 
 Create a dependency container with ``ContainerBuilder``:
 
 ``` php
-    use Slick\Di\ContainerBuilder;
+use Slick\Di\ContainerBuilder;
 
-    $container = (new ContainerBuilder(__DIR__ . '/services.php'))->getContainer();
+$container = (new ContainerBuilder(__DIR__ . '/services.php'))->getContainer();
 ```
 
 Now you are ready to create and inject dependencies with your container:
 
 ``` php
-    class Car
+class Car
+{
+    /**
+     * @var Engine
+     */
+    protected $engine;
+
+    public function __construct(Engine $engine)
     {
-        /**
-         * @var Engine
-         */
-        protected $engine;
-
-        public function __construct(Engine $engine)
-        {
-            $this->engine = $engine;
-        }
+        $this->engine = $engine;
     }
+}
 
-    $myCar = $container->get(Car::class);
+$myCar = $container->get(Car::class);
 ```
 
 Please refer to the [full documentation site](http://di.slick-framework.com) for more on ``slick/di`` package.
@@ -82,11 +82,11 @@ We use [Behat](http://behat.org/en/latest/index.html) to describe features and a
 and [PHPUnit](https://phpunit.de) for integration and unit testing.
 
 ``` bash
-    # unit and integration tests
-    $ vendor/bin/phpunit
+# unit and integration tests
+$ vendor/bin/phpunit
 
-    # acceptance tests
-    $ vendor/bin/behat
+# acceptance tests
+$ vendor/bin/behat
 ```
 
 ## Contributing
