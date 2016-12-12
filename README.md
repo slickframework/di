@@ -2,9 +2,9 @@
 
 [![Latest Version](https://img.shields.io/github/release/slickframework/di.svg?style=flat-square)](https://github.com/slickframework/di/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/slickframework/di/develop.svg?style=flat-square)](https://travis-ci.org/slickframework/di)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/slickframework/di/develop.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di/code-structure?branch=develop)
-[![Quality Score](https://img.shields.io/scrutinizer/g/slickframework/di/develop.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di?branch=develop)
+[![Build Status](https://img.shields.io/travis/slickframework/di/master.svg?style=flat-square)](https://travis-ci.org/slickframework/di)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/slickframework/di/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di/code-structure?branch=master)
+[![Quality Score](https://img.shields.io/scrutinizer/g/slickframework/di/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/slick/di.svg?style=flat-square)](https://packagist.org/packages/slick/di)
 
 `slick/di` is an easy dependency injection container for PHP 5.5+. It aims to be very
