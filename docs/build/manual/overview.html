@@ -30,6 +30,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="Dependency Injection Container v1.0.0 documentation" href="../index.html"/>
         <link rel="next" title="Installation" href="installation.html"/>
         <link rel="prev" title="Slick Dependency Injection" href="../index.html"/> 
@@ -83,7 +86,7 @@
             
             
                 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Overview</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dependency-injection">Dependency Injection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dependency-injection-container">Dependency Injection Container</a></li>
 </ul>
@@ -165,7 +168,7 @@
 <p>Dependency injection is a concept that has been talked about all over the web.
 You probably have done it without knowing that is called dependency injection.
 Simply put the next line of code can describe what it is:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$volvo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">(</span><span class="k">new</span> <span class="nx">Engine</span><span class="p">());</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$volvo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">(</span><span class="k">new</span> <span class="nx">Engine</span><span class="p">());</span>
 </pre></div>
 </div>
 <p>Above, <code class="docutils literal"><span class="pre">Engine</span></code> is a dependency of <code class="docutils literal"><span class="pre">Car</span></code>, and <code class="docutils literal"><span class="pre">Engine</span></code> was injected into
@@ -183,7 +186,7 @@ and inject dependencies.</p>
 create and values that you may need to use repeatedly like configuration
 settings.</p>
 <p>Lets look at a very simple example:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Slick\Di\ContainerBuilder</span><span class="p">;</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="k">use</span> <span class="nx">Slick\Di\ContainerBuilder</span><span class="p">;</span>
 
 <span class="nv">$definitions</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;config.environment&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;develop&#39;</span>
@@ -203,7 +206,7 @@ the same result with a global variable. In fact storing values or object
 instances in a container is the simplest feature of a dependency container
 and a side effect as the main goal is to store definitions that can be used
 to create the real objects when we need them.</p>
-<p>But lets first understand <a class="reference internal" href="../cookbook/definitions.html"><em>what a definition is</em></a> and how to set them in your
+<p>But lets first understand <a class="reference internal" href="../cookbook/definitions.html"><span class="doc">what a definition is</span></a> and how to set them in your
 container.</p>
 </div>
 </div>
@@ -253,7 +256,7 @@ container.</p>
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: ''
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../_static/jquery.js"></script>

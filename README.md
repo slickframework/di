@@ -31,47 +31,47 @@ To create a dependency container lets create a ``services.php`` file with all ou
 dependency definitions:
 
 ``` php
-    use Slick\Configuration\Configuration:
-    use Slick\Di\Definition\ObjectDefinition;
+use Slick\Configuration\Configuration:
+use Slick\Di\Definition\ObjectDefinition;
 
-    /**
-     * Dependency injection object definition example
-     */
-    return [
-        'config' => function() {
-            return Configuration::get('config');
-        },
-        Engine::class => ObjectDefinition::create(Engine::class)
-            ->setConstructArgs(['@config'])
-            ->setMethod('setMode', ['simple'])
-    ];
+/**
+ * Dependency injection object definition example
+ */
+return [
+    'config' => function() {
+        return Configuration::get('config');
+    },
+    Engine::class => ObjectDefinition::create(Engine::class)
+        ->setConstructArgs(['@config'])
+        ->setMethod('setMode', ['simple'])
+];
 ```
 
 Create a dependency container with ``ContainerBuilder``:
 
 ``` php
-    use Slick\Di\ContainerBuilder;
+use Slick\Di\ContainerBuilder;
 
-    $container = (new ContainerBuilder(__DIR__ . '/services.php'))->getContainer();
+$container = (new ContainerBuilder(__DIR__ . '/services.php'))->getContainer();
 ```
 
 Now you are ready to create and inject dependencies with your container:
 
 ``` php
-    class Car
+class Car
+{
+    /**
+     * @var Engine
+     */
+    protected $engine;
+
+    public function __construct(Engine $engine)
     {
-        /**
-         * @var Engine
-         */
-        protected $engine;
-
-        public function __construct(Engine $engine)
-        {
-            $this->engine = $engine;
-        }
+        $this->engine = $engine;
     }
+}
 
-    $myCar = $container->get(Car::class);
+$myCar = $container->get(Car::class);
 ```
 
 Please refer to the [full documentation site](http://di.slick-framework.com) for more on ``slick/di`` package.
@@ -82,11 +82,11 @@ We use [Behat](http://behat.org/en/latest/index.html) to describe features and a
 and [PHPUnit](https://phpunit.de) for integration and unit testing.
 
 ``` bash
-    # unit and integration tests
-    $ vendor/bin/phpunit
+# unit and integration tests
+$ vendor/bin/phpunit
 
-    # acceptance tests
-    $ vendor/bin/behat
+# acceptance tests
+$ vendor/bin/behat
 ```
 
 ## Contributing

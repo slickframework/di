@@ -30,6 +30,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="Dependency Injection Container v1.0.0 documentation" href="../index.html"/>
         <link rel="next" title="Container usage" href="container.html"/>
         <link rel="prev" title="Installation" href="../manual/installation.html"/> 
@@ -85,7 +88,7 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../manual/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../manual/installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Definitions</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Definitions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#value-definition">Value definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#factory-callable-definition">Factory (callable) definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#alias-definition">Alias definition</a></li>
@@ -169,7 +172,7 @@ created and you SHOULD always use the <code class="docutils literal"><span class
 your container.</p>
 <p>Lets create our <code class="docutils literal"><span class="pre">dependencies.php</span></code> file that will contain our dependencies
 definitions:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="sd">/**</span>
 <span class="sd"> * Dependency injection definitions file</span>
@@ -195,7 +198,7 @@ directly executed, enhancing performance.</p>
 <div class="section" id="value-definition">
 <h2>Value definition<a class="headerlink" href="#value-definition" title="Permalink to this headline">¶</a></h2>
 <p>A value or scalar definition is used as is. The following example is a value definition:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="sd">/**</span>
 <span class="sd"> * Dependency injection value definition example</span>
@@ -210,7 +213,7 @@ directly executed, enhancing performance.</p>
 <div class="section" id="factory-callable-definition">
 <h2>Factory (callable) definition<a class="headerlink" href="#factory-callable-definition" title="Permalink to this headline">¶</a></h2>
 <p>With factory definition you can compute and/or control the object or value creation:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="sd">/**</span>
 <span class="sd"> * Dependency injection callable definition example</span>
@@ -226,7 +229,7 @@ directly executed, enhancing performance.</p>
 <div class="section" id="alias-definition">
 <h2>Alias definition<a class="headerlink" href="#alias-definition" title="Permalink to this headline">¶</a></h2>
 <p>Alias definition is a shortcut for another defined entry:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="sd">/**</span>
 <span class="sd"> * Dependency injection alias definition example</span>
@@ -244,7 +247,7 @@ directly executed, enhancing performance.</p>
 object definition you need to use an helper
 class: <code class="docutils literal"><span class="pre">Slick\Di\Definition\ObjectDefinition</span></code></p>
 <p>Lets see an example:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="k">use</span> <span class="nx">Services\SearchService</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Slick\Configuration\Configuration</span><span class="o">:</span>
@@ -315,7 +318,7 @@ creating those objects.</p>
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: ''
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../_static/jquery.js"></script>
