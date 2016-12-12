@@ -306,6 +306,7 @@ html_context = {
   "github_version": "master",
   "conf_py_path": "/doc/",
   "source_suffix": source_suffix,
+  "disqus_shortname": "slick-framework"
 }
 
 highlight_language = 'php'

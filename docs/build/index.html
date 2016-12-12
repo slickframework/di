@@ -30,9 +30,6 @@
   
 
   
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Dependency Injection Container v1.0.0 documentation" href="#"/>
         <link rel="next" title="Overview" href="manual/overview.html"/> 
 
@@ -172,7 +169,7 @@ and some of them are really good. Some examples are the
 <h2>Dependency injection container quick start<a class="headerlink" href="#dependency-injection-container-quick-start" title="Permalink to this headline">¶</a></h2>
 <p>To create a dependency container lets create a <code class="docutils literal"><span class="pre">services.php</span></code> file with all our
 dependency definitions:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="k">use</span> <span class="nx">Slick\Configuration\Configuration</span><span class="o">:</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Slick\Configuration\Configuration</span><span class="o">:</span>
 <span class="k">use</span> <span class="nx">Slick\Di\Definition\ObjectDefinition</span><span class="p">;</span>
 
 <span class="sd">/**</span>
@@ -189,13 +186,13 @@ dependency definitions:</p>
 </pre></div>
 </div>
 <p>Create a dependency container with <code class="docutils literal"><span class="pre">ContainerBuilder</span></code>:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="k">use</span> <span class="nx">Slick\Di\ContainerBuilder</span><span class="p">;</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Slick\Di\ContainerBuilder</span><span class="p">;</span>
 
 <span class="nv">$container</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nx">ContainerBuilder</span><span class="p">(</span><span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/services.php&#39;</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">getContainer</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>Now you are ready to create and inject dependencies with your container:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Car</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Car</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
 <span class="sd">     * @var Engine</span>
@@ -251,25 +248,49 @@ dependency definitions:</p>
 
            </div>
           </div>
-          <footer>
-  
+          
+
+
+
+
+
+<footer>
+    
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
+        
         <a href="manual/overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+        
+        
     </div>
-  
+    
 
-  <hr/>
+    <hr/>
+    
+        
 
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2016, Slick Team.
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'slick-framework'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+    
+    <div role="contentinfo">
+        <p>
+            &copy; Copyright 2016, Slick Team.
+
+        </p>
+    </div>
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -291,7 +312,7 @@ dependency definitions:</p>
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
+            SOURCELINK_SUFFIX: ''
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

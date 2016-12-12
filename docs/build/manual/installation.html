@@ -30,9 +30,6 @@
   
 
   
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="Dependency Injection Container v1.0.0 documentation" href="../index.html"/>
         <link rel="next" title="Definitions" href="../cookbook/definitions.html"/>
         <link rel="prev" title="Overview" href="overview.html"/> 
@@ -87,7 +84,7 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cookbook/definitions.html">Definitions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cookbook/container.html">Container usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing</a></li>
@@ -164,12 +161,12 @@ environment. Before you begin, ensure that you have PHP 5.5 or higher installed.
 <p>You can install <cite>slick/di</cite> with all its dependencies through Composer. Follow
 instructions on the <a class="reference external" href="https://getcomposer.org/download/">composer website</a> if you don’t have it installed yet.</p>
 <p>You can use this Composer command to install <cite>slick/di</cite>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ composer require slick/di
+<div class="highlight-bash"><div class="highlight"><pre>$ composer require slick/di
 </pre></div>
 </div>
 <p>If you prefer editing your <cite>composer.json</cite> file manually, add <cite>slick/di</cite> to your
 <cite>require-dev</cite> section like this:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
     <span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;slick/di&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.0&quot;</span>
     <span class="p">}</span>
@@ -177,7 +174,7 @@ instructions on the <a class="reference external" href="https://getcomposer.org/
 </pre></div>
 </div>
 <p>Then install <cite>slick/di</cite> with the composer install command:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ composer install
+<div class="highlight-bash"><div class="highlight"><pre>$ composer install
 </pre></div>
 </div>
 </div>
@@ -185,27 +182,51 @@ instructions on the <a class="reference external" href="https://getcomposer.org/
 
            </div>
           </div>
-          <footer>
-  
+          
+
+
+
+
+
+<footer>
+    
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
+        
         <a href="../cookbook/definitions.html" class="btn btn-neutral float-right" title="Definitions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+        
+        
         <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        
     </div>
-  
+    
 
-  <hr/>
+    <hr/>
+    
+        
 
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2016, Slick Team.
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'slick-framework'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+    
+    <div role="contentinfo">
+        <p>
+            &copy; Copyright 2016, Slick Team.
+
+        </p>
+    </div>
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -227,7 +248,7 @@ instructions on the <a class="reference external" href="https://getcomposer.org/
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
+            SOURCELINK_SUFFIX: ''
         };
     </script>
       <script type="text/javascript" src="../_static/jquery.js"></script>
