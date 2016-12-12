@@ -1,6 +1,6 @@
 {
   "name": "slick/di",
-  "description": "Slick dependency injection container.",
+  "description": "Slick package for dependency injection container.",
   "keywords": [
     "slick",
     "dependency injection",
@@ -17,7 +17,7 @@
     }
   ],
   "require": {
-    "php" : ">=5.4.0",
+    "php" : ">=5.5.0",
     "slick/common": "@dev",
     "container-interop/container-interop": "^1.1"
   },
