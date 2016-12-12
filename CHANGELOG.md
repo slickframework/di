@@ -2,7 +2,7 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
-## 1.2.0 - 2015-12-14
+## 1.0.0 - 2016-12-12
 
 ### Added
 - First release of Di package
