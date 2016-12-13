@@ -4,6 +4,6 @@ default:
     default:
       contexts:
         - FeatureContext
-        - Di\DiContext
+        - ContainerContext
       paths:
         - %paths.base%/features

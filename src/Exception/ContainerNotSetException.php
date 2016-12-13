@@ -7,15 +7,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Slick\Di;
+namespace Slick\Di\Exception;
+
+use RuntimeException;
+use Slick\Di\Exception;
 
 /**
- * Exception
+ * Container Not Set Exception
  *
- * @package Slick\Di
+ * @package Slick\Di\Exception
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-interface Exception
+class ContainerNotSetException extends RuntimeException implements Exception
 {
 
 }

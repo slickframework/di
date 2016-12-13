@@ -16,41 +16,35 @@ use Slick\Di\DefinitionInterface;
  *
  * @package Slick\Di\Definition
  * @author  Filipe Silva <silvam.filipe@gmail.com>
- *
- * @property callable $callable The callable that will create the value
  */
 class Factory extends AbstractDefinition implements DefinitionInterface
 {
-
     /**
-     * @readwrite
      * @var callable
      */
     protected $callable;
 
     /**
-     * @read
      * @var array
      */
     protected $parameters;
 
     /**
-     * Sets the callable for this factory
+     * Factory needs a name and a callable
      *
      * @param callable $callable
-     * @param array $parameters
-     *
-     * @return $this|self
+     * @param array    $parameters
      */
-    public function setCallable(Callable $callable, array $parameters = [])
-    {
+    public function __construct(
+        callable $callable,
+        array $parameters = []
+    ) {
         $this->callable = $callable;
         $this->parameters = $parameters;
-        return $this;
     }
 
     /**
-     * Resolves current definition and returns its value
+     * Resolves the definition into a scalar or object
      *
      * @return mixed
      */

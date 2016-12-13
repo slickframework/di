@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of slick/di package
+ * This file is part of slick/di
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -9,59 +9,36 @@
 
 namespace Slick\Di;
 
-use Interop\Container\ContainerInterface;
 use Slick\Di\Definition\Scope;
 
 /**
- * Definition for container resolution
+ * Definition Interface
  *
  * @package Slick\Di
+ * @author  Filipe Silva <filipe.silva@sata.pt>
  */
-interface DefinitionInterface
+interface DefinitionInterface extends ContainerAwareInterface
 {
-
     /**
-     * Resolves current definition and returns its value
+     * Resolves the definition into a scalar or object
      *
      * @return mixed
      */
     public function resolve();
 
     /**
-     * Gets current definition name
+     * Set resolution scope
      *
-     * @return mixed
+     * @param string|Scope $scope
+     *
+     * @return self|$this|DefinitionInterface
      */
-    public function getName();
+    public function setScope($scope);
 
     /**
-     * Gets the scope for current definition
+     * Get resolution scope
      *
-     * @return Scope
+     * @return Scope|string
      */
     public function getScope();
-
-    /**
-     * Sets definition scope
-     *
-     * @param Scope $scope The scope type
-     * @return $this|self
-     */
-    public function setScope(Scope $scope);
-
-    /**
-     * Set container for this definition
-     *
-     * @param ContainerInterface $container
-     *
-     * @return $this|self
-     */
-    public function setContainer(ContainerInterface $container);
-
-    /**
-     * Gets container
-     *
-     * @return ContainerInterface
-     */
-    public function getContainer();
 }

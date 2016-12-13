@@ -1,21 +1,21 @@
 <?php
 
 /**
- * This file is part of slick/di package
+ * This file is part of slick/di
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Slick\Di;
+namespace Fixtures;
 
 /**
- * Exception
+ * Class Object
  *
- * @package Slick\Di
+ * @package Fixtures
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-interface Exception
+class Object
 {
 
 }

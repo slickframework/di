@@ -9,61 +9,30 @@
 
 namespace Slick\Di;
 
-use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
-use Slick\Di\Definition\DefinitionList;
+use Slick\Di\Definition\Alias;
 use Slick\Di\Definition\Factory;
 use Slick\Di\Definition\Scope;
 use Slick\Di\Definition\Value;
-use Slick\Di\Exception\InvalidArgumentException;
 use Slick\Di\Exception\NotFoundException;
 
 /**
- * Dependency injection container
+ * Container
  *
  * @package Slick\Di
- * @author  Filipe Silva <filipe.silva@gmail.com>
+ * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
 class Container implements ContainerInterface
 {
-
     /**
-     * @var DefinitionList
+     * @var array
      */
-    protected $definitions;
+    protected $definitions = [];
 
     /**
      * @var array
      */
     protected static $instances = [];
-
-    /**
-     * @readwrite
-     * @var ContainerInterface
-     */
-    protected $parent;
-
-    private static $containerKeys = [
-        'Interop\Container\ContainerInterface',
-        'Slick\Di\Container'
-    ];
-
-    /**
-     * Initialise the container with an empty definitions list
-     */
-    public function __construct()
-    {
-        $this->definitions = new DefinitionList();
-        $existingKey = reset(self::$containerKeys);
-        if (array_key_exists($existingKey, static::$instances)) {
-            $this->setParent(static::$instances[$existingKey]);
-        }
-
-        foreach (self::$containerKeys as $key) {
-            $this->register($key, $this);
-            static::$instances[$key] = $this;
-        }
-    }
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -79,25 +48,15 @@ class Container implements ContainerInterface
     {
         if (!$this->has($id)) {
             throw new NotFoundException(
-                "There is no entry with '{$id}' name in the ".
-                "dependency container."
+                "Dependency container has not found any definition for '{$id}'"
             );
         }
-
-        $entry = (!$this->definitions->offsetExists($id))
-            ? $this->parent->get($id)
-            : $this->resolve($this->definitions[$id]);
-
-        if (is_object($entry)) {
-            $entry = $this->injectOn($entry);
-        }
-
-        return $entry;
+        return $this->resolve($id);
     }
 
     /**
-     * Returns true if the container can return an entry for the given identifier.
-     * Returns false otherwise.
+     * Returns true if the container can return an entry for the given
+     * identifier. Returns false otherwise.
      *
      * @param string $id Identifier of the entry to look for.
      *
@@ -105,220 +64,124 @@ class Container implements ContainerInterface
      */
     public function has($id)
     {
-        if (!is_string($id)) {
-            return false;
-        }
-
-        if (!$this->definitions->offsetExists($id)) {
-            return $this->parentHas($id);
-        }
-        return true;
+        return array_key_exists($id, $this->definitions);
     }
 
     /**
      * Adds a definition or a value to the container
      *
-     * If the $definition parameter is a scalar a Value definition is created
-     * and added to the definitions list.
+     * @param string       $name
+     * @param mixed        $definition
+     * @param Scope|string $scope      Resolving scope
+     * @param array        $parameters Used if $value is a callable
      *
-     * If the $value is a callable a factory definition will be created
-     *
-     * @param string|DefinitionInterface $definition
-     * @param mixed                      $value
-     * @param array                      $parameters
-     * @param Scope|string               $scope
-     *
-     * @return $this|self
+     * @return Container
      */
     public function register(
-        $definition, $value = null, array $parameters = [],
-        $scope = Scope::SINGLETON)
-    {
-        if (! $definition instanceof DefinitionInterface) {
-            if (is_callable($value)) {
-                $value = $this->createFactoryDefinition(
-                    (string) $definition,
-                    $value,
-                    $parameters,
-                    new Scope((string) $scope)
-                );
-            }
-
-            $definition = ($value instanceof DefinitionInterface)
-                ? $value->setName($definition)
-                : $definition = $this->createValueDefinition(
-                    (string) $definition,
-                    $value
-                );
-        }
-
-        $definition->setContainer($this);
-
-        $this->definitions->append($definition);
-        return $this;
-    }
-
-    /**
-     * Creates the object for provided class name
-     *
-     * This method creates factory definition that can be retrieved from
-     * the container by using it FQ class name.
-     *
-     * If there are satisfiable dependencies in the container the are injected.
-     *
-     * @param string $className  FQ class name
-     * @param array  $parameters An array of constructor parameters
-     * @param string $scope      The definition scope
-     *
-     * @return mixed
-     */
-    public function make(
-        $className, array $parameters = [], $scope = Scope::SINGLETON)
-    {
-        if (!class_exists($className)) {
-            throw new InvalidArgumentException(
-                "DI container cannot make object. Class does not exists."
+        $name,
+        $definition = null,
+        $scope = Scope::SINGLETON,
+        array $parameters = []
+    ) {
+        if (!$definition instanceof DefinitionInterface) {
+            $definition = $this->createDefinition(
+                $definition,
+                $parameters
             );
+            $definition->setScope($scope);
         }
-
-        if (!$this->has($className)) {
-            $this->registerObject($className, $parameters, $scope);
-        }
-
-        return $this->get($className);
+        return $this->add($name, $definition);
     }
 
     /**
-     * Inject known dependencies on provide object
+     * Resolves the definition that was saved under the provided name
      *
-     * @param object $object
+     * @param string $name
      *
      * @return mixed
      */
-    public function injectOn($object)
+    protected function resolve($name)
     {
-        $injectedObject = $object;
-        $inspector = new DependencyInspector($this, $object);
-        $definition = $inspector->getDefinition();
-        if ($inspector->isSatisfiable()) {
-            $injectedObject = $definition->resolve();
+        if (! array_key_exists($name, self::$instances)) {
+            $entry = $this->definitions[$name];
+            return $this->registerEntry($name, $entry);
         }
-        return $injectedObject;
+        return self::$instances[$name];
     }
 
     /**
-     * Set parent container for interoperability
+     * Checks the definition scope to register resolution result
      *
-     * @ignoreInject
-     * @param ContainerInterface $container
-     * @return $this
+     * If scope is set to prototype the the resolution result is not
+     * stores in the container instances.
+     *
+     * @param string              $name
+     * @param DefinitionInterface $definition
+     * @return mixed
      */
-    public function setParent(ContainerInterface $container)
+    protected function registerEntry($name, DefinitionInterface $definition)
     {
-        $this->parent = $container;
+        $value = $definition->resolve();
+        if ((string) $definition->getScope() !== Scope::PROTOTYPE) {
+            self::$instances[$name] = $value;
+        }
+        return $value;
+    }
+
+    /**
+     * Adds a definition to the definitions list
+     *
+     * @param string              $name
+     * @param DefinitionInterface $definition
+     *
+     * @return Container
+     */
+    protected function add($name, DefinitionInterface $definition)
+    {
+        $this->definitions[$name] = $definition;
+        $definition->setContainer($this);
         return $this;
     }
 
     /**
-     * Creates a value definition for register
+     * Creates the definition for registered data
      *
-     * @param string $name  The name for the definition
-     * @param mixed  $value The value that the definition will resolve
+     * If value is a callable then the definition is Factory, otherwise
+     * it will create a Value definition.
      *
-     * @return Value A Value definition object
+     * @see Factory, Value
+     *
+     * @param callable|mixed $value
+     * @param array          $parameters
+     *
+     * @return Factory|Value
      */
-    private function createValueDefinition($name, $value)
-    {
-        return new Value(
-            [
-                'name' => $name,
-                'value' => $value
-            ]
-        );
-    }
-
-    /**
-     * Creates a Factory definition
-     *
-     * @param string   $name
-     * @param callable $callback
-     * @param array    $params
-     * @param Scope    $scope
-     *
-     * @return Factory
-     */
-    private function createFactoryDefinition(
-        $name, Callable $callback, array $params, Scope $scope)
-    {
-        $definition = new Factory(['name' => $name]);
-        return $definition
-            ->setCallable($callback, $params)
-            ->setScope($scope);
-    }
-
-    /**
-     * Returns the resolved object for provide definition
-     *
-     * @param DefinitionInterface $definition
-     * @return mixed|null
-     */
-    private function resolve(DefinitionInterface $definition)
-    {
-        if ($definition->getScope() == Scope::Prototype()) {
-            return $definition->resolve();
+    protected function createDefinition(
+        $value,
+        array $parameters = []
+    ) {
+        if (is_callable($value)) {
+            return new Factory($value, $parameters);
         }
-        return $this->resolveSingleton($definition);
+        return $this->createValueDefinition($value);
     }
 
     /**
-     * Resolve instances and save then for singleton use
+     * Creates a definition for provided name and value pair
      *
-     * @param DefinitionInterface $definition
-     * @return mixed
+     * If $value is a string prefixed with '@' it will create an Alias
+     * definition. Otherwise a Value definition will be created.
+     *
+     * @param mixed  $value
+     *
+     * @return Value|Alias
      */
-    private function resolveSingleton(DefinitionInterface $definition)
+    protected function createValueDefinition($value)
     {
-        $key = $definition->getName();
-        $hasInstance = array_key_exists($key, static::$instances);
-
-        if (!$hasInstance) {
-            static::$instances[$key] = $definition->resolve();
+        if (is_string($value) && strpos($value, '@') !== false) {
+            return new Alias($value);
         }
-        return static::$instances[$key];
-    }
 
-    /**
-     * Creates and registers an object definition
-     *
-     * @param string       $name       FQ class name
-     * @param array        $parameters Constructor parameters
-     * @param string $scope      Definition scope
-     *
-     * @return $this|self
-     */
-    private function registerObject($name, $parameters, $scope)
-    {
-        $inspector = new DependencyInspector($this, $name);
-        $definition = $inspector->getDefinition();
-        if (!empty($parameters)) {
-            $definition->setConstructArgs($parameters);
-        }
-        $definition->setScope(new Scope((string) $scope));
-        $this->register($definition);
-        return $this;
-    }
-
-    /**
-     * Check if parent has provided key
-     *
-     * @param string $key
-     * @return bool
-     */
-    private function parentHas($key)
-    {
-        if (is_null($this->parent)) {
-            return false;
-        }
-        return $this->parent->has($key);
+        return new Value($value);
     }
 }

@@ -9,111 +9,100 @@
 
 namespace Slick\Di;
 
-use Slick\Common\BaseMethods;
-use Slick\Di\Definition\Alias;
-use Slick\Di\Exception\InvalidArgumentException;
-
 /**
- * ContainerBuilder for dependency container creation
+ * Container Builder
  *
  * @package Slick\Di
  * @author  Filipe Silva <silvam.filipe@gmail.com>
- *
- * @method array getDefinitions() Returns the source definitions
- */
-final class ContainerBuilder
+*/
+final class ContainerBuilder implements ContainerAwareInterface
 {
 
     /**
-     * For easy getters and setters
+     * @var ContainerInterface
      */
-    use BaseMethods;
+    private $container;
 
     /**
-     * @read
-     * @var array
+     * @var array|string
      */
-    protected $definitions = [];
+    private $definitions;
 
-    /**
-     * @read
-     * @var bool
-     */
-    protected $override = false;
-
-    /**
-     * @read
-     * @var Container
-     */
-    protected $container;
-
-    /**
-     * Creates a container builder with provided definitions and override mode
-     *
-     * @param array|string $definitions
-     *    The definitions list for container creation
-     * @param bool         $override
-     *    Set to true to override existing definitions
-     */
-    public function __construct($definitions, $override = false)
+    public function __construct($definitions = [])
     {
-        $this->definitions = $this->checkDefinitions($definitions);
-        $this->override = $override;
+        $this->definitions = $definitions;
     }
 
     /**
-     * Creates a container with existing definitions
+     * Get current container
      *
-     * @return Container
+     * If no container was created a new, empty container will be created.
+     *
+     * @return ContainerInterface|Container
      */
     public function getContainer()
     {
-        if (is_null($this->container)) {
-            $this->container = new Container();
-            $this->applyDefinitions();
+        if (!$this->container) {
+            $this->setContainer(new Container());
         }
+        $this->hydrateContainer($this->definitions);
         return $this->container;
     }
 
-    /**
-     * Apply definitions to content
-     */
-    private function applyDefinitions()
-    {
-        foreach($this->definitions as $name => $entry) {
-            if (
-                is_string($entry) &&
-                preg_match('/^@(?P<key>.*)$/i', $entry, $result)
-            ) {
-                $entry = new Alias(['target' => $result['key']]);
-            }
 
-            if (!$this->container->has($name) || $this->override) {
-                $this->container->register($name, $entry);
-            }
+    /**
+     * Set the dependency container
+     *
+     * @param ContainerInterface $container
+     *
+     * @return ContainerBuilder
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+        return $this;
+    }
+
+    /**
+     * Hydrates the container with provided definitions
+     *
+     * @param string|array $definitions
+     */
+    protected function hydrateContainer($definitions)
+    {
+        if (! is_array($definitions)) {
+            $this->hydrateFromFile($definitions);
+            return;
+        }
+
+        foreach ($definitions as $name => $definition) {
+            $this->container->register($name, $definition);
         }
     }
 
     /**
-     * Checks the data to be returned
+     * Hydrate the container with definitions from provided file
      *
-     * @param string|array $definitions
-     * @return array
+     * @param $definitions
      */
-    private function checkDefinitions($definitions)
+    protected function hydrateFromFile($definitions)
     {
-        if (is_array($definitions)) {
-            return $definitions;
+        if (! is_file($definitions)) {
+            $this->hydrateFromDirectory($definitions);
+            return;
         }
 
-        if (is_string($definitions) && file_exists($definitions)) {
-            $data = include($definitions);
-            return $this->checkDefinitions($data);
-        }
+        $services = require $definitions;
+        $this->hydrateContainer($services);
+    }
 
-        throw new InvalidArgumentException(
-            "Definitions file not found or invalid. Cannot create ".
-            "container builder."
-        );
+    protected function hydrateFromDirectory($definitions)
+    {
+        $directory = new \RecursiveDirectoryIterator($definitions);
+        $iterator = new \RecursiveIteratorIterator($directory);
+        $phpFiles = new \RegexIterator($iterator, '/.*\.php$/i');
+        foreach ($phpFiles as $phpFile) {
+            $this->hydrateFromFile($phpFile);
+        }
     }
 }

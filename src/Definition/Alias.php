@@ -9,37 +9,55 @@
 
 namespace Slick\Di\Definition;
 
+use Interop\Container\ContainerInterface;
 use Slick\Di\DefinitionInterface;
+use Slick\Di\Exception\ContainerNotSetException;
+use Slick\Di\Exception\NotFoundException;
 
 /**
- * Alias definition
+ * Alias Definition
  *
  * @package Slick\Di\Definition
  * @author  Filipe Silva <silvam.filipe@gmail.com>
- *
- * @property string $target The entry name this definition points to
- *
- * @method $this|Alias setTarget(string $entryName) Sets the entry name this
- *                                                  definition will point to.
- * @method string getTarget() Gets the entry name that will resolve
- *                            this definition.
  */
 class Alias extends AbstractDefinition implements DefinitionInterface
 {
-
     /**
-     * @readwrite
      * @var string
      */
-    protected $target;
+    protected $alias;
 
     /**
-     * Resolves current definition and returns its value
+     * Alias needs a name and the definition name to look for in the container
+     *
+     * @param string $alias
+     */
+    public function __construct($alias)
+    {
+        $alias = str_replace('@', '', $alias);
+
+        $this->alias = $alias;
+    }
+
+    /**
+     * Resolves the definition into a scalar or object
      *
      * @return mixed
+     *
+     * @throws NotFoundException  No entry was found for alias
+     *                            in current container.
+     * @throws ContainerNotSetException If no container is set before
+     *                                  calling resolve().
      */
     public function resolve()
     {
-        return $this->container->get($this->target);
+        if (! $this->container instanceof ContainerInterface) {
+            throw new ContainerNotSetException(
+                "No container was set for definition. " .
+                "It is not possible to look for alias '{$this->alias}'"
+            );
+        }
+
+        return $this->container->get($this->alias);
     }
 }

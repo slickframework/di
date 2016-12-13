@@ -9,216 +9,260 @@
 
 namespace Slick\Di\Definition;
 
-use Slick\Common\Inspector;
-use Slick\Di\Definition\Resolver\Object as Resolver;
-use Slick\Di\Definition\Resolver\ObjectResolver;
-use Slick\Di\Exception\InvalidArgumentException;
+use Slick\Di\Definition\Object\DefinitionData;
+use Slick\Di\Definition\Object\Resolver;
+use Slick\Di\Definition\Object\ResolverAwareInterface;
+use Slick\Di\Definition\Object\ResolverInterface;
+use Slick\Di\Exception\ClassNotFoundException;
+use Slick\Di\Exception\MethodNotFoundException;
+use Slick\Di\Exception\PropertyNotFoundException;
 
 /**
- * Object definition class
+ * Object
  *
  * @package Slick\Di\Definition
  * @author  Filipe Silva <silvam.filipe@gmail.com>
- *
- * @property string $name          Definition name or key
- * @property string $className
- * @property object $instance
- * @property array  $constructArgs
- * @property array  $properties
- * @property array  $methods
  */
-class Object extends AbstractDefinition implements ObjectDefinitionInterface
+class Object extends AbstractDefinition implements
+    FluentObjectDefinitionInterface,
+    ResolverAwareInterface
 {
     /**
-     * @readwrite
-     * @var string
+     * @var DefinitionData
      */
-    protected $className;
+    protected $definitionData;
 
     /**
-     * @readwrite
-     * @var object
-     */
-    protected $instance;
-
-    /**
-     * @readwrite
-     * @var array
-     */
-    protected $constructArgs = [];
-
-    /**
-     * @readwrite
-     * @var array
-     */
-    protected $properties = [];
-
-    /**
-     * @readwrite
-     * @var array
-     */
-    protected $methods = [];
-
-    /**
-     * @var Inspector
-     */
-    protected $classMetaData;
-
-    /**
-     * @readwrite
-     * @var ObjectResolver
+     * @var ResolverInterface
      */
     protected $resolver;
 
     /**
-     * Gets class meta data (Inspector)
-     *
-     * @return Inspector
+     * @var \ReflectionClass
      */
-    protected function getClassMetaData()
-    {
-        if (is_null($this->classMetaData)) {
-            $this->classMetaData = Inspector::forClass($this->getClassName());
-        }
-        return $this->classMetaData;
-    }
+    private $reflectionClass;
 
     /**
-     * Gets definition class name
-     *
-     * If class name is not set and there is an instance set the class name
-     * will be retrieved from instance object.
-     *
-     * @return string
+     * @var mixed
      */
-    public function getClassName()
-    {
-        if (is_null($this->className) && is_object($this->instance)) {
-            $this->className = get_class($this->instance);
-        }
-        return $this->className;
-    }
+    private $lastValue;
 
     /**
-     * Gets the instance object for current definition
+     * Creates an object definition
      *
-     * If instance is not defined yet and the class name is set and
-     * is an existing class, a new instance will be created and the
-     * constructor arguments will be used.
+     * @param string $className
      *
-     * @return object
+     * @throws ClassNotFoundException if the provided class name is from an
+     *         undefined or inaccessible class.
      */
-    public function getInstance()
+    public function __construct($className)
     {
-        if (is_null($this->instance) && class_exists($this->className)) {
-            $reflection = $this->getClassMetaData()->getReflection();
-            $this->instance = (!empty($this->constructArgs))
-                ? $reflection->newInstanceArgs(
-                    $this->getResolver()->checkValues($this->constructArgs)
-                )
-                : new $this->className();
-        }
-        return $this->instance;
-    }
-
-    /**
-     * Sets constructor arguments used on instance instantiation
-     *
-     * @param array $arguments
-     * @return $this|self
-     */
-    public function setConstructArgs(array $arguments)
-    {
-        $this->constructArgs = $arguments;
-        return $this;
-    }
-
-    /**
-     * Set a method to be called when resolving this definition
-     *
-     * @param string $name      Method name
-     * @param array  $arguments Method parameters
-     *
-     * @return $this|self
-     */
-    public function setMethod($name, array $arguments = [])
-    {
-        if (!$this->getClassMetaData()->hasMethod($name)) {
-            throw new InvalidArgumentException(
-                "The method {$name} does not exists in class ".
-                "{$this->getClassName()}"
+        if (! class_exists($className)) {
+            throw new ClassNotFoundException(
+                "The class '{$className}' does not exists or it cannot be " .
+                "loaded. Object definition therefore cannot be " .
+                "created."
             );
         }
 
-        $this->methods[] = compact('name', 'arguments');
-        return $this;
+        $this->definitionData = new DefinitionData($className);
     }
 
     /**
-     * Sets property value when resolving this definition
-     *
-     * @param string $name  The property name
-     * @param mixed  $value The property value
-     *
-     * @return $this|self
-     */
-    public function setProperty($name, $value)
-    {
-        if (!$this->getClassMetaData()->hasProperty($name)) {
-            throw new InvalidArgumentException(
-                "The property {$name} does not exists in class ".
-                "{$this->getClassName()}"
-            );
-        }
-
-        $this->properties[$name] = $value;
-        return $this;
-    }
-
-    /**
-     * Resolves current definition and returns its value
+     * Resolves the definition into a scalar or object
      *
      * @return mixed
      */
     public function resolve()
     {
-        return $this->getResolver()->resolve();
+        return $this->getResolver()
+            ->setContainer($this->getContainer())
+            ->resolve($this->definitionData);
     }
 
     /**
-     * Gets property values
+     * Set the arguments for the last defined method call
      *
-     * @return array
+     * If no method call was defined yet it will set the constructor argument list
+     *
+     * @param array ...$arguments Arguments passed to object constructor
+     *
+     * @return $this|Object|self
      */
-    public function getProperties()
+    public function with(...$arguments)
     {
-        return $this->properties;
+
+        if (empty($this->definitionData->calls)) {
+            $this->getReflectionClass()
+                ->getMethod('withConstructorArgument')
+                ->invokeArgs($this, $arguments);
+            return $this;
+        }
+
+        $this->definitionData->updateLastMethod($arguments);
+        return $this;
     }
 
     /**
-     * Returns the list of methods to call
+     * Set the arguments used to create the object
      *
-     * @return mixed
+     * @param array ...$arguments
+     *
+     * @return self|Object
      */
-    public function getMethods()
+    public function withConstructorArgument(...$arguments)
     {
-        return $this->methods;
+        $this->definitionData->arguments = $arguments;
+        return $this;
     }
 
     /**
-     * Returns resolver for this definition
+     * Get the object resolver
      *
-     * @return Resolver|ObjectResolver
+     * @return ResolverInterface
      */
-    protected function getResolver()
+    public function getResolver()
     {
-        if (is_null($this->resolver)) {
-            $this->resolver = new Resolver(
-                [
-                    'definition' => $this
-                ]
-            );
+        if (!$this->resolver) {
+            $this->setResolver(new Resolver());
         }
         return $this->resolver;
+    }
+
+    /**
+     * Set the object resolver
+     *
+     * @param ResolverInterface $resolver
+     *
+     * @return self|$this
+     */
+    public function setResolver(ResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+        return $this;
+    }
+
+    /**
+     * Get the definition data
+     *
+     * @return DefinitionData
+     */
+    public function getDefinitionData()
+    {
+        return $this->definitionData;
+    }
+
+    /**
+     * Define a method call in the freshly created object
+     *
+     * @param string $methodName The method name to call
+     *
+     * @return FluentObjectDefinitionInterface|self
+     *
+     * @throws MethodNotFoundException
+     */
+    public function call($methodName)
+    {
+        $this->getReflectionClass()
+            ->getMethod('callMethod')
+            ->invokeArgs($this, [$methodName]);
+        return $this;
+    }
+
+    /**
+     * Define a method call with provide call
+     *
+     * @param string $methodName
+     * @param array ...$arguments
+     *
+     * @return self|ObjectDefinitionInterface
+     *
+     * @throws MethodNotFoundException
+     */
+    public function callMethod($methodName, ...$arguments)
+    {
+
+        if (! method_exists($this->definitionData->className, $methodName)) {
+            throw new MethodNotFoundException(
+                "The method '{$methodName}' is not defined in the class ".
+                "{$this->definitionData->className}"
+            );
+        }
+
+        $this->definitionData->addCall(
+            DefinitionData::METHOD,
+            $methodName,
+            $arguments
+        );
+        return $this;
+    }
+
+    /**
+     * Set the value that will be assigned to a property
+     *
+     * @param mixed $value
+     *
+     * @return self|Object
+     */
+    public function assign($value)
+    {
+        $this->lastValue = $value;
+        return $this;
+    }
+
+    /**
+     * Assign the last defined value to the provided property
+     *
+     * The value will be reset apter its assigned.
+     *
+     * @param string $property
+     *
+     * @return self|Object
+     */
+    public function to($property)
+    {
+        if (! property_exists($this->definitionData->className, $property)) {
+            throw new PropertyNotFoundException(
+                "The class '{$this->definitionData->className}' has no " .
+                "property called '{$property}'."
+            );
+        }
+        $this->getReflectionClass()
+            ->getMethod('assignProperty')
+            ->invokeArgs($this, [$property, $this->lastValue]);
+
+        $this->lastValue = null;
+        return $this;
+    }
+
+    /**
+     * Assigns a value to the property with provided name
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return self|Object
+     */
+    public function assignProperty($name, $value)
+    {
+        $this->definitionData->addCall(
+            DefinitionData::PROPERTY,
+            $name,
+            $value
+        );
+        return $this;
+    }
+
+    /**
+     * Get the self reflection
+     *
+     * @return \ReflectionClass
+     */
+    protected function getReflectionClass()
+    {
+        if (!$this->reflectionClass) {
+            $this->reflectionClass = new \ReflectionClass($this);
+        }
+        return $this->reflectionClass;
     }
 }
