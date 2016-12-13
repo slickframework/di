@@ -114,9 +114,9 @@ class DefinitionData extends Base
     protected function update($type, $arguments)
     {
         $reversed = new \ArrayIterator(array_reverse($this->calls));
-        foreach ($reversed as &$call) {
+        foreach ($reversed as $key => $call) {
             if ($call['type'] == $type) {
-                $call['arguments'] = $arguments;
+                $reversed[$key]['arguments'] = $arguments;
             }
         }
         $this->calls = array_reverse($reversed->getArrayCopy());
