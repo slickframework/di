@@ -103,4 +103,22 @@ class ContainerSpec extends ObjectBehavior
         $first = $this->get('test');
         $this->get('test')->shouldNotBe($first);
     }
+
+    function it_creates_objects_injecting_its_dependencies()
+    {
+        $this->register('the-value', 33);
+        $this->make(CreatableObject::class, ['@the-value'])
+            ->shouldBeAnInstanceOf(CreatableObject::class);
+    }
+}
+
+
+class CreatableObject
+{
+    private $value;
+
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
 }

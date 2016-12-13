@@ -12,6 +12,7 @@ namespace Slick\Di;
 use Interop\Container\Exception\ContainerException;
 use Slick\Di\Definition\Alias;
 use Slick\Di\Definition\Factory;
+use Slick\Di\Definition\Object;
 use Slick\Di\Definition\Scope;
 use Slick\Di\Definition\Value;
 use Slick\Di\Exception\NotFoundException;
@@ -183,5 +184,25 @@ class Container implements ContainerInterface
         }
 
         return new Value($value);
+    }
+
+    /**
+     * Creates an instance of provided class injecting its dependencies
+     *
+     * @param string $className FQ class name
+     * @param array $arguments An array of constructor arguments
+     *
+     * @return mixed
+     */
+    public function make(
+        $className,
+        array $arguments = []
+    )
+    {
+        $definition = (new Object($className))
+            ->with($arguments)
+            ->setContainer($this)
+        ;
+        return $definition->resolve();
     }
 }

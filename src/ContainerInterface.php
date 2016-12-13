@@ -31,4 +31,17 @@ interface ContainerInterface extends InteropContainer
         $scope = Scope::SINGLETON,
         array $parameters = []
     );
+
+    /**
+     * Creates an instance of provided class injecting its dependencies
+     *
+     * @param string $className  FQ class name
+     * @param array  $arguments An array of constructor arguments
+     *
+     * @return mixed
+     */
+    public function make(
+        $className,
+        array $arguments = []
+    );
 }
