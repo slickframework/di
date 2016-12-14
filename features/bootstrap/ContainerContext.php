@@ -217,4 +217,33 @@ class ContainerContext extends FeatureContext
     {
         $this->definition->assign($value)->to($property);
     }
+
+    /**
+     * @When /^I use the container to create "([^"]*)"$/
+     */
+    public function iUseContainerToCreate($className)
+    {
+        $this->iUseContainerToCreateWith($className);
+    }
+
+    /**
+     * @When /^I use the container to create "([^"]*)" width:$/
+     *
+     * @param $className
+     * @param TableNode $arguments
+     */
+    public function iUseContainerToCreateWith($className, TableNode $arguments = null)
+    {
+        if (is_null($arguments)) {
+            $this->lastValue = $this->container->make($className);
+            return;
+        }
+
+        $args = [$className];
+        foreach ($arguments->getRow(0) as $value) {
+            $args[] = $value;
+        }
+
+        $this->lastValue = call_user_func_array([$this->container, 'make'], $args);
+    }
 }

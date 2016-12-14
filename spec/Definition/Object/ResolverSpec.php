@@ -54,6 +54,13 @@ class ResolverSpec extends ObjectBehavior
         $this->resolve($data)->shouldHavePropertyEquals('other', $object);
     }
 
+    function it_creates_object_from_classes_without_constructor()
+    {
+        $data = new DefinitionData(WithoutConstructor::class);
+        $this->resolve($data)->shouldBeAnInstanceOf(WithoutConstructor::class);
+
+    }
+
     public function getMatchers()
     {
         return [
@@ -92,4 +99,9 @@ class ConstructorObject
     {
         $this->other = $value;
     }
+}
+
+class WithoutConstructor
+{
+
 }

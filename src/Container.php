@@ -189,20 +189,21 @@ class Container implements ContainerInterface
     /**
      * Creates an instance of provided class injecting its dependencies
      *
-     * @param string $className FQ class name
-     * @param array $arguments An array of constructor arguments
+     * @param string $className
+     * @param array ...$arguments
      *
      * @return mixed
      */
-    public function make(
-        $className,
-        array $arguments = []
-    )
+    public function make($className, ...$arguments)
     {
+        if (is_a($className, ContainerInjectionInterface::class, true)) {
+            return call_user_func_array([$className, 'create'], [$this]);
+        }
+
         $definition = (new Object($className))
-            ->with($arguments)
             ->setContainer($this)
         ;
+        call_user_func_array([$definition, 'with'], $arguments);
         return $definition->resolve();
     }
 }

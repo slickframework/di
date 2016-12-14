@@ -9,6 +9,8 @@
 
 namespace Slick\Di;
 
+use Interop\Container\ContainerInterface as InteropContainer;
+
 /**
  * Container Aware Interface
  *
@@ -21,16 +23,16 @@ interface ContainerAwareInterface
     /**
      * Set the dependency container
      *
-     * @param ContainerInterface $container
+     * @param InteropContainer $container
      *
      * @return self|$this|ContainerAwareInterface
      */
-    public function setContainer(ContainerInterface $container);
+    public function setContainer(InteropContainer $container);
 
     /**
      * Get the dependency container
      *
-     * @return ContainerInterface
+     * @return InteropContainer
      */
     public function getContainer();
 }

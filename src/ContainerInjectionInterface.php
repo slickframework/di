@@ -9,7 +9,7 @@
 
 namespace Slick\Di;
 
-use Interop\Container\ContainerInterface;
+use Interop\Container\ContainerInterface as InteropContainer;
 
 /**
  * Container Injection Interface
@@ -28,8 +28,8 @@ interface ContainerInjectionInterface
      * class, but not the container itself. Every call to this method must return
      * a new instance of this class; that is, it may not implement a singleton.
      *
-     * @param ContainerInterface $container
+     * @param InteropContainer $container
      *   The service container this instance should use.
      */
-    public static function create(ContainerInterface $container);
+    public static function create(InteropContainer $container);
 }

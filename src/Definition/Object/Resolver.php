@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * This file is part of slick/di
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Slick\Di\Definition\Object;
 
 use Slick\Di\ContainerAwareMethods;
 
+/**
+ * Object definition Resolver
+ *
+ * @package Slick\Di\Definition\Object
+ * @author  Filipe Silva <silvam.filipe@gmail.com>
+ */
 class Resolver implements ResolverInterface
 {
 
@@ -55,9 +68,11 @@ class Resolver implements ResolverInterface
     public function createObject()
     {
         $reflection = new \ReflectionClass($this->data->className);
-        return $reflection->newInstanceArgs(
-            $this->filterArguments($this->data->arguments)
-        );
+        return $reflection->hasMethod('__construct')
+            ? $reflection->newInstanceArgs(
+                $this->filterArguments($this->data->arguments)
+            )
+            : $reflection->newInstance();
     }
 
     /**

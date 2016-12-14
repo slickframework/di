@@ -9,6 +9,8 @@
 
 namespace Slick\Di;
 
+use Interop\Container\ContainerInterface as InteropContainer;
+
 /**
  * Implementation methods for ContainerAwareInterface
  *
@@ -26,7 +28,7 @@ trait ContainerAwareMethods
     /**
      * Get container
      *
-     * @return ContainerInterface
+     * @return InteropContainer
      */
     public function getContainer()
     {
@@ -36,11 +38,11 @@ trait ContainerAwareMethods
     /**
      * Set container
      *
-     * @param ContainerInterface $container
+     * @param InteropContainer $container
      *
      * @return self|$this|ContainerAwareMethods
      */
-    public function setContainer(ContainerInterface $container)
+    public function setContainer(InteropContainer $container)
     {
         $this->container = $container;
         return $this;

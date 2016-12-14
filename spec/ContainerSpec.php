@@ -14,6 +14,7 @@ use Interop\Container\Exception\NotFoundException;
 use Slick\Di\Container;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Slick\Di\ContainerInjectionInterface;
 use Slick\Di\Definition\Scope;
 use Slick\Di\DefinitionInterface;
 
@@ -107,8 +108,15 @@ class ContainerSpec extends ObjectBehavior
     function it_creates_objects_injecting_its_dependencies()
     {
         $this->register('the-value', 33);
-        $this->make(CreatableObject::class, ['@the-value'])
+        $this->make(CreatableObject::class, '@the-value')
             ->shouldBeAnInstanceOf(CreatableObject::class);
+    }
+
+    function it_creates_container_injection_implementations()
+    {
+        $this->register('some-value', new \stdClass());
+        $this->make(CustomMethodObject::class)
+            ->shouldBeAnInstanceOf(CustomMethodObject::class);
     }
 }
 
@@ -120,5 +128,36 @@ class CreatableObject
     public function __construct($value)
     {
         $this->value = $value;
+    }
+}
+
+class CustomMethodObject implements ContainerInjectionInterface
+{
+    /**
+     * @var
+     */
+    private $value;
+
+    public function __construct(\stdClass $value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * Instantiates a new instance of this class.
+     *
+     * This is a factory method that returns a new instance of this class. The
+     * factory should pass any needed dependencies into the constructor of this
+     * class, but not the container itself. Every call to this method must return
+     * a new instance of this class; that is, it may not implement a singleton.
+     *
+     * @param ContainerInterface $container
+     *   The service container this instance should use.
+     *
+     * @return CustomMethodObject
+     */
+    public static function create(ContainerInterface $container)
+    {
+        return new static($container->get('some-value'));
     }
 }

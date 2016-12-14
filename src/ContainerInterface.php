@@ -35,13 +35,10 @@ interface ContainerInterface extends InteropContainer
     /**
      * Creates an instance of provided class injecting its dependencies
      *
-     * @param string $className  FQ class name
-     * @param array  $arguments An array of constructor arguments
+     * @param string $className
+     * @param array ...$arguments
      *
      * @return mixed
      */
-    public function make(
-        $className,
-        array $arguments = []
-    );
+    public function make($className, ...$arguments);
 }
