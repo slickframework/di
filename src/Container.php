@@ -23,7 +23,7 @@ use Slick\Di\Exception\NotFoundException;
  * @package Slick\Di
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-class Container implements ContainerInterface
+class Container implements ContainerInterface, ObjectHydratorAwareInterface
 {
     /**
      * @var array
@@ -34,6 +34,11 @@ class Container implements ContainerInterface
      * @var array
      */
     protected static $instances = [];
+
+    /**
+     * @var ObjectHydratorInterface
+     */
+    protected $hydrator;
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -204,6 +209,34 @@ class Container implements ContainerInterface
             ->setContainer($this)
         ;
         call_user_func_array([$definition, 'with'], $arguments);
-        return $definition->resolve();
+        $object = $definition->resolve();
+        $this->getHydrator()->hydrate($object);
+        return $object;
+    }
+
+    /**
+     * Set the object hydrator
+     *
+     * @param ObjectHydratorInterface $hydrator
+     *
+     * @return Container|ObjectHydratorAwareInterface
+     */
+    public function setHydrator(ObjectHydratorInterface $hydrator)
+    {
+        $this->hydrator = $hydrator;
+        return $this;
+    }
+
+    /**
+     * Get the object hydrator
+     *
+     * @return ObjectHydratorInterface
+     */
+    public function getHydrator()
+    {
+        if (!$this->hydrator) {
+            $this->setHydrator(new ObjectHydrator($this));
+        }
+        return $this->hydrator;
     }
 }
