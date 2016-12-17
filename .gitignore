@@ -1,4 +1,4 @@
-vendor
+/vendor
 composer.phar
 /build
 *.DS_Store
