@@ -1,95 +1,202 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Contributing: Slick Dependency Injection &mdash; Dependency Injection Container v1.0.0 documentation</title>
-  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
 
-  
-  
-
-  
-
-  
-  
+    
+    <title>Contributing: Slick Dependency Injection &mdash; Dependency Injection Container v1.0.0 documentation</title>
     
 
-  
+    <!-- Styles -->
+    <link rel="stylesheet" href="../_static/css/main.css" type="text/css" />
 
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:100,300,400,500%7CLato:300,400' rel='stylesheet' type='text/css'>
 
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Dependency Injection Container v1.0.0 documentation" href="../index.html"/>
-        <link rel="next" title="License" href="license.html"/>
-        <link rel="prev" title="Container usage" href="../cookbook/container.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
+    <!-- Favicons -->
+    <link rel="icon" href="../_static/favicon.ico">
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
 
-   
-  <div class="wy-grid-for-nav">
-
+<body>
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+        <header class="site-header sticky">
 
-          
-            <a href="../index.html" class="icon icon-home"> Dependency Injection Container
-          
+    <!-- Top navbar & branding -->
+    <nav class="navbar navbar-default">
+        <div class="container">
 
-          
-          </a>
+            <!-- Toggle buttons and brand -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
+                    <span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
 
-          
-            
-            
-              <div class="version">
-                v1.0.0
-              </div>
-            
-          
+                <button type="button" class="navbar-toggle for-sidebar" data-toggle="offcanvas">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
+                <a class="navbar-brand" href="../index.html"><img src="../_static/img/logo.png" alt="logo"></a>
+            </div>
+            <!-- END Toggle buttons and brand -->
 
-          
+            <!-- Top navbar -->
+            <div id="navbar" class="navbar-collapse collapse" aria-expanded="true" role="banner">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        
+                        
+                        <a href="https://github.com/slickframework/di/blob/master/doc/manual/contrib">
+                            <i class="fa fa-github"></i>
+                            Edit on GitHub
+                        </a>
+                        
+                        
+                    </li>
+
+                    <!-- li class="hero"><a href="http://themeforest.net/item/thedocs-online-documentation-template/13070884">Purchase</a></li -->
+                </ul>
+            </div>
+            <!-- END Top navbar -->
+
         </div>
+    </nav>
+    <!-- END Top navbar & branding -->
 
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-                <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+</header>
+    
+
+    <main class="container">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <aside class="col-md-3 col-sm-3 sidebar">
+                
+<!-- ul class="sidenav dropable sticky">
+    <li><a href="index.html">Overview</a></li>
+    <li>
+        <a class="active" href="#">Layouts</a>
+        <ul>
+            <li><a class="active" href="layout_boxed_left-sidebar.html">Boxed - Left sidebar</a></li>
+            <li><a href="layout_boxed_right-sidebar.html">Boxed - Right sidebar</a></li>
+            <li><a href="layout_boxed_no-sidebar.html">Boxed - No sidebar</a></li>
+            <li><a href="layout_full_left-sidebar.html">Fullwidth - Left sidebar</a></li>
+            <li><a href="layout_full_right-sidebar.html">Fullwidth - Right sidebar</a></li>
+            <li><a href="layout_full_no-sidebar.html">Fullwidth - No sidebar</a></li>
+            <li><a href="layout_single-page-1.html">Single page - Sample 1</a></li>
+            <li><a href="layout_single-page-2.html">Single page - Sample 2</a></li>
+            <li><a href="layout_single-page-3.html">Single page - Sample 3</a></li>
+            <li><a href="layout_sidebar_boxed.html">Boxed sidebar</a></li>
+            <li><a href="layout_skin.html">Skins</a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">Components</a>
+        <ul>
+            <li><a href="component_navbar.html">Navbar</a></li>
+            <li><a href="component_banner.html">Banner</a></li>
+            <li><a href="component_banner_sample1.html">Banner - Sample 1</a></li>
+            <li><a href="component_banner_sample2.html">Banner - Sample 2</a></li>
+            <li><a href="component_banner_sample3.html">Banner - Sample 3</a></li>
+            <li><a href="component_sidebar.html">Sidebar - default</a></li>
+            <li><a href="component_sidebar_line.html">Sidebar - line</a></li>
+            <li><a href="component_sidebar_icon.html">Sidebar - icon</a></li>
+            <li><a href="component_footer.html">Footer</a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">Basic styling</a>
+        <ul>
+            <li><a href="css_typography.html">Typography</a></li>
+            <li><a href="css_button.html">Buttons</a></li>
+            <li><a href="css_label.html">Labels</a></li>
+            <li><a href="css_table.html">Tables</a></li>
+            <li><a href="css_alert.html">Alerts</a></li>
+            <li><a href="css_icon.html">Icons</a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">Elements</a>
+        <ul>
+            <li><a href="element_toc.html">Table of contents</a></li>
+            <li><a href="element_code.html">Code view</a></li>
+            <li><a href="element_view.html">Views</a></li>
+            <li><a href="element_promo.html">Promo</a></li>
+            <li><a href="element_files.html">Included files</a></li>
+            <li><a href="element_requirement.html">Requirements</a></li>
+            <li><a href="element_tab.html">Tabs</a></li>
+            <li><a href="element_step.html">Steps</a></li>
+            <li><a href="element_media.html">Media</a></li>
+            <li><a href="element_color.html">Color palette</a></li>
+            <li><a href="element_jumbotron.html">Jumbotron</a></li>
+            <li><a href="element_carousel.html">Carousel</a></li>
+            <li><a href="element_faq.html">FAQ</a></li>
+            <li><a href="element_mix.html">Mix</a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">Menu level</a>
+        <ul>
+            <li><a href="#">Level 1</a></li>
+            <li>
+                <a href="#">Level 1</a>
+                <ul>
+                    <li><a href="#">Level 2</a></li>
+                    <li>
+                        <a href="#">Level 2</a>
+                        <ul>
+                            <li><a href="#">Level 3</a></li>
+                            <li><a href="#">Level 3</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Level 2</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Level 1</a></li>
+            <li><a href="#">Level 1</a></li>
+        </ul>
+    </li>
+
+</ul -->
+
+
+
+
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#dependency-injection">Dependency Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#dependency-injection-container">Dependency Injection Container</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cookbook/definitions.html">Definitions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cookbook/container.html">Container usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/definitions.html">Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#value-definition">Value definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#factory-callable-definition">Factory (callable) definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#alias-definition">Alias definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#object-definition">Object definition</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/container.html">Container usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/container.html#constructor-injection">Constructor injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/container.html#setter-injection">Setter injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/container.html#property-injection">Property injection</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pull-requests">Pull requests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-tests">Running tests</a></li>
@@ -99,69 +206,14 @@
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Dependency Injection Container</a>
-        
-      </nav>
-
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          
 
 
 
+            </aside>
 
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-      <li>Contributing: Slick Dependency Injection</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/slickframework/di/blob/master/doc/manual/contrib.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+            <!-- Main content -->
+            <article class="col-md-9 col-sm-9 main-content" role="main">
+                
   <div class="section" id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
 <p>Contributions are <strong>welcome</strong> and will be fully <strong>credited</strong>.
@@ -198,72 +250,56 @@ $ vendor/bin/behat
 </div>
 
 
-           </div>
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../cookbook/container.html" class="btn btn-neutral" title="Container usage" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
-  
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2016, Slick Team.
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
+                
+                    
+                <p>&nbsp;</p>
+                    <ul class="pager">
+                        
+                        <li class="previous">
+                            <a href="../cookbook/container.html" title="Container usage" accesskey="p">Prev</a>
+                        </li>
+                        
+                        
+                        <li class="next">
+                            <a title="License" href="license.html" accesskey="n">Next</a>
+                        </li>
+                        
+                    </ul>
+                    
+                    <hr/>
+                
+            </article>
         </div>
-      </div>
+    </main>
 
-    </section>
+    
+        <footer class="site-footer">
+    <div class="container">
+        <a id="scroll-up" href="#"><i class="fa fa-angle-up"></i></a>
 
-  </div>
-  
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                &copy; Copyright 2016, Slick Team<br>
+                Built with <a href="http://sphinx-doc.org/">Sphinx</a>.
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <ul class="footer-menu">
+                    <li><a href="https://github.com/slickframework/di/blob/master/CHANGELOG.md">Changelog</a></li>
+                    <li><a href="https://github.com/slickframework/di/graphs/contributors">Credits</a></li>
+                    <li><a href="mailto:">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+    
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'v1.0.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
-      });
-  </script>
-   
+    <!-- Scripts -->
+    <script src="../_static/js/vendor/jquery.min.js"></script>
+    <script src="../_static/js/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../_static/js/custom.js"></script>
+    <script src="../_static/js/theDocs.all.min.js"></script>
 
 </body>
 </html>
