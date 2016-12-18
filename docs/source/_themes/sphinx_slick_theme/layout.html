@@ -13,108 +13,175 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {{ metatags }}
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
 
     {% block htmltitle %}
     <title>{{ title|striptags|e }}{{ titlesuffix }}</title>
     {% endblock %}
 
-    <!-- Styles -->
+    <!-- Favicons -->
+    <link rel="icon" href="{{ pathto('_static/favicon.ico', 1) }}">
+
+    {# CSS #}
+
+    {# OPENSEARCH #}
+    {% if not embedded %}
+    {% if use_opensearch %}
+    <link rel="search" type="application/opensearchdescription+xml" title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}" href="{{ pathto('_static/opensearch.xml', 1) }}"/>
+    {% endif %}
+
+    {% endif %}
+
+    {# RTD hosts this file, so just load on non RTD builds #}
+    {% if not READTHEDOCS %}
     <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css" />
+    {% endif %}
+
+    {% for cssfile in css_files %}
+    <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+    {% endfor %}
+
+    {% for cssfile in extra_css_files %}
+    <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+    {% endfor %}
 
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Raleway:100,300,400,500%7CLato:300,400' rel='stylesheet' type='text/css'>
 
-    <!-- Favicons -->
-    <link rel="icon" href="{{ pathto('_static/favicon.ico', 1) }}">
+    {%- block linktags %}
+    {%- if hasdoc('about') %}
+    <link rel="author" title="{{ _('About these documents') }}"
+          href="{{ pathto('about') }}"/>
+    {%- endif %}
+    {%- if hasdoc('genindex') %}
+    <link rel="index" title="{{ _('Index') }}"
+          href="{{ pathto('genindex') }}"/>
+    {%- endif %}
+    {%- if hasdoc('search') %}
+    <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}"/>
+    {%- endif %}
+    {%- if hasdoc('copyright') %}
+    <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}"/>
+    {%- endif %}
+    <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}"/>
+    {%- if parents %}
+    <link rel="up" title="{{ parents[-1].title|striptags|e }}" href="{{ parents[-1].link|e }}"/>
+    {%- endif %}
+    {%- if next %}
+    <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}"/>
+    {%- endif %}
+    {%- if prev %}
+    <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}"/>
+    {%- endif %}
+    {%- endblock %}
+    {%- block extrahead %} {% endblock %}
+
 
 </head>
 
 
 <body>
-    {% block header %}
-        {% include "header.html"%}
-    {% endblock %}
+{% block header %}
+{% include "header.html"%}
+{% endblock %}
 
-    <main class="container">
-        <div class="row">
+<main class="container">
+    <div class="row">
 
-            <!-- Sidebar -->
-            <aside class="col-md-3 col-sm-3 sidebar">
-                {% include "sidebar.html"%}
-            </aside>
+        <!-- Sidebar -->
+        <aside class="col-md-3 col-sm-3 sidebar">
+            {% include "sidebar.html"%}
+        </aside>
 
-            <!-- Main content -->
-            <article class="col-md-9 col-sm-9 main-content" role="main">
-                {% block body %}{% endblock %}
+        <!-- Main content -->
+        <article class="col-md-9 col-sm-9 main-content" role="main">
+            {% block body %}{% endblock %}
 
-                {% block pager %}
-                    {% if (next or prev) %}
-                <p>&nbsp;</p>
-                    <ul class="pager">
-                        {% if prev %}
-                        <li class="previous">
-                            <a href="{{ prev.link|e }}" title="{{ prev.title|striptags|e }}" accesskey="p">{{ _('Prev') }}</a>
-                        </li>
-                        {% endif %}
-                        {% if next %}
-                        <li class="next">
-                            <a title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" accesskey="n">{{ _('Next') }}</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                    {% endif %}
-                    <hr/>
-                <div id="disqus_thread"></div>
-                <script>
+            {% block pager %}
+            {% if (next or prev) %}
+            <p>&nbsp;</p>
+            <ul class="pager">
+                {% if prev %}
+                <li class="previous">
+                    <a href="{{ prev.link|e }}" title="{{ prev.title|striptags|e }}" accesskey="p">{{ _('Prev') }}</a>
+                </li>
+                {% endif %}
+                {% if next %}
+                <li class="next">
+                    <a title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" accesskey="n">{{ _('Next') }}</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% endif %}
+            <hr/>
+            <div id="disqus_thread"></div>
+            <script>
 
-                    /**
-                     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-                     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-                    /*
-                     var disqus_config = function () {
-                     this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-                     this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-                     };
-                     */
-                    (function() { // DON'T EDIT BELOW THIS LINE
-                        var d = document, s = d.createElement('script');
-                        s.src = 'https://slick-framework.disqus.com/embed.js';
-                        s.setAttribute('data-timestamp', +new Date());
-                        (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                {% endblock %}
-            </article>
-        </div>
-    </main>
+                /**
+                 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+                /*
+                 var disqus_config = function () {
+                 this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                 this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                 };
+                 */
+                (function() { // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://slick-framework.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            {% endblock %}
+        </article>
+    </div>
+</main>
 
-    {% block footer %}
-        {% include "footer.html" %}
-    {% endblock %}
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}
 
-    <!-- Scripts -->
-    <script src="{{ pathto('_static/js/vendor/jquery.min.js', 1) }}"></script>
-    <script src="{{ pathto('_static/js/vendor/bootstrap/bootstrap.min.js', 1) }}"></script>
-    <script src="{{ pathto('_static/js/custom.js', 1) }}"></script>
-    <script src="{{ pathto('_static/js/theDocs.all.min.js', 1) }}"></script>
+<script src="{{ pathto('_static/js/jquery.min.js', 1) }}"></script>
+<script src="{{ pathto('_static/js/document-fixing.js', 1) }}"></script>
+<script src="{{ pathto('_static/js/theDocs.all.min.js', 1) }}"></script>
 
-    {# RTD hosts this file, so just load on non RTD builds #}
-    {% if not READTHEDOCS %}
-    <script type="text/javascript" src="{{ pathto('_static/js/theme.js', 1) }}"></script>
-    {% endif %}
 
-    {# STICKY NAVIGATION #}
-    {% if theme_sticky_navigation %}
-    <script type="text/javascript">
-        jQuery(function () {
-            SphinxRtdTheme.StickyNav.enable();
-        });
-    </script>
-    {% endif %}
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/jquery/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/underscore.js"></script>
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/doctools.js"></script>
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/readthedocs-doc-embed.js"></script>
+
+{% include "versions.html" %}
+
+{% if not embedded %}
+
+<script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:'{{ url_root }}',
+        VERSION:'{{ release|e }}',
+        COLLAPSE_INDEX:false,
+        FILE_SUFFIX:'{{ '' if no_search_suffix else file_suffix }}',
+        HAS_SOURCE:  {{ has_source|lower }},
+    SOURCELINK_SUFFIX: '{{ sourcelink_suffix }}'
+    };
+</script>
+{%- for scriptfile in script_files %}
+<script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
+{%- endfor %}
+
+{% endif %}
+
+{# STICKY NAVIGATION #}
+{% if theme_sticky_navigation %}
+<script type="text/javascript">
+    jQuery(function () {
+        SphinxRtdTheme.StickyNav.enable();
+    });
+</script>
+{% endif %}
 
 </body>
 </html>
