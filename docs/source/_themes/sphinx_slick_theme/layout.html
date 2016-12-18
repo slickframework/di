@@ -23,16 +23,6 @@
     <!-- Favicons -->
     <link rel="icon" href="{{ pathto('_static/favicon.ico', 1) }}">
 
-    {# CSS #}
-
-    {# OPENSEARCH #}
-    {% if not embedded %}
-    {% if use_opensearch %}
-    <link rel="search" type="application/opensearchdescription+xml" title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}" href="{{ pathto('_static/opensearch.xml', 1) }}"/>
-    {% endif %}
-
-    {% endif %}
-
     <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css" />
 
     {% for cssfile in css_files %}
@@ -141,9 +131,7 @@
 {% include "footer.html" %}
 {% endblock %}
 
-<script src="{{ pathto('_static/js/jquery.min.js', 1) }}"></script>
-<script src="{{ pathto('_static/js/document-fixing.js', 1) }}"></script>
-<script src="{{ pathto('_static/js/theDocs.all.min.js', 1) }}"></script>
+<script src="{{ pathto('_static/js/slick.min.js', 1) }}"></script>
 
 {% include "versions.html" %}
 
