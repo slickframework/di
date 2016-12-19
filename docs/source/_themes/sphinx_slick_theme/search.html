@@ -13,7 +13,7 @@
 
 {% block closure %}
 {{ super() }}
-<script type="text/javascript" src="{{ pathto('_static/searchtools.js/, 1') }}"></script>
+<script type="text/javascript" src="{{ pathto('_static/searchtools.js', 1) }}"></script>
 
 <script type="text/javascript">
     jQuery(function() { Search.loadIndex("{{ pathto('searchindex.js', 1) }}"); });
