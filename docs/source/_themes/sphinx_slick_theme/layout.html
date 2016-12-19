@@ -36,6 +36,14 @@
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Raleway:100,300,400,500%7CLato:300,400' rel='stylesheet' type='text/css'>
 
+    {# OPENSEARCH #}
+    {% if not embedded %}
+    {% if use_opensearch %}
+    <link rel="search" type="application/opensearchdescription+xml" title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}" href="{{ pathto('_static/opensearch.xml', 1) }}"/>
+    {% endif %}
+
+    {% endif %}
+
     {%- block linktags %}
     {%- if hasdoc('about') %}
     <link rel="author" title="{{ _('About these documents') }}"
@@ -133,6 +141,23 @@
 
 {% include "versions.html" %}
 
-<script src="{{ pathto('_static/js/slick.min.js', 1) }}"></script>
+{% block closure %}
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'{{ url_root }}',
+            VERSION:'{{ release|e }}',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'{{ '' if no_search_suffix else file_suffix }}',
+            HAS_SOURCE:  {{ has_source|lower }},
+        SOURCELINK_SUFFIX: '{{ sourcelink_suffix }}'
+        };
+    </script>
+
+    <script src="{{ pathto('_static/js/slick.min.js', 1) }}"></script>
+    <script type="text/javascript" src="https://media.readthedocs.org/javascript/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="{{ pathto('_static/underscore.js/', 1) }}"></script>
+    <script type="text/javascript" src="{{ pathto('_static/doctools.js/, 1') }}"></script>
+
+{% endblock %}
 </body>
 </html>
