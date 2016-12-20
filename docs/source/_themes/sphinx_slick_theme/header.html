@@ -22,26 +22,6 @@
 
             <!-- Top navbar -->
             <div id="navbar" class="navbar-collapse collapse" aria-expanded="true" role="banner">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="">
-                        {% if display_github %}
-                        {% if check_meta and 'github_url' in meta %}
-                        <!-- User defined GitHub URL -->
-                        <a href="{{ meta['github_url'] }}">
-                            <i class="fa fa-github"></i>
-                            {{ _('Edit on GitHub') }}
-                        </a>
-                        {% else %}
-                        <a href="https://{{ github_host|default("github.com") }}/{{ github_user }}/{{ github_repo }}/blob/{{ github_version }}{{ conf_py_path }}{{ pagename }}{{ suffix }}">
-                            <i class="fa fa-github"></i>
-                            {{ _('Edit on GitHub') }}
-                        </a>
-                        {% endif %}
-                        {% endif %}
-                    </li>
-
-                    <!-- li class="hero"><a href="http://themeforest.net/item/thedocs-online-documentation-template/13070884">Purchase</a></li -->
-                </ul>
                 {%- if builder != 'singlehtml' %}
                 <form id="rtd-search-form" class="navbar-form navbar-right" action="{{ pathto('search') }}" method="get">
                     <div class="input-group">
@@ -52,6 +32,26 @@
                     <input type="hidden" name="area" value="default" />
                 </form>
                 {% endif %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        {% if display_github %}
+                        {% if check_meta and 'github_url' in meta %}
+                        <!-- User defined GitHub URL -->
+                        <a href="{{ meta['github_url'] }}">
+                            <i class="fa fa-github"></i>
+                            {{ _('Edit on GitHub') }}
+                        </a>
+                        {% else %}
+                        <a href="https://{{ github_host|default("github.com") }}/{{ github_user }}/{{ github_repo }}">
+                            <i class="fa fa-github"></i>
+                            {{ _('Repository') }}
+                        </a>
+                        {% endif %}
+                        {% endif %}
+                    </li>
+
+                    <!-- li class="hero"><a href="http://themeforest.net/item/thedocs-online-documentation-template/13070884">Purchase</a></li -->
+                </ul>
             </div>
             <!-- END Top navbar -->
         </div>
