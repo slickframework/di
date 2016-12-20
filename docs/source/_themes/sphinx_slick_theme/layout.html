@@ -5,9 +5,7 @@
 {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
 {%- else %}
 {%- set titlesuffix = "" %}
-{%- endif %}
-
-<!DOCTYPE html>
+{%- endif %}<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -112,8 +110,6 @@
 {% block footer %}
     {% include "footer.html" %}
 {% endblock %}
-
-{% include "versions.html" %}
 
 {% block closure %}
     {% if not embedded %}
