@@ -114,8 +114,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../cookbook/definitions.html">Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#what-s-a-definition">What&#8217;s a definition?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#value-definition">Value definition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#factory-callable-definition">Factory (callable) definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#factory-definition">Factory definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#alias-definition">Alias definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cookbook/definitions.html#object-definition">Object definition</a></li>
 </ul>
@@ -164,8 +165,8 @@ We accept contributions via Pull Requests on <a class="reference external" href=
 <h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
 <p>We use <a class="reference external" href="http://behat.org/en/latest/index.html">Behat</a> to describe features and and for acceptance tests
 and <a class="reference external" href="https://phpunit.de/">PHPUnit</a> for integration and unit testing.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="c1"># unit and integration tests</span>
-$ vendor/bin/phpunit
+<div class="highlight-bash"><div class="highlight"><pre><span class="c1"># unit tests</span>
+$ vendor/bin/phpspec run
 
 <span class="c1"># acceptance tests</span>
 $ vendor/bin/behat

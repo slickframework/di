@@ -45,9 +45,9 @@ A value or scalar definition is used as is. The following example is a value def
     /**
      * Dependency injection value definition example
      */
-    return [
-        'timezone' => 'UTC'
-    ];
+    $services['timezone'] = 'UTC';
+
+    return $services;
 
 Value definitions are good to store application wide constants.
 
@@ -55,15 +55,14 @@ Factory definition
 ------------------
 With factory definition we can compute and/or control the object or value creation::
 
-
     /**
      * Dependency injection callable definition example
      */
-    return [
-        'general.config' => function() {
+    $services['general.config'] = function() {
             return Configuration::get('config');
         }
-    ];
+
+    return $services;
 
 Alias definition
 ----------------
@@ -72,16 +71,16 @@ Alias definition is a shortcut for another defined entry::
     /**
      * Dependency injection alias definition example
      */
-    return [
-        'config' => @general.config
-    ];
+    $services['config'] = '@general.config';
+
+    return $services;
 
 The alias points to an entry key and is always prefixed with an ``@``
 
 Object definition
 -----------------
 Objects are what makes dependency containers very handy, and fun! Lets take
-a look on a object definition inside our ``dependencies.php`` file::
+a look on an object definition inside our ``dependencies.php`` file::
 
 
     namespace Services;
@@ -102,7 +101,7 @@ a look on a object definition inside our ``dependencies.php`` file::
     $services['search.service'] = Object::create(SearchService::class)
         ->with('@config')
         ->call('setMode')->with('simple')
-        ->call('siteName')->with('@siteName')
+        ->call('setSiteName')->with('@siteName')
         ->assign(20)->to('rowsPerPage')
     ;
 
