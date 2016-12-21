@@ -69,6 +69,21 @@ class Object extends AbstractDefinition implements
     }
 
     /**
+     * Creates an object definition
+     *
+     * @param string $className
+     *
+     * @return FluentObjectDefinitionInterface
+     *
+     * @throws ClassNotFoundException if the provided class name is from an
+     *         undefined or inaccessible class.
+     */
+    public static function create($className)
+    {
+        return new static($className);
+    }
+
+    /**
      * Resolves the definition into a scalar or object
      *
      * @return mixed

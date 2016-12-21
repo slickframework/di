@@ -10,6 +10,7 @@
 namespace Slick\Di;
 
 use Interop\Container\ContainerInterface as InteropContainer;
+use Slick\Di\Exception\InvalidDefinitionsPathException;
 
 /**
  * Container Builder
@@ -100,7 +101,15 @@ final class ContainerBuilder implements ContainerAwareInterface
 
     protected function hydrateFromDirectory($definitions)
     {
-        $directory = new \RecursiveDirectoryIterator($definitions);
+        try {
+            $directory = new \RecursiveDirectoryIterator($definitions);
+        } catch (\Exception $caught) {
+            throw new InvalidDefinitionsPathException(
+                'Provided definitions path is not valid or is not found. ' .
+                'Could not create container. Please check '.$definitions
+            );
+        }
+
         $iterator = new \RecursiveIteratorIterator($directory);
         $phpFiles = new \RegexIterator($iterator, '/.*\.php$/i');
         foreach ($phpFiles as $phpFile) {

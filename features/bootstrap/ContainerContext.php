@@ -246,4 +246,13 @@ class ContainerContext extends FeatureContext
 
         $this->lastValue = call_user_func_array([$this->container, 'make'], $args);
     }
+
+    /**
+     * @Given /^I build a container with "([^"]*)"$/
+     */
+    public function iBuildAContainerWith($file)
+    {
+        $file =  __DIR__ . "/{$file}";
+        $this->container = (new \Slick\Di\ContainerBuilder($file))->getContainer();
+    }
 }
