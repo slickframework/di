@@ -10,7 +10,7 @@
 namespace Service;
 
 use Fixtures\ComplexObject;
-use Slick\Di\Definition\Object;
+use Slick\Di\Definition\ObjectDefinition;
 
 $services = [];
 
@@ -26,7 +26,7 @@ $services['callable'] = function () {
 };
 
 // Object definition
-$services['complexObject'] = (new Object(ComplexObject::class))
+$services['complexObject'] = (new ObjectDefinition(ComplexObject::class))
     ->with('@callable')
     ->call('setTest')->with('@environment');
 

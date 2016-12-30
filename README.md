@@ -3,16 +3,15 @@
 [![Latest Version](https://img.shields.io/github/release/slickframework/di.svg?style=flat-square)](https://github.com/slickframework/di/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/slickframework/di/master.svg?style=flat-square)](https://travis-ci.org/slickframework/di)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/slickframework/di/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di/code-structure?branch=master)
 [![Quality Score](https://img.shields.io/scrutinizer/g/slickframework/di/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/slickframework/di?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/slick/di.svg?style=flat-square)](https://packagist.org/packages/slick/di)
 
-`slick/di` is an easy dependency injection container for PHP 5.5+. It aims to be very
-lightweight and tries to remove a lot of the guessing and magic stuff that dependency
-containers use those days. It also allows you to nest containers witch can become
-very useful if you have several packages that you reuse in your applications, allowing
-you to define containers with default dependencies in those packages overriding and
-using them in your application.
+``slick/di`` is an easy dependency injection container for PHP 5.6+. It aims to
+be very lightweight and tries to remove a lot of the *guessing* and *magic*
+stuff that dependency containers use those days. It also allows you to nest
+containers witch can become very useful if you have several packages that you
+reuse in your applications, allowing you to define containers with default
+dependencies in those packages for later override and usage them in your application.
 
 This package is compliant with PSR-2 code standards and PSR-4 autoload standards. It
 also applies the [semantic version 2.0.0](http://semver.org) specification.
@@ -27,12 +26,12 @@ $ composer require slick/di
 
 ## Usage
 
-To create a dependency container lets create a ``services.php`` file with all our
-dependency definitions:
+To create a dependency container we need to create at least a ``services.php``
+file with all our dependency definitions:
 
-``` php
+```php
 use Slick\Configuration\Configuration:
-use Slick\Di\Definition\ObjectDefinition;
+use Slick\Di\Definition\Object;
 
 /**
  * Dependency injection object definition example
@@ -41,33 +40,39 @@ return [
     'config' => function() {
         return Configuration::get('config');
     },
-    Engine::class => ObjectDefinition::create(Engine::class)
-        ->setConstructArgs(['@config'])
-        ->setMethod('setMode', ['simple'])
+    'engineService' => Object::create(Engine::class)
+        ->with('@config')
+        ->call('setMode')->with('simple')
 ];
 ```
+Now to build the dependency container we need to use the ``ContainerBuilder`` factory class like this:
 
-Create a dependency container with ``ContainerBuilder``:
-
-``` php
+```php
 use Slick\Di\ContainerBuilder;
 
-$container = (new ContainerBuilder(__DIR__ . '/services.php'))->getContainer();
+$definitionsFile = __DIR__ . '/services.php';
+$container = (new ContainerBuilder($definitionsFile))->getContainer();
 ```
 
-Now you are ready to create and inject dependencies with your container:
+With that, we are ready to create and inject dependencies with our container:
 
-``` php
+```php
 class Car
 {
     /**
-     * @var Engine
+     * @var EngineInterface
      */
     protected $engine;
 
-    public function __construct(Engine $engine)
+    /**
+     * @inject engineService
+     *
+     * @return self
+     */
+    public function setEngine(EngineInterface $engine)
     {
         $this->engine = $engine;
+        return $this;
     }
 }
 
@@ -78,12 +83,12 @@ Please refer to the [full documentation site](http://di.slick-framework.com) for
 
 ## Testing
 
-We use [Behat](http://behat.org/en/latest/index.html) to describe features and and for acceptance tests
-and [PHPUnit](https://phpunit.de) for integration and unit testing.
+We use [Behat](http://behat.org/en/latest/index.html) to describe features and for acceptance tests
+and [PHPSpec](http://www.phpspec.net/) for unit testing.
 
 ``` bash
-# unit and integration tests
-$ vendor/bin/phpunit
+# unit tests
+$ vendor/bin/phpspec
 
 # acceptance tests
 $ vendor/bin/behat

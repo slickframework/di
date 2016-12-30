@@ -48,9 +48,9 @@ class DefinitionData extends Base
     /**
      * Definition Data
      *
-     * @param array|object $className
-     * @param array        $arguments
-     * @param array        $calls
+     * @param string $className
+     * @param array  $arguments
+     * @param array  $calls
      */
     public function __construct($className, array $arguments = [], array $calls = [])
     {

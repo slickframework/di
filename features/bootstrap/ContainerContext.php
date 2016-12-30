@@ -35,7 +35,7 @@ class ContainerContext extends FeatureContext
     protected $lastException;
 
     /**
-     * @var \Slick\Di\DefinitionInterface|\Slick\Di\Definition\Object
+     * @var \Slick\Di\DefinitionInterface|\Slick\Di\Definition\ObjectDefinition
      */
     protected $definition;
 
@@ -173,7 +173,7 @@ class ContainerContext extends FeatureContext
      */
     public function iCreateAnObjectDefinition($className)
     {
-        $this->definition = new \Slick\Di\Definition\Object($className);
+        $this->definition = new \Slick\Di\Definition\ObjectDefinition($className);
     }
 
     /**
@@ -189,7 +189,7 @@ class ContainerContext extends FeatureContext
      */
     public function iCreateAnObjectDefinitionWith($className, TableNode $arguments)
     {
-        $this->definition = new \Slick\Di\Definition\Object($className);
+        $this->definition = new \Slick\Di\Definition\ObjectDefinition($className);
         list($arg1, $arg2) = $arguments->getRow(0);
         $this->definition->withConstructorArgument($arg1, $arg2);
     }

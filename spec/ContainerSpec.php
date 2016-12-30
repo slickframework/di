@@ -128,6 +128,11 @@ class ContainerSpec extends ObjectBehavior
             ->shouldBeAnInstanceOf(CustomMethodObject::class);
 
     }
+
+    function it_references_last_created_container_as_its_parent()
+    {
+        $this->parent()->shouldBeAnInstanceOf(\Slick\Di\ContainerInterface::class);
+    }
 }
 
 

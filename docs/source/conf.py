@@ -50,7 +50,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Dependency Injection Container'
-copyright = u'2016, Slick Team'
+copyright = u'2014 - 2017, Slick Team'
 author = u'Filipe Silva <silvam.filipe@gmail.com>'
 
 # The version info for the project you're documenting, acts as replacement for

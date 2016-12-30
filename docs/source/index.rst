@@ -24,6 +24,7 @@ dependency injection container.
     manual/getting-started
     cookbook/definitions
     cookbook/container
+    reference
     manual/contrib
     manual/license
 

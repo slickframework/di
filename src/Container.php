@@ -12,7 +12,7 @@ namespace Slick\Di;
 use Interop\Container\Exception\ContainerException;
 use Slick\Di\Definition\Alias;
 use Slick\Di\Definition\Factory;
-use Slick\Di\Definition\Object;
+use Slick\Di\Definition\ObjectDefinition;
 use Slick\Di\Definition\Scope;
 use Slick\Di\Definition\Value;
 use Slick\Di\Exception\NotFoundException;
@@ -39,6 +39,23 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      * @var ObjectHydratorInterface
      */
     protected $hydrator;
+
+    /**
+     * @var null|ContainerInterface
+     */
+    protected $parent;
+
+    /**
+     * Creates a dependency container
+     */
+    public function __construct()
+    {
+        $this->parent = array_key_exists('container', self::$instances)
+            ? self::$instances['container']
+            : null;
+
+        self::$instances['container'] = $this;
+    }
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -205,7 +222,7 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
             return call_user_func_array([$className, 'create'], [$this]);
         }
 
-        $definition = (new Object($className))
+        $definition = (new ObjectDefinition($className))
             ->setContainer($this)
         ;
         call_user_func_array([$definition, 'with'], $arguments);
@@ -238,5 +255,15 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
             $this->setHydrator(new ObjectHydrator($this));
         }
         return $this->hydrator;
+    }
+
+    /**
+     * Gets the parent container if it exists
+     *
+     * @return null|ContainerInterface
+     */
+    public function parent()
+    {
+        return $this->parent;
     }
 }

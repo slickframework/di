@@ -6,13 +6,15 @@ use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Slick\Di\ContainerInterface;
 use Slick\Di\Definition\FluentObjectDefinitionInterface;
-use Slick\Di\Definition\Object;
+use Slick\Di\Definition\Object\DefinitionData;
+use Slick\Di\Definition\Object\ResolverInterface;
+use Slick\Di\Definition\ObjectDefinition;
 use Slick\Di\DefinitionInterface;
 use Slick\Di\Exception\ClassNotFoundException;
 use Slick\Di\Exception\MethodNotFoundException;
 use Slick\Di\Exception\PropertyNotFoundException;
 
-class ObjectSpec extends ObjectBehavior
+class ObjectDefinitionSpec extends ObjectBehavior
 {
     function let()
     {
@@ -21,7 +23,7 @@ class ObjectSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Object::class);
+        $this->shouldHaveType(ObjectDefinition::class);
     }
 
     function its_a_definition()
@@ -35,11 +37,11 @@ class ObjectSpec extends ObjectBehavior
     }
 
     function it_resolves_objects_using_an_object_resolver_interface(
-        Object\ResolverInterface $resolver,
+        ResolverInterface $resolver,
         ContainerInterface $container
     ) {
         $resolver->setContainer($container)->willReturn($resolver);
-        $resolver->resolve(new Object\DefinitionData(InitializableService::class))->shouldBeCalled();
+        $resolver->resolve(new DefinitionData(InitializableService::class))->shouldBeCalled();
         $this->setResolver($resolver);
         $this->setContainer($container);
         $this->resolve();
@@ -63,7 +65,7 @@ class ObjectSpec extends ObjectBehavior
         $this->call('doSomething')->with('hello', 'world');
         $this->getDefinitionData()->shouldHaveACallEquals(
             [
-                'type' => Object\DefinitionData::METHOD,
+                'type' => DefinitionData::METHOD,
                 'name' => 'doSomething',
                 'arguments' => ['hello', 'world']
             ]
@@ -83,7 +85,7 @@ class ObjectSpec extends ObjectBehavior
         $this->assign('test')->to('scope');
         $this->getDefinitionData()->shouldHaveACallEquals(
             [
-                'type' => Object\DefinitionData::PROPERTY,
+                'type' => DefinitionData::PROPERTY,
                 'name' => 'scope',
                 'arguments' => 'test'
             ]
@@ -103,7 +105,7 @@ class ObjectSpec extends ObjectBehavior
             'haveArgumentsEquals' => function ($subject, $arguments) {
                  return $subject->arguments == $arguments;
             },
-            'haveACallEquals' => function (Object\DefinitionData $subject, $expectedCall) {
+            'haveACallEquals' => function (DefinitionData $subject, $expectedCall) {
                 $call = null;
                 foreach ($subject->calls as $call) {
                     if ($call == $expectedCall) {

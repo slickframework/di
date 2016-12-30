@@ -23,7 +23,7 @@ use Slick\Di\Exception\PropertyNotFoundException;
  * @package Slick\Di\Definition
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-class Object extends AbstractDefinition implements
+class ObjectDefinition extends AbstractDefinition implements
     FluentObjectDefinitionInterface,
     ResolverAwareInterface
 {
@@ -228,7 +228,7 @@ class Object extends AbstractDefinition implements
     /**
      * Assign the last defined value to the provided property
      *
-     * The value will be reset apter its assigned.
+     * The value will be reset after its assigned.
      *
      * @param string $property
      *

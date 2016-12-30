@@ -15,20 +15,17 @@ create the correspondent object instance or value.
     your container.
 
 Lets create our ``dependencies.php`` file that will contain our dependencies
-definitions:
-
-.. code-block:: php
+definitions::
 
     /**
      * Dependency injection definitions file
      */
+    $services['timezone'] = 'UTC';
+    $services['config'] = function() {
+        return Configuration::get('config');
+    };
 
-    return [
-        'timezone' => 'UTC',
-        'config' => function() {
-            return Configuration::get('config');
-        },
-    ];
+    return $services;
 
 .. note:: Why use PHP arrays?
 
@@ -59,8 +56,8 @@ With factory definition we can compute and/or control the object or value creati
      * Dependency injection callable definition example
      */
     $services['general.config'] = function() {
-            return Configuration::get('config');
-        }
+        return Configuration::get('config');
+    }
 
     return $services;
 
@@ -79,15 +76,14 @@ The alias points to an entry key and is always prefixed with an ``@``
 
 Object definition
 -----------------
-Objects are what makes dependency containers very handy, and fun! Lets take
-a look on an object definition inside our ``dependencies.php`` file::
-
+Objects are what makes dependency containers very handy, and fun! Lets have
+a look at an object definition inside our ``dependencies.php`` file::
 
     namespace Services;
 
     use Services\SearchService;
     use Slick\Configuration\Configuration:
-    use Slick\Di\Definition\Object;
+    use Slick\Di\Definition\ObjectDefinition;
 
     /**
      * Dependency injection object definition example
@@ -98,7 +94,7 @@ a look on an object definition inside our ``dependencies.php`` file::
     };
 
     // Object definition
-    $services['search.service'] = Object::create(SearchService::class)
+    $services['search.service'] = ObjectDefinition::create(SearchService::class)
         ->with('@config')
         ->call('setMode')->with('simple')
         ->call('setSiteName')->with('@siteName')
@@ -107,5 +103,9 @@ a look on an object definition inside our ``dependencies.php`` file::
 
     return $services;
 
-You can use the alias notation to instruct container to use other entries when
-creating those objects.
+Defining how an object is instantiated is the most important feature of a dependency container.
+``'search.service'`` is an object definition on how to instantiate a ``SearchService``. It uses a fluent
+api that can easily describe the necessary steps to create a service or object.
+
+Please check the :doc:`ObjectDefinition API </reference/object-definition>` for a better understanding
+of all methods on ``ObjectDefinition`` definition.
