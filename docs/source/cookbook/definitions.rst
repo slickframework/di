@@ -3,30 +3,29 @@
 Definitions
 ===========
 
+What's a definition?
+--------------------
 Definitions are entries in an array that instruct the container on how to
 create the correspondent object instance or value.
 
-Every container MUST have a definition list (associative array) to be
-created and you SHOULD always use the ``Slick\Di\ContainerBuilder`` to create
-your container.
+.. attention::
+
+    Every container MUST have a definition list (associative array) in order to be
+    created and you SHOULD always use the ``Slick\Di\ContainerBuilder`` to create
+    your container.
 
 Lets create our ``dependencies.php`` file that will contain our dependencies
-definitions:
-
-.. code-block:: php
-
-    <?php
+definitions::
 
     /**
      * Dependency injection definitions file
      */
+    $services['timezone'] = 'UTC';
+    $services['config'] = function() {
+        return Configuration::get('config');
+    };
 
-    return [
-        'timezone' => 'UTC',
-        'config' => function() {
-            return Configuration::get('config');
-        },
-    ];
+    return $services;
 
 .. note:: Why use PHP arrays?
 
@@ -40,56 +39,47 @@ Value definition
 ----------------
 A value or scalar definition is used as is. The following example is a value definition::
 
-    <?php
-
     /**
      * Dependency injection value definition example
      */
-    return [
-        'timezone' => 'UTC'
-    ];
+    $services['timezone'] = 'UTC';
+
+    return $services;
 
 Value definitions are good to store application wide constants.
 
-Factory (callable) definition
------------------------------
-With factory definition you can compute and/or control the object or value creation::
-
-    <?php
+Factory definition
+------------------
+With factory definition we can compute and/or control the object or value creation::
 
     /**
      * Dependency injection callable definition example
      */
-    return [
-        'config' => function() {
-            return Configuration::get('config');
-        }
-    ];
+    $services['general.config'] = function() {
+        return Configuration::get('config');
+    }
+
+    return $services;
 
 Alias definition
 ----------------
 Alias definition is a shortcut for another defined entry::
 
-    <?php
-
     /**
      * Dependency injection alias definition example
      */
-    return [
-        'config' => @general.config
-    ];
+    $services['config'] = '@general.config';
+
+    return $services;
 
 The alias points to an entry key and is always prefixed with an ``@``
 
 Object definition
 -----------------
-Objects are what makes dependency containers very handy, and fun! To create an
-object definition you need to use an helper
-class: ``Slick\Di\Definition\ObjectDefinition``
+Objects are what makes dependency containers very handy, and fun! Lets have
+a look at an object definition inside our ``dependencies.php`` file::
 
-Lets see an example::
-
-    <?php
+    namespace Services;
 
     use Services\SearchService;
     use Slick\Configuration\Configuration:
@@ -98,16 +88,24 @@ Lets see an example::
     /**
      * Dependency injection object definition example
      */
-    return [
-        'siteName' => 'Example site',
-        'config' => function() {
-            return Configuration::get('config');
-        },
-        'search.service' => ObjectDefinition::create(SearchService::class)
-            ->setConstructArgs(['@config'])
-            ->setMethod('setMode', ['simple'])
-            ->setProperty('siteName', '@siteName')
-    ];
+    $services['siteName'] => 'Example site';
+    $services['config'] => function() {
+        return Configuration::get('config');
+    };
 
-You can use the alias notation to instruct container to use other entries when
-creating those objects.
+    // Object definition
+    $services['search.service'] = ObjectDefinition::create(SearchService::class)
+        ->with('@config')
+        ->call('setMode')->with('simple')
+        ->call('setSiteName')->with('@siteName')
+        ->assign(20)->to('rowsPerPage')
+    ;
+
+    return $services;
+
+Defining how an object is instantiated is the most important feature of a dependency container.
+``'search.service'`` is an object definition on how to instantiate a ``SearchService``. It uses a fluent
+api that can easily describe the necessary steps to create a service or object.
+
+Please check the :doc:`ObjectDefinition API </reference/object-definition>` for a better understanding
+of all methods on ``ObjectDefinition`` definition.

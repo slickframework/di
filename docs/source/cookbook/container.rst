@@ -6,10 +6,13 @@ Container usage
 Now that we have defined all of our dependencies its time to create a container
 that will use them.
 
+Building a container
+--------------------
+
 Even though ``Container`` can be instantiated as normal PHP objects do, it is
 advisable to use the ``ContainerBuilder`` factory to do so. It translates the
-definitions file into ``DefinitionInterface`` objects that dependency container
-uses to create dependencies. It also chains all the created container so that if
+definitions file(s) into ``DefinitionInterface`` objects that dependency container
+uses to resolve its dependencies. It also chains all the created container so that if
 you try to get an entry it will search over all containers in the chain. This
 is a very handy feature if you want, for example, to create a package that you
 will reuse in your applications and in that package you define a container with
@@ -21,7 +24,7 @@ Now lets create our container::
 
     use Slick\Di\ContainerBuilder;
 
-    $container = (new ContainerBuilder(__DIR__ . '/services.php'))->getContainer();
+    $container = (new ContainerBuilder(__DIR__ . '/dependencies.php'))->getContainer();
 
 That's it! We now have a new created dependency container ready to create objects
 and inject their dependencies.
@@ -29,112 +32,132 @@ and inject their dependencies.
 Constructor injection
 ---------------------
 
+Constructor dependency injection is considered the *way* we should do dependency injection
+and it is just passing the dependencies as arguments in the constructor. With this you
+do not need to created setters and your object is ready to be used right away. You can also
+test it in isolation by passing mocks of those dependencies.
+
 Consider the following class::
 
     class Car
     {
         /**
-         * @var Engine
-         */
-        protected $engine;
+     * @var EngineInterface
+     */
+        private $engine;
 
-        public function __construct(Engine $engine)
+        public function __construct(EngineInterface $engine)
         {
             $this->engine = $engine;
         }
     }
 
-Now lets create a new ``Car`` using our dependency container::
-
-    $myCar = $container->get(Car::class);
+This is a basic class. The car needs an engine to work, right!?
 
 .. tip::
 
-    As a rule of thumb, always use type hint in your constructor. This will make
-    your code more readable, bug free and easy to instantiate with the
-    dependency container.
+    In constructor dependency injection and in dependency injection in general, it is a
+    good practice to type hint your arguments. This practice guarantees that the arguments
+    are from that given type and PHP's core will trigger a fatal error if they are not.
 
-The dependency container will look to constructor arguments and search for type
-matches in the dependencies collection he holds and will inject those
-dependencies on the requested object instance.
+Now that we have a container with all its dependency definitions lets create the car using
+and engine that is store in the container under the ``diesel.engine`` name::
+
+    $dieselCar = $container->make(Car::class, '@diesel.engine');
+
+This line of code is instructing the container that it should instantiate a ``Car`` object
+and it will inject the dependency that was stored under the ``diesel.engine`` name in its constructor.
+
+Take a look at :doc:`Container class </reference/container>` reference page for more information on
+``Container::make()`` method.
+
 
 Setter injection
 ----------------
 
-When creating objects with containers, be aware that the container will also
-look for methods like ``set<VarName>(VarType $var)`` and if it has a matching
-dependency it will use that method to inject that dependency::
+As the name implies this injection strategy uses a setter method tho inject a dependency. This is
+not a good way of doing dependency injection as it makes the object instantiation more complex. We
+need to created the object (1st phase) and then call and inject its dependencies (2nd phase).
+
+.. important::
+
+    It only makes sense to use the setter injection if the dependency we have is only available at
+    runtime or we are working with legacy code.
+
+Check the following class::
 
     class Car
     {
         /**
-         * @var Engine
-         */
-        protected $engine;
+     * @var EngineInterface
+     */
+        private $engine;
 
-        public function setEngine(Engine $engine)
+        /**
+     * Set the car engine
+     *
+     * @inject diesel.engine
+     * @param EngineInterface $engine
+     * @return Car
+     */
+        public function setEngine(EngineInterface $engine)
         {
             $this->engine = $engine;
             return $this;
         }
     }
 
-By calling the container to create your car object like::
+With the above class we can't tell the container to inject dependencies as arguments to the
+class constructor as it has gone::
 
-    $myCar = $container->get(Car::class);
 
-``Car::$engine`` will be inject using the setter method.
+    $dieselCar = $container->make(Car::class);
 
-.. warning::
+Instead we use an annotation ``@inject`` with the name of the entry we want the container
+use when calling the setter.
 
-    When creating objects with a container if you have a setter but there is no
-    known dependency in the container collection, it will not fail because the
-    container only injects dependencies that he knows of.
+Factory method
+--------------
 
-    In the other hand if you have dependencies on your constructor the object
-    creation will fail due to missing arguments.
+one other possibility to create classes that the container can instantiate is by implementing
+the ``ContainerInjectionInterface`` interface. This is a simple interface that forces the
+creation of the object trough a factory method.
 
-Property injection
-------------------
+Take a look at the ``Car`` class with dependency injection implementation::
 
-In property injection we will use the annotation ``@inject`` to tell the
-container what to inject::
+    use Slick\Di\ContainerInjectionInterface;
+    use slick\Di\ContainerInterface;
 
-    class Car
+    class Car implements ContainerInjectionInterface
     {
         /**
-         * @inject
-         * @var Engine
-         */
-        protected $engine;
-    }
+     * @var EngineInterface
+     */
+        private $engine;
 
-In the example above the container will use the ``@var`` annotation to determine
-the dependency to inject::
+        public function __construct(EngineInterface $engine)
+        {
+            $this->engine = $engine;
+        }
 
-    class Car
-    {
         /**
-         * @inject car.config
-         * @var array
-         */
-        protected $config;
+     * Creates a diesel car
+     *
+     * @param ContainerInterface $container
+     * @return Car
+     */
+        public static function create(ContainerInterface $container)
+        {
+            $car = new Car($container->get('diesel.engine'));
+            return $car;
+        }
     }
 
-``@inject`` annotation accepts an argument with the entry name that the container
-should use to determine the dependency. In the above example, config array was
-stored with car.config key and will be injected in ``Car`` creation.
+Creating the car::
 
-.. note::
+    $dieselCar = $container->make(Car::class);
 
-    To skip dependency injection on methods or properties you need to set
-    ``@ignoreInject`` annotation. This annotation tells dependency container to
-    ignore the automatic dependency injection on public properties or public
-    methods. This annotation does not work with constructor methods.
+The container will call the ``ContainerInjectionInterface::create()`` method passing itself as argument.
+Note that the responsibility for object creation is on the class itself.
 
-.. attention::
-
-    By using the ``@inject`` annotation you are explicitly telling the container
-    to inject a dependency. If no dependency is found for the provided key or
-    type an exception will be thrown telling you that the container cannot
-    inject something you said that he has to.
+Form more information check the :doc:`Container Injection Interface </reference/container-injection-interface>` reference page.
