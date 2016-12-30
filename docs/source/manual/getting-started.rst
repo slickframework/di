@@ -33,7 +33,7 @@ To create a dependency container we need to create at least a ``services.php``
 file with all our dependency definitions::
 
     use Slick\Configuration\Configuration:
-    use Slick\Di\Definition\Object;
+    use Slick\Di\Definition\ObjectDefinition;
 
     /**
      * Dependency injection object definition example
@@ -42,7 +42,7 @@ file with all our dependency definitions::
         'config' => function() {
             return Configuration::get('config');
         },
-        'engineService' => Object::create(Engine::class)
+        'engineService' => ObjectDefinition::create(Engine::class)
             ->with('@config')
             ->call('setMode')->with('simple')
     ];
