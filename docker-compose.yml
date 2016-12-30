@@ -2,7 +2,7 @@ version: '2'
 
 services:
   php:
-    image: slickframework/php:5.5
+    image: slickframework/php:5.6
     volumes:
      - ./:/usr/src/app
     working_dir: /usr/src/app

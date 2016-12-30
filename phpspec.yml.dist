@@ -1,0 +1,4 @@
+suites:
+  slick_di_suite:
+    namespace: Slick\Di
+    psr4_prefix: Slick\Di

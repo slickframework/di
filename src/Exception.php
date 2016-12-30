@@ -9,15 +9,13 @@
 
 namespace Slick\Di;
 
-use Interop\Container\Exception\ContainerException;
-
 /**
- * Container Exception
+ * Exception
  *
  * @package Slick\Di
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-interface Exception extends ContainerException
+interface Exception
 {
 
 }

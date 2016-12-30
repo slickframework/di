@@ -9,7 +9,9 @@
 
 namespace Slick\Di\Definition;
 
+use Slick\Di\Definition\Object\DefinitionData;
 use Slick\Di\DefinitionInterface;
+use Slick\Di\Exception\MethodNotFoundException;
 
 /**
  * Object Definition Interface
@@ -21,65 +23,40 @@ interface ObjectDefinitionInterface extends DefinitionInterface
 {
 
     /**
-     * Gets definition class name
+     * Get the definition data
      *
-     * If class name is not set and there is an instance set the class name
-     * will be retrieved from instance object.
-     *
-     * @return string
+     * @return DefinitionData
      */
-    public function getClassName();
+    public function getDefinitionData();
 
     /**
-     * Gets the instance object for current definition
+     * Adds the arguments to be used with constructor
      *
-     * If instance is not defined yet and the class name is set and
-     * is an existing class, a new instance will be created and the
-     * constructor arguments will be used.
+     * @param array ...$arguments
      *
-     * @return object
+     * @return self|ObjectDefinitionInterface
      */
-    public function getInstance();
+    public function withConstructorArgument(...$arguments);
 
     /**
-     * Sets constructor arguments used on instance instantiation
+     * Define a method call with provide call
      *
-     * @param array $arguments
-     * @return $this|self
+     * @param string $methodName
+     * @param array ...$arguments
+     *
+     * @return self|ObjectDefinitionInterface
+     *
+     * @throws MethodNotFoundException
      */
-    public function setConstructArgs(array $arguments);
+    public function callMethod($methodName, ...$arguments);
 
     /**
-     * Set a method to be called when resolving this definition
+     * Assigns a value to the property with provided name
      *
-     * @param string $name      Method name
-     * @param array  $arguments Method parameters
+     * @param string $name
+     * @param mixed  $value
      *
-     * @return $this|self
+     * @return self|Object
      */
-    public function setMethod($name, array $arguments = []);
-
-    /**
-     * Sets property value when resolving this definition
-     *
-     * @param string $name  The property name
-     * @param mixed  $value The property value
-     *
-     * @return $this|self
-     */
-    public function setProperty($name, $value);
-
-    /**
-     * Gets property values
-     *
-     * @return array
-     */
-    public function getProperties();
-
-    /**
-     * Returns the list of methods to call
-     *
-     * @return mixed
-     */
-    public function getMethods();
+    public function assignProperty($name, $value);
 }

@@ -1,12 +1,5 @@
 <?php
 
-/**
- * This file is part of slick library
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
@@ -27,4 +20,5 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function __construct()
     {
     }
+
 }

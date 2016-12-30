@@ -23,8 +23,8 @@ and `PHPUnit`_ for integration and unit testing.
 
 .. code-block:: bash
 
-    # unit and integration tests
-    $ vendor/bin/phpunit
+    # unit tests
+    $ vendor/bin/phpspec run
 
     # acceptance tests
     $ vendor/bin/behat

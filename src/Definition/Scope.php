@@ -22,7 +22,6 @@ use Slick\Common\Utils\Enum;
  */
 class Scope extends Enum
 {
-
     const SINGLETON = 'singleton';
     const PROTOTYPE = 'prototype';
 }
