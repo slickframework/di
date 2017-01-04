@@ -2,6 +2,12 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
+## 2.0.1 - 2017-01-03
+
+### Fixed
+- Now you can reference the container in a definitions file by using the
+  ``@container`` tag
+
 ## 2.0.0 - 2016-12-30
 
 ### Added
