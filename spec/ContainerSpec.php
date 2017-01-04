@@ -133,6 +133,11 @@ class ContainerSpec extends ObjectBehavior
     {
         $this->parent()->shouldBeAnInstanceOf(\Slick\Di\ContainerInterface::class);
     }
+
+    function it_can_reference_itself()
+    {
+        $this->get('container')->shouldBe($this->getWrappedObject());
+    }
 }
 
 

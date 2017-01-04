@@ -69,7 +69,7 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      */
     public function get($id)
     {
-        if (!$this->has($id)) {
+        if (!$this->has($id) && $id !== 'container') {
             throw new NotFoundException(
                 "Dependency container has not found any definition for '{$id}'"
             );
