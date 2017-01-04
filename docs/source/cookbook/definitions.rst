@@ -107,5 +107,10 @@ Defining how an object is instantiated is the most important feature of a depend
 ``'search.service'`` is an object definition on how to instantiate a ``SearchService``. It uses a fluent
 api that can easily describe the necessary steps to create a service or object.
 
+.. tip::
+
+    If you want to reference the container itself you can use the ``@container`` tag in the object
+    definition file.
+
 Please check the :doc:`ObjectDefinition API </reference/object-definition>` for a better understanding
 of all methods on ``ObjectDefinition`` definition.
