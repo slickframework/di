@@ -2,6 +2,13 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
+## 2.0.2 - 2017-01-05
+
+### Fixed
+- Container builder does not override existing entries. This allows
+  applications to set the main container and when other packages build
+  their containers the first entries will be used instead.
+
 ## 2.0.1 - 2017-01-03
 
 ### Fixed

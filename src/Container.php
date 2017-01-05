@@ -87,7 +87,11 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      */
     public function has($id)
     {
-        return array_key_exists($id, $this->definitions);
+        if (!array_key_exists($id, $this->definitions)) {
+            return $this->parentHas($id);
+        }
+
+        return true;
     }
 
     /**
@@ -117,6 +121,21 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
     }
 
     /**
+     * Checks if parent has a provided key
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    protected function parentHas($key)
+    {
+        if (!$this->parent) {
+            return false;
+        }
+        return $this->parent->has($key);
+    }
+
+    /**
      * Resolves the definition that was saved under the provided name
      *
      * @param string $name
@@ -125,11 +144,16 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      */
     protected function resolve($name)
     {
-        if (! array_key_exists($name, self::$instances)) {
+        if (array_key_exists($name, self::$instances)) {
+            return self::$instances[$name];
+        }
+
+        if (array_key_exists($name, $this->definitions)) {
             $entry = $this->definitions[$name];
             return $this->registerEntry($name, $entry);
         }
-        return self::$instances[$name];
+
+        return $this->parent->get($name);
     }
 
     /**
@@ -154,6 +178,13 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
     /**
      * Adds a definition to the definitions list
      *
+     * This method does not override an existing entry if the same name exists
+     * in the definitions or in any definitions of its parents.
+     * This way it is possible to change entries defined by other packages
+     * as those are build after the main application container is build.
+     * The main application container should be the first to be created and
+     * therefore set any entry that will override the latest containers build.
+     *
      * @param string              $name
      * @param DefinitionInterface $definition
      *
@@ -161,6 +192,10 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      */
     protected function add($name, DefinitionInterface $definition)
     {
+        if ($this->has($name)) {
+            return $this;
+        }
+
         $this->definitions[$name] = $definition;
         $definition->setContainer($this);
         return $this;
