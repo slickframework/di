@@ -18,6 +18,13 @@ interface ContainerInterface extends InteropContainer
     /**
      * Adds a definition or a value to the container
      *
+     * This method does not override an existing entry if the same name exists
+     * in the definitions or in any definitions of its parents.
+     * This way it is possible to change entries defined by other packages
+     * as those are build after the main application container is build.
+     * The main application container SHOULD be the first to be created and
+     * therefore set any entry that will override the latest containers build.
+     *
      * @param string       $name
      * @param mixed        $definition
      * @param Scope|string $scope      Resolving scope
