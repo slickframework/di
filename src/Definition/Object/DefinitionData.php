@@ -117,6 +117,7 @@ class DefinitionData extends Base
         foreach ($reversed as &$call) {
             if ($call['type'] == $type) {
                 $call['arguments'] = $arguments;
+                break;
             }
         }
         $this->calls = array_reverse($reversed);
