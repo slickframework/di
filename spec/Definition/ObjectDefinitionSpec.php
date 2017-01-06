@@ -129,6 +129,21 @@ class ObjectDefinitionSpec extends ObjectBehavior
             ->during('to', ['test']);
     }
 
+    function it_can_chain_multiple_method_calls()
+    {
+        $this->call('doSomething')->with('hello1');
+        $this->call('doSomething')->with('hello2');
+        $this->call('doSomething')->with('hello3');
+        $this->getDefinitionData()->shouldHaveACallEquals(
+            [
+                'type' => DefinitionData::METHOD,
+                'name' => 'doSomething',
+                'arguments' => ['hello1']
+            ]
+
+        );
+    }
+
     public function getMatchers()
     {
         return [
