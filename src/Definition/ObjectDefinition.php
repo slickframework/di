@@ -63,10 +63,10 @@ class ObjectDefinition extends AbstractDefinition implements
      */
     public function __construct($className)
     {
-        if (! class_exists($className)) {
+        if (!class_exists($className)) {
             throw new ClassNotFoundException(
-                "The class '{$className}' does not exists or it cannot be " .
-                "loaded. Object definition therefore cannot be " .
+                "The class '{$className}' does not exists or it cannot be ".
+                "loaded. Object definition therefore cannot be ".
                 "created."
             );
         }
@@ -108,7 +108,7 @@ class ObjectDefinition extends AbstractDefinition implements
      *
      * @param array ...$arguments Arguments passed to object constructor
      *
-     * @return $this|Object|self
+     * @return ObjectDefinition
      */
     public function with(...$arguments)
     {
@@ -129,7 +129,7 @@ class ObjectDefinition extends AbstractDefinition implements
      *
      * @param array ...$arguments
      *
-     * @return self|Object
+     * @return ObjectDefinition
      */
     public function withConstructorArgument(...$arguments)
     {
@@ -203,7 +203,7 @@ class ObjectDefinition extends AbstractDefinition implements
     public function callMethod($methodName, ...$arguments)
     {
 
-        if (! method_exists($this->definitionData->className, $methodName)) {
+        if (!method_exists($this->definitionData->className, $methodName)) {
             throw new MethodNotFoundException(
                 "The method '{$methodName}' is not defined in the class ".
                 "{$this->definitionData->className}"
@@ -223,7 +223,7 @@ class ObjectDefinition extends AbstractDefinition implements
      *
      * @param mixed $value
      *
-     * @return self|Object
+     * @return ObjectDefinition
      */
     public function assign($value)
     {
@@ -238,13 +238,13 @@ class ObjectDefinition extends AbstractDefinition implements
      *
      * @param string $property
      *
-     * @return self|Object
+     * @return ObjectDefinition
      */
     public function to($property)
     {
-        if (! property_exists($this->definitionData->className, $property)) {
+        if (!property_exists($this->definitionData->className, $property)) {
             throw new PropertyNotFoundException(
-                "The class '{$this->definitionData->className}' has no " .
+                "The class '{$this->definitionData->className}' has no ".
                 "property called '{$property}'."
             );
         }
@@ -262,7 +262,7 @@ class ObjectDefinition extends AbstractDefinition implements
      * @param string $name
      * @param mixed  $value
      *
-     * @return self|Object
+     * @return ObjectDefinition
      */
     public function assignProperty($name, $value)
     {
