@@ -25,7 +25,8 @@ use Slick\Di\Exception\PropertyNotFoundException;
  */
 class ObjectDefinition extends AbstractDefinition implements
     FluentObjectDefinitionInterface,
-    ResolverAwareInterface
+    ResolverAwareInterface,
+    BackwardCompatibleDefinitionInterface
 {
     /**
      * @var DefinitionData
@@ -46,6 +47,11 @@ class ObjectDefinition extends AbstractDefinition implements
      * @var mixed
      */
     private $lastValue;
+
+    /**
+     * Old methods that should be removed in next major version
+     */
+    use BackwardCompatibleMethodsTrait;
 
     /**
      * Creates an object definition
