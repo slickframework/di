@@ -2,6 +2,19 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
+## 2.1.0 - 2017-01-06
+
+### Added
+- ``BackwardCompatibleDefinitionInterface`` to support old object definition methods.
+
+### Fixed
+- call()->with() consecutive call bug.
+  Check [github issue #2](https://github.com/slickframework/di/issues/2) for details.
+  
+### Deprecates
+- ``ObjectDefinition::setConstructArgs()``, ``ObjectDefinition::setMethod()`` and ``ObjectDefinition::setProperty()``.
+  This methods will be removed in the next major release.
+
 ## 2.0.2 - 2017-01-05
 
 ### Fixed

@@ -73,7 +73,7 @@ final class ContainerBuilder implements ContainerAwareInterface
      */
     protected function hydrateContainer($definitions)
     {
-        if (! is_array($definitions)) {
+        if (!is_array($definitions)) {
             $this->hydrateFromFile($definitions);
             return;
         }
@@ -90,7 +90,7 @@ final class ContainerBuilder implements ContainerAwareInterface
      */
     protected function hydrateFromFile($definitions)
     {
-        if (! is_file($definitions)) {
+        if (!is_file($definitions)) {
             $this->hydrateFromDirectory($definitions);
             return;
         }
@@ -105,7 +105,7 @@ final class ContainerBuilder implements ContainerAwareInterface
             $directory = new \RecursiveDirectoryIterator($definitions);
         } catch (\Exception $caught) {
             throw new InvalidDefinitionsPathException(
-                'Provided definitions path is not valid or is not found. ' .
+                'Provided definitions path is not valid or is not found. '.
                 'Could not create container. Please check '.$definitions
             );
         }

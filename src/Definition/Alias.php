@@ -51,9 +51,9 @@ class Alias extends AbstractDefinition implements DefinitionInterface
      */
     public function resolve()
     {
-        if (! $this->container instanceof ContainerInterface) {
+        if (!$this->container instanceof ContainerInterface) {
             throw new ContainerNotSetException(
-                "No container was set for definition. " .
+                "No container was set for definition. ".
                 "It is not possible to look for alias '{$this->alias}'"
             );
         }

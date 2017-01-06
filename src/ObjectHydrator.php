@@ -73,7 +73,7 @@ class ObjectHydrator implements ObjectHydratorInterface
     {
         $annotations = $this->inspector->getMethodAnnotations($method);
 
-        if (! $annotations->hasAnnotation('@inject')) {
+        if (!$annotations->hasAnnotation('@inject')) {
             return;
         }
 
