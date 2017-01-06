@@ -60,6 +60,12 @@ class ObjectDefinitionSpec extends ObjectBehavior
         $this->getDefinitionData()->shouldHaveArgumentsEquals(['hello', 'world']);
     }
 
+    function it_can_define_constructor_arguments_with_old_method()
+    {
+        $this->setConstructArgs(['hello', 'world']);
+        $this->getDefinitionData()->shouldHaveArgumentsEquals(['hello', 'world']);
+    }
+
     function it_can_define_a_method_call_with_arguments()
     {
         $this->call('doSomething')->with('hello', 'world');
@@ -73,6 +79,18 @@ class ObjectDefinitionSpec extends ObjectBehavior
         );
     }
 
+    function it_can_define_a_method_call_with_arguments_using_old_method()
+    {
+        $this->setMethod('doSomething', ['hello', 'world']);
+        $this->getDefinitionData()->shouldHaveACallEquals(
+            [
+                'type' => DefinitionData::METHOD,
+                'name' => 'doSomething',
+                'arguments' => ['hello', 'world']
+            ]
+        );
+    }
+
     function it_throws_method_not_found_exception_if_defining_an_undefined_method_call()
     {
         $this->beConstructedWith(InitializableService::class);
@@ -83,6 +101,18 @@ class ObjectDefinitionSpec extends ObjectBehavior
     function it_can_define_an_assignment_to_a_property()
     {
         $this->assign('test')->to('scope');
+        $this->getDefinitionData()->shouldHaveACallEquals(
+            [
+                'type' => DefinitionData::PROPERTY,
+                'name' => 'scope',
+                'arguments' => 'test'
+            ]
+        );
+    }
+
+    function it_can_define_an_assignment_to_a_property_with_old_method()
+    {
+        $this->setProperty('scope', 'test');
         $this->getDefinitionData()->shouldHaveACallEquals(
             [
                 'type' => DefinitionData::PROPERTY,
