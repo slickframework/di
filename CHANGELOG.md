@@ -2,6 +2,11 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
+## 2.2.0 - 2017-01-24
+
+### Added
+- Container is passed as an argument in the callable definition when resolving  
+
 ## 2.1.0 - 2017-01-06
 
 ### Added
