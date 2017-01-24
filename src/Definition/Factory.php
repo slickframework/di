@@ -50,6 +50,7 @@ class Factory extends AbstractDefinition implements DefinitionInterface
      */
     public function resolve()
     {
-        return call_user_func_array($this->callable, $this->parameters);
+        $params = array_replace([$this->container], $this->parameters);
+        return call_user_func_array($this->callable, $params);
     }
 }

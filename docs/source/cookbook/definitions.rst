@@ -61,6 +61,19 @@ With factory definition we can compute and/or control the object or value creati
 
     return $services;
 
+It is possible to have the container instance available in the closure by defining an
+input argument. See the following example::
+
+    /**
+     * Dependency injection callable definition example
+     */
+    $services['general.config'] = function(ContainerInterface $container) {
+        $foo = $container->get('foo');
+        return Configuration::get('config')->get('bar', $foo);
+    }
+
+    return $services;
+
 Alias definition
 ----------------
 Alias definition is a shortcut for another defined entry::
