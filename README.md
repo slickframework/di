@@ -30,7 +30,8 @@ To create a dependency container we need to create at least a ``services.php``
 file with all our dependency definitions:
 
 ```php
-use Slick\Configuration\Configuration:
+use Slick\Configuration\Configuration;
+use Slick\Di\Container;
 use Slick\Di\Definition\ObjectDefinition;
 
 /**
@@ -40,9 +41,14 @@ return [
     'config' => function() {
         return Configuration::get('config');
     },
+    
     'engineService' => ObjectDefinition::create(Engine::class)
         ->with('@config')
-        ->call('setMode')->with('simple')
+        ->call('setMode')->with('simple'),
+        
+    CarSettings::class => function(Container $container) {
+        return new CarSettings($container->get('config'));
+    };
 ];
 ```
 Now to build the dependency container we need to use the ``ContainerBuilder`` factory class like this:
@@ -63,6 +69,11 @@ class Car
      * @var EngineInterface
      */
     protected $engine;
+    
+    public function __construct(CarSettings $settings)
+    {
+        // $settings will be injected if created with the Container::make() method.
+    }
 
     /**
      * @inject engineService
@@ -76,7 +87,7 @@ class Car
     }
 }
 
-$myCar = $container->get(Car::class);
+$myCar = $container->make(Car::class);
 ```
 
 Please refer to the [full documentation site](http://di.slick-framework.com) for more on ``slick/di`` package.
