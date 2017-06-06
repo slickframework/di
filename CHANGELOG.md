@@ -2,6 +2,11 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
+## 2.23.0 - 2017-06-06
+
+### Added 
+- Constructor auto-loader: Loads dependency based on constructor type hinted parameters 
+
 ## 2.2.0 - 2017-01-24
 
 ### Added
