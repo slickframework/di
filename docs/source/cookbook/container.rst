@@ -71,6 +71,28 @@ and it will inject the dependency that was stored under the ``diesel.engine`` na
 Take a look at :doc:`Container class </reference/container>` reference page for more information on
 ``Container::make()`` method.
 
+Constructor auto-injection
+--------------------------
+
+It is also possible to have dependencies injected on objects created by ``Container::make()``
+only by type hinting the parameters in the constructor::
+
+    public function __construct(EngineInterface $engine)...
+    ...
+    $dieselCar = $container->make(Car::class);
+    ...
+    // As __construct(EngineInterface $engine) is type hinted the container will look
+    // for '@EngineInterface::class' definition and inject it.
+
+You can mix the arguments sent on ``Container::make()`` second parameter with constructor
+auto-injection. In this case the arguments used in this late array will override the ones
+container has figure out.
+
+.. important::
+
+    Since v2.3.0 this is the behavior of ``Container::make()`` method and an exception
+    will be thrown whenever a parameter hint results in a missing definition, otherwise
+    why should you create object with the dependency container?
 
 Setter injection
 ----------------
