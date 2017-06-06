@@ -58,7 +58,13 @@ class ConstructorArgumentInspector
     private function definedArguments()
     {
         $arguments = [];
-        $parameters = $this->reflectionClass->getConstructor()->getParameters();
+        $constructor = $this->reflectionClass->getConstructor();
+
+        if (null === $constructor) {
+            return $arguments;
+        }
+
+        $parameters = $constructor->getParameters();
 
         foreach ($parameters as $parameter) {
             $class = $parameter->getClass();
