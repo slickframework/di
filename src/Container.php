@@ -16,6 +16,7 @@ use Slick\Di\Definition\ObjectDefinition;
 use Slick\Di\Definition\Scope;
 use Slick\Di\Definition\Value;
 use Slick\Di\Exception\NotFoundException;
+use Slick\Di\Inspector\ConstructorArgumentInspector;
 
 /**
  * Container
@@ -260,6 +261,13 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
         $definition = (new ObjectDefinition($className))
             ->setContainer($this)
         ;
+
+        $arguments = (new ConstructorArgumentInspector(
+            new \ReflectionClass($className),
+            $arguments
+        ))
+            ->arguments();
+
         call_user_func_array([$definition, 'with'], $arguments);
         $object = $definition->resolve();
         $this->getHydrator()->hydrate($object);
