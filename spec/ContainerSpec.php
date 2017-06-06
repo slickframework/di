@@ -129,6 +129,13 @@ class ContainerSpec extends ObjectBehavior
 
     }
 
+    function it_creates_objects_injecting_the_constructor_dependencies()
+    {
+        $this->register(\stdClass::class, new \stdClass());
+        $this->make(AutoInjected::class)
+            ->shouldBeAnInstanceOf(AutoInjected::class);
+    }
+
     function it_references_last_created_container_as_its_parent()
     {
         $this->parent()->shouldBeAnInstanceOf(\Slick\Di\ContainerInterface::class);
@@ -179,5 +186,12 @@ class CustomMethodObject implements ContainerInjectionInterface
     public static function create(ContainerInterface $container)
     {
         return new static($container->get('some-value'));
+    }
+}
+
+class AutoInjected
+{
+    public function __construct(\stdClass $object)
+    {
     }
 }
