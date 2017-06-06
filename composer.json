@@ -10,6 +10,7 @@
   "minimum-stability": "dev",
   "homepage": "https://github.com/slickframework/di",
   "license": "MIT",
+  "version": "v2.3.0",
   "authors": [
     {
       "name": "Filipe Silva",
@@ -45,8 +46,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev",
-      "dev-develop": "2.3-dev"
+      "dev-master": "2.3-dev",
+      "dev-develop": "2.4-dev"
     }
   },
   "config": {
