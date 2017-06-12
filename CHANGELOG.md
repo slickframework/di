@@ -2,7 +2,13 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
-## 2.23.0 - 2017-06-06
+## 2.3.1 - 2017-06-12 [YANKED]
+
+### Fixed
+- Resolving dependencies with wrong container in a multi-container scenario was leading to missing
+  dependency exception. Now Container resolves dependency properly.
+
+## 2.3.0 - 2017-06-06
 
 ### Added 
 - Constructor auto-loader: Loads dependency based on constructor type hinted parameters 
