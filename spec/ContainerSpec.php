@@ -68,7 +68,7 @@ class ContainerSpec extends ObjectBehavior
     function it_can_resolve_definitions(DefinitionInterface $definition)
     {
         $definition->resolve()->willReturn('value');
-        $definition->setContainer($this)->willReturn($this);
+        $definition->setContainer($this)->willReturn($definition);
         $definition->getScope()->willReturn(Scope::SINGLETON);
         $this->register('test-value', $definition);
         $this->get('test-value')->shouldBe('value');
