@@ -169,7 +169,9 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      */
     protected function registerEntry($name, DefinitionInterface $definition)
     {
-        $value = $definition->resolve();
+        $value = $definition
+            ->setContainer($this->container())
+            ->resolve();
         if ((string) $definition->getScope() !== Scope::PROTOTYPE) {
             self::$instances[$name] = $value;
         }
@@ -198,7 +200,7 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
         }
 
         $this->definitions[$name] = $definition;
-        $definition->setContainer($this);
+        $definition->setContainer($this->container());
         return $this;
     }
 
@@ -259,7 +261,7 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
         }
 
         $definition = (new ObjectDefinition($className))
-            ->setContainer($this)
+            ->setContainer($this->container())
         ;
 
         $arguments = (new ConstructorArgumentInspector(
@@ -308,5 +310,15 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
     public function parent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Get the top container
+     *
+     * @return container
+     */
+    private function container()
+    {
+        return self::$instances['container'];
     }
 }
