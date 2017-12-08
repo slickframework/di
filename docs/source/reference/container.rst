@@ -62,8 +62,3 @@ Container class
         If you create a class that implements the ``Slick\Di\ContainerInjectionInterface`` all the ``$arguments`` that
         you may pass to this method will be ignored as the container will call the ``create()`` method and pass himself
         as an argument to that method. Please see :doc:`ContainerInjectionInterface reference </reference/container-injection-interface>`
-
-        All other classes will be resolved with an ``Object`` definition and if you use any ``@inject`` annotation the
-        correspondent dependency will be injected.
-
-        Entry alias (``@alias``) can be used in the arguments to reference injected dependencies.

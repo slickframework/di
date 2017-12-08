@@ -2,12 +2,12 @@
 
 namespace spec\Slick\Di\Definition\Object;
 
+use PhpSpec\Exception\Example\FailureException;
 use Slick\Di\ContainerInterface;
 use Slick\Di\Definition\Object\DefinitionData;
 use Slick\Di\Definition\Object\Resolver;
 use Slick\Di\Definition\Object\ResolverInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ResolverSpec extends ObjectBehavior
 {
@@ -65,8 +65,10 @@ class ResolverSpec extends ObjectBehavior
     {
         return [
             'havePropertyEquals' => function(ConstructorObject $subject, $property, $expected) {
-                \PHPUnit_Framework_Assert::assertEquals($expected, $subject->{$property});
-                return true;
+                if ($expected == $subject->{$property}) {
+                    return true;
+                }
+                throw new FailureException("Properties are not equal...");
             }
         ];
     }

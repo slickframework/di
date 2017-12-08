@@ -46,6 +46,9 @@ class Resolver implements ResolverInterface
      * @param DefinitionData $data
      *
      * @return object
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     public function resolve(DefinitionData $data)
     {
@@ -53,7 +56,7 @@ class Resolver implements ResolverInterface
 
         $this->object = $this->createObject();
 
-        foreach ($data->calls as $call) {
+        foreach ($data->calls() as $call) {
             $this->apply($call);
         }
 
@@ -64,13 +67,16 @@ class Resolver implements ResolverInterface
      * Creates the object
      *
      * @return object
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     public function createObject()
     {
-        $reflection = new \ReflectionClass($this->data->className);
+        $reflection = new \ReflectionClass($this->data->className());
         return $reflection->hasMethod('__construct')
             ? $reflection->newInstanceArgs(
-                $this->filterArguments($this->data->arguments)
+                $this->filterArguments($this->data->arguments())
             )
             : $reflection->newInstance();
     }
@@ -81,6 +87,9 @@ class Resolver implements ResolverInterface
      * @param array $call
      *
      * @return Resolver
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     protected function apply($call)
     {
@@ -104,6 +113,9 @@ class Resolver implements ResolverInterface
      * @param array $data
      *
      * @return Resolver
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     protected function setProperty($data)
     {
@@ -126,6 +138,9 @@ class Resolver implements ResolverInterface
      * @param array $data
      *
      * @return array
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     protected function filterArguments(array $data)
     {
@@ -145,6 +160,9 @@ class Resolver implements ResolverInterface
      * @param string $value
      *
      * @return mixed
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     protected function filterValue($value)
     {

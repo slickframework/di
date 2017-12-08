@@ -9,19 +9,37 @@
 
 namespace Slick\Di\Definition;
 
-use Slick\Common\Utils\Enum;
-
 /**
  * Scope used in the definition
  *
  * @package Slick\Di\Definition
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  *
- * @method static Scope Singleton()
- * @method static Scope Prototype()
  */
-class Scope extends Enum
+class Scope
 {
+    private $value;
+
     const SINGLETON = 'singleton';
     const PROTOTYPE = 'prototype';
+
+    private function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    public static function Singleton()
+    {
+        return new Scope(Scope::SINGLETON);
+    }
+
+    public static function Prototype()
+    {
+        return new Scope(Scope::PROTOTYPE);
+    }
+
+    public function __toString()
+    {
+        return $this->value;
+    }
 }

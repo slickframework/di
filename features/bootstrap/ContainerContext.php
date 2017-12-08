@@ -80,21 +80,31 @@ class ContainerContext extends FeatureContext
 
     /**
      * @Then /^the value should be "([^"]*)"$/
+     *
+     * @throws \Exception
      */
     public function theValueShouldBe($expected)
     {
-        PHPUnit_Framework_Assert::assertEquals($expected, $this->lastValue);
+        if ($expected === $this->lastValue) {
+            return;
+        }
+
+        throw new \Exception("Expecting $expected, but got {$this->lastValue}");
     }
 
     /**
      * @Then /^I should get an exception$/
+     * @throws \Exception
      */
     public function iShouldGetAnException()
     {
-        PHPUnit_Framework_Assert::assertInstanceOf(
-            Exception::class,
-            $this->lastException
-        );
+
+        if (is_subclass_of($this->lastException, Exception::class))
+        {
+            return;
+        }
+
+        throw new \Exception("No exception was thrown...");
     }
 
     /**
@@ -119,22 +129,32 @@ class ContainerContext extends FeatureContext
 
     /**
      * @Then /^the value should be an object$/
+     * @throws \Exception
      */
     public function theValueShouldBeAnObject()
     {
-        PHPUnit_Framework_Assert::assertInstanceOf(
-            stdClass::class,
-            $this->lastValue
-        );
+        if ($this->lastValue instanceof stdClass) {
+            return;
+        }
+
+        throw new \Exception("The expected value is not an object...");
     }
 
     /**
      * @Then /^it should be the same as "([^"]*)"$/
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Exception
      */
     public function itShouldBeTheSameAs($alias)
     {
         $new = $this->container->get($alias);
-        PHPUnit_Framework_Assert::assertSame($this->lastValue, $new);
+
+        if ($new === $this->lastValue) {
+            return;
+        }
+
+        throw new \Exception("Objects are note the same...");
     }
 
     /**
@@ -148,24 +168,29 @@ class ContainerContext extends FeatureContext
 
     /**
      * @Then /^it should be the equal to "([^"]*)"$/
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Exception
      */
     public function itShouldBeTheEqualTo($key)
     {
-        PHPUnit_Framework_Assert::assertEquals(
-            $this->lastValue,
-            $this->container->get($key)
-        );
+
+        if ($this->lastValue == $this->container->get($key)) {
+            return;
+        }
+
+        throw new \Exception("Objects are not equal...");
     }
 
     /**
      * @Given /^it should not be the same as "([^"]*)"$/
+     * @throws \Exception
+     * @throws \Interop\Container\Exception\ContainerException
      */
     public function itShouldNotBeTheSameAs($key)
     {
-        PHPUnit_Framework_Assert::assertNotSame(
-            $this->lastValue,
-            $this->container->get($key)
-        );
+        if ($this->lastValue === $this->container->get($key))
+
+            throw new \Exception("Objects are the same...");
     }
 
     /**
@@ -178,10 +203,15 @@ class ContainerContext extends FeatureContext
 
     /**
      * @Then /^it should be an instance of "([^"]*)"$/
+     * @throws \Exception
      */
     public function itShouldBeAnInstanceOfFixturesObject($className)
     {
-        PHPUnit_Framework_Assert::assertInstanceOf($className, $this->lastValue);
+        if ($this->lastValue instanceof $className) {
+            return;
+        }
+
+        throw new \Exception("It is not an instance of $className");
     }
 
     /**
@@ -204,10 +234,13 @@ class ContainerContext extends FeatureContext
 
     /**
      * @Given /^it should have a property "([^"]*)" equals to "([^"]*)"$/
+     * @throws \Exception
      */
     public function itShouldHaveAPropertyEqualsTo($property, $value)
     {
-        PHPUnit_Framework_Assert::assertEquals($value, $this->lastValue->{$property});
+        if ($value === $this->lastValue->{$property}) return;
+
+        throw new \Exception("There are no properties with provided value...");
     }
 
     /**

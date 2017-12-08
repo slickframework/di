@@ -94,50 +94,6 @@ container has figure out.
     will be thrown whenever a parameter hint results in a missing definition, otherwise
     why should you create object with the dependency container?
 
-Setter injection
-----------------
-
-As the name implies this injection strategy uses a setter method tho inject a dependency. This is
-not a good way of doing dependency injection as it makes the object instantiation more complex. We
-need to created the object (1st phase) and then call and inject its dependencies (2nd phase).
-
-.. important::
-
-    It only makes sense to use the setter injection if the dependency we have is only available at
-    runtime or we are working with legacy code.
-
-Check the following class::
-
-    class Car
-    {
-        /**
-     * @var EngineInterface
-     */
-        private $engine;
-
-        /**
-     * Set the car engine
-     *
-     * @inject diesel.engine
-     * @param EngineInterface $engine
-     * @return Car
-     */
-        public function setEngine(EngineInterface $engine)
-        {
-            $this->engine = $engine;
-            return $this;
-        }
-    }
-
-With the above class we can't tell the container to inject dependencies as arguments to the
-class constructor as it has gone::
-
-
-    $dieselCar = $container->make(Car::class);
-
-Instead we use an annotation ``@inject`` with the name of the entry we want the container
-use when calling the setter.
-
 Factory method
 --------------
 

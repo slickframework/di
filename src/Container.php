@@ -24,7 +24,7 @@ use Slick\Di\Inspector\ConstructorArgumentInspector;
  * @package Slick\Di
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-class Container implements ContainerInterface, ObjectHydratorAwareInterface
+class Container implements ContainerInterface
 {
     /**
      * @var array
@@ -35,11 +35,6 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      * @var array
      */
     protected static $instances = [];
-
-    /**
-     * @var ObjectHydratorInterface
-     */
-    protected $hydrator;
 
     /**
      * @var null|ContainerInterface
@@ -142,6 +137,9 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
      * @param string $name
      *
      * @return mixed
+     *
+     * @throws ContainerException
+     * @throws \Interop\Container\Exception\NotFoundException
      */
     protected function resolve($name)
     {
@@ -272,34 +270,7 @@ class Container implements ContainerInterface, ObjectHydratorAwareInterface
 
         call_user_func_array([$definition, 'with'], $arguments);
         $object = $definition->resolve();
-        $this->getHydrator()->hydrate($object);
         return $object;
-    }
-
-    /**
-     * Set the object hydrator
-     *
-     * @param ObjectHydratorInterface $hydrator
-     *
-     * @return Container|ObjectHydratorAwareInterface
-     */
-    public function setHydrator(ObjectHydratorInterface $hydrator)
-    {
-        $this->hydrator = $hydrator;
-        return $this;
-    }
-
-    /**
-     * Get the object hydrator
-     *
-     * @return ObjectHydratorInterface
-     */
-    public function getHydrator()
-    {
-        if (!$this->hydrator) {
-            $this->setHydrator(new ObjectHydrator($this));
-        }
-        return $this->hydrator;
     }
 
     /**

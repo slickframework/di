@@ -39,11 +39,6 @@ class ContainerSpec extends ObjectBehavior
         $this->shouldHaveType(ContainerInterface::class);
     }
 
-    function its_hydrator_aware()
-    {
-        $this->shouldBeAnInstanceOf(ObjectHydratorAwareInterface::class);
-    }
-
     function it_registers_values_under_provided_keys()
     {
         $this->register('baz', 'test')->shouldBeAnInstanceOf(Container::class);
@@ -112,13 +107,11 @@ class ContainerSpec extends ObjectBehavior
         $this->get('test')->shouldNotBe($first);
     }
 
-    function it_creates_objects_injecting_its_dependencies(ObjectHydratorInterface $hydrator)
+    function it_creates_objects_injecting_its_dependencies()
     {
         $this->register('the-value', 33);
-        $this->setHydrator($hydrator);
         $this->make(CreatableObject::class, '@the-value')
             ->shouldBeAnInstanceOf(CreatableObject::class);
-        $hydrator->hydrate(Argument::any())->shouldHaveBeenCalled();
     }
 
     function it_creates_container_injection_implementations()

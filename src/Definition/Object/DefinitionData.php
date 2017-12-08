@@ -9,38 +9,28 @@
 
 namespace Slick\Di\Definition\Object;
 
-use Slick\Common\Base;
-
 /**
  * Definition Data for object creation
  *
  * @package Slick\Di\Definition\Object
- * @author  Filipe Silva <silvam.filipe@gmail.com>
- *
- * @property string $className
- * @property array  $arguments
- * @property array  $calls
  */
-class DefinitionData extends Base
+class DefinitionData
 {
 
     const METHOD   = 'method';
     const PROPERTY = 'property';
 
     /**
-     * @readwrite
      * @var string
      */
     protected $className;
 
     /**
-     * @readwrite
      * @var array
      */
     protected $arguments = [];
 
     /**
-     * @readwrite
      * @var array
      */
     protected $calls = [];
@@ -54,12 +44,10 @@ class DefinitionData extends Base
      */
     public function __construct($className, array $arguments = [], array $calls = [])
     {
-        $options = [
-            'className' => $className,
-            'arguments' => $arguments,
-            'calls' => $calls
-        ];
-        parent::__construct($options);
+
+        $this->className = $className;
+        $this->arguments = $arguments;
+        $this->calls = $calls;
     }
 
     /**
@@ -122,5 +110,25 @@ class DefinitionData extends Base
         }
         $this->calls = array_reverse($reversed);
         return $this;
+    }
+
+    public function arguments()
+    {
+        return $this->arguments;
+    }
+
+    public function withArguments(array $arguments)
+    {
+        $this->arguments = $arguments;
+    }
+
+    public function className()
+    {
+        return $this->className;
+    }
+
+    public function calls()
+    {
+        return $this->calls;
     }
 }
