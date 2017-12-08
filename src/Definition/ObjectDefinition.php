@@ -113,7 +113,7 @@ class ObjectDefinition extends AbstractDefinition implements
     public function with(...$arguments)
     {
 
-        if (empty($this->definitionData->calls)) {
+        if (empty($this->definitionData->calls())) {
             $this->getReflectionClass()
                 ->getMethod('withConstructorArgument')
                 ->invokeArgs($this, $arguments);
@@ -133,7 +133,7 @@ class ObjectDefinition extends AbstractDefinition implements
      */
     public function withConstructorArgument(...$arguments)
     {
-        $this->definitionData->arguments = $arguments;
+        $this->definitionData->withArguments($arguments);
         return $this;
     }
 
@@ -203,10 +203,10 @@ class ObjectDefinition extends AbstractDefinition implements
     public function callMethod($methodName, ...$arguments)
     {
 
-        if (!method_exists($this->definitionData->className, $methodName)) {
+        if (!method_exists($this->definitionData->className(), $methodName)) {
             throw new MethodNotFoundException(
                 "The method '{$methodName}' is not defined in the class ".
-                "{$this->definitionData->className}"
+                "{$this->definitionData->className()}"
             );
         }
 
@@ -242,9 +242,9 @@ class ObjectDefinition extends AbstractDefinition implements
      */
     public function to($property)
     {
-        if (!property_exists($this->definitionData->className, $property)) {
+        if (!property_exists($this->definitionData->className(), $property)) {
             throw new PropertyNotFoundException(
-                "The class '{$this->definitionData->className}' has no ".
+                "The class '{$this->definitionData->className()}' has no ".
                 "property called '{$property}'."
             );
         }

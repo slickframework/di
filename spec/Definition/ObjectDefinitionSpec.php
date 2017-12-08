@@ -147,12 +147,12 @@ class ObjectDefinitionSpec extends ObjectBehavior
     public function getMatchers()
     {
         return [
-            'haveArgumentsEquals' => function ($subject, $arguments) {
-                 return $subject->arguments == $arguments;
+            'haveArgumentsEquals' => function (DefinitionData $subject, $arguments) {
+                 return $subject->arguments() == $arguments;
             },
             'haveACallEquals' => function (DefinitionData $subject, $expectedCall) {
                 $call = null;
-                foreach ($subject->calls as $call) {
+                foreach ($subject->calls() as $call) {
                     if ($call == $expectedCall) {
                         return true;
                     }

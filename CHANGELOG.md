@@ -2,7 +2,14 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
-## 2.3.1 - 2017-06-12 [YANKED]
+## [Unreleased]
+
+### Removed
+- ``Slick/Common`` dependency
+- ``@inject`` annotation
+- ``ObjectHydratorInterface``s without annotations the hydrators are no longer needed
+
+## 2.3.1 - 2017-06-12
 
 ### Fixed
 - Resolving dependencies with wrong container in a multi-container scenario was leading to missing
