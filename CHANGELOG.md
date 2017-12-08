@@ -8,6 +8,7 @@ All Notable changes to `Slick/di` will be documented in this file
 - ``Slick/Common`` dependency
 - ``@inject`` annotation
 - ``ObjectHydratorInterface``s without annotations the hydrators are no longer needed
+- phpunit was unnecessary as all tests are written for phpspec  
 
 ## 2.3.1 - 2017-06-12
 
