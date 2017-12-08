@@ -63,19 +63,14 @@ With that, we are ready to create and inject dependencies with our container::
      */
         protected $engine;
 
-        /**
-     * @inject engineService
-     *
-     * @return self
-     */
-        public function setEngine(EngineInterface $engine)
+        public function __construct(EngineInterface $engine)
         {
             $this->engine = $engine;
-            return $this;
         }
+
     }
 
-    $myCar = $container->get(Car::class);
+    $myCar = $container->make(Car::class);
 
 Installation
 ------------
