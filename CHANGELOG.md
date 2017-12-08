@@ -2,7 +2,7 @@
 
 All Notable changes to `Slick/di` will be documented in this file
 
-## [Unreleased]
+## 2.4.0 - 2017-12-08
 
 ### Removed
 - ``Slick/Common`` dependency
