@@ -6,12 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
-### Removed
-- Support for PHP <= 7.0
-- Updated documentation
+
+## [v2.5.0] - 2019-03-19
+### Added
 - Code of conduct
 - Issue template
 - Pull request template
+### Changed
+- Updated documentation library
+### Removed
+- Support for PHP <= 7.0
 
 ## [v2.4.0] - 2017-12-08
 ### Removed
@@ -81,7 +85,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of Di package
 
-[Unreleased]: https://github.com/slickframework/di/compare/v2.4.0...HEAD
+[Unreleased]: https://github.com/slickframework/di/compare/v2.5.0...HEAD
+[v2.5.0]: https://github.com/slickframework/di/compare/v2.4.0...v2.5.0
 [v2.4.0]: https://github.com/slickframework/di/compare/v2.3.1...v2.4.0
 [v2.3.1]: https://github.com/slickframework/di/compare/v2.3.0...v2.3.1
 [v2.3.0]: https://github.com/slickframework/di/compare/v2.2.0...v2.3.0
