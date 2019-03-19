@@ -13,6 +13,6 @@ use Slick\Di\Definition\ObjectDefinition;
 
 $services = [];
 
-$services['otherService'] = ObjectDefinition::create(\Fixtures\Object::class);
+$services['otherService'] = ObjectDefinition::create(\Fixtures\SomeObject::class);
 
 return $services;

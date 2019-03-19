@@ -15,7 +15,7 @@ namespace Fixtures;
  * @package Fixtures
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-class Object
+class SomeObject
 {
 
 }

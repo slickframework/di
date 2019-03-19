@@ -13,11 +13,11 @@ Feature: Store a definition of object creation
       definition by using an '@' prefixing the entry name.
 
   Scenario: Create a simple object
-    Given I create an object definition for class "Fixtures\Object"
+    Given I create an object definition for class "Fixtures\SomeObject"
     And I create a container
     And register it under "simple-object" key
     When I get "simple-object" from container
-    Then it should be an instance of "Fixtures\Object"
+    Then it should be an instance of "Fixtures\SomeObject"
 
   Scenario: Create object with constructor arguments
     Given I create a container
