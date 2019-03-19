@@ -33,7 +33,7 @@ Security
 --------
 
 If you discover any security related issues, please email
-`silvam.filipe@gmail.com <mailto:silvam.filipe@gmail.com>`_ instead of using the issue tracker.
+`slick.framework@gmail.com <mailto:slick.framework@gmail.com>`_ instead of using the issue tracker.
 
 .. _Github: https://github.com/slickframework/di
 .. _PSR-2 Coding Standard: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md

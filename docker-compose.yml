@@ -2,7 +2,13 @@ version: '3.1'
 
 services:
   php:
-    image: fsilva/php:5.6
+    image: fsilva/php:7.1-cli
     volumes:
      - ./:/usr/src/app
     working_dir: /usr/src/app
+  docs:
+    image: nginx
+    ports:
+      - 80
+    volumes:
+      - ./docs/build/html:/usr/share/nginx/html
