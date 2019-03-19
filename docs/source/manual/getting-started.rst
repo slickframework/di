@@ -75,8 +75,8 @@ With that, we are ready to create and inject dependencies with our container::
 Installation
 ------------
 
-`slick/di` is a php 5.6+ library that you’ll have in your project development
-environment. Before you begin, ensure that you have PHP 5.6 or higher installed.
+`slick/di` is a php 7.1+ library that you’ll have in your project development
+environment. Before you begin, ensure that you have PHP 7.1 or higher installed.
 
 You can install `slick/di` with all its dependencies through Composer. Follow
 instructions on the `composer website`_ if you don’t have it installed yet.
