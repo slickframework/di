@@ -1,10 +1,12 @@
 Slick Dependency Injection
 ==========================
 
-``slick/di`` is an easy dependency injection container for PHP 5.6+. It aims to
-be very lightweight and tries to remove a lot of the *guessing* and *magic*
-stuff that dependency containers use those days. It also allows you to nest
-containers witch can become very useful if you have several packages that you
+``slick/di`` is an easy dependency injection container for PHP 7.1+.
+
+It aims to be very lightweight and tries to remove a lot of the *guessing* and *magic*
+stuff that dependency containers use those days.
+
+It also allows you to nest containers witch can become very useful if you have several packages that you
 reuse in your applications, allowing you to define containers with default
 dependencies in those packages for later override and usage them in your application.
 
