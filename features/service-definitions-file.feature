@@ -11,4 +11,4 @@ Feature: Create service definitions file(s)
   Scenario: Built a container providing a directory of definition files
     Given I build a container with "Service"
     When I get "otherService" from container
-    Then it should be an instance of "Fixtures\Object"
+    Then it should be an instance of "Fixtures\SomeObject"

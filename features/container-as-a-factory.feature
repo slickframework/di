@@ -11,8 +11,8 @@ Feature: Use the container as a factory
 
   Scenario: Create an object without dependencies
     Given I create a container
-    When I use the container to create "Fixtures\Object"
-    Then it should be an instance of "Fixtures\Object"
+    When I use the container to create "Fixtures\SomeObject"
+    Then it should be an instance of "Fixtures\SomeObject"
 
   Scenario: Create an object with argument alias
     Given I create a container
