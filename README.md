@@ -118,7 +118,7 @@ If you discover any security related issues, please email slick.framework@gmail.
 ## Credits
 
 - [Slick framework](https://github.com/slickframework)
-- [All Contributors](https://github.com/slickframework/database/graphs/contributors)
+- [All Contributors](https://github.com/slickframework/di/graphs/contributors)
 
 ## License
 
