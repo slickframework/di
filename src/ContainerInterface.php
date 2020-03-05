@@ -9,7 +9,7 @@
 
 namespace Slick\Di;
 
-use Interop\Container\ContainerInterface as InteropContainer;
+use Psr\Container\ContainerInterface as InteropContainer;
 use Slick\Di\Definition\Scope;
 
 interface ContainerInterface extends InteropContainer

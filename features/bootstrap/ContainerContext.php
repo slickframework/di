@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+use Psr\Container\ContainerExceptionInterface;
 use Slick\Di\Container;
 use Slick\Di\Exception;
 use Behat\Gherkin\Node\TableNode;
@@ -143,7 +144,7 @@ class ContainerContext extends FeatureContext
     /**
      * @Then /^it should be the same as "([^"]*)"$/
      *
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerExceptionInterface
      * @throws \Exception
      */
     public function itShouldBeTheSameAs($alias)
@@ -168,7 +169,7 @@ class ContainerContext extends FeatureContext
 
     /**
      * @Then /^it should be the equal to "([^"]*)"$/
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerExceptionInterface
      * @throws \Exception
      */
     public function itShouldBeTheEqualTo($key)
@@ -184,7 +185,7 @@ class ContainerContext extends FeatureContext
     /**
      * @Given /^it should not be the same as "([^"]*)"$/
      * @throws \Exception
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerExceptionInterface
      */
     public function itShouldNotBeTheSameAs($key)
     {

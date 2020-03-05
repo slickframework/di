@@ -47,8 +47,8 @@ class Resolver implements ResolverInterface
      *
      * @return object
      *
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \Psr\Container\Exception\ContainerException
+     * @throws \Psr\Container\Exception\NotFoundException
      */
     public function resolve(DefinitionData $data)
     {
@@ -68,8 +68,8 @@ class Resolver implements ResolverInterface
      *
      * @return object
      *
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \Psr\Container\Exception\ContainerException
+     * @throws \Psr\Container\Exception\NotFoundException
      */
     public function createObject()
     {
@@ -88,8 +88,8 @@ class Resolver implements ResolverInterface
      *
      * @return Resolver
      *
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \Psr\Container\Exception\ContainerException
+     * @throws \Psr\Container\Exception\NotFoundException
      */
     protected function apply($call)
     {
@@ -114,8 +114,8 @@ class Resolver implements ResolverInterface
      *
      * @return Resolver
      *
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \Psr\Container\Exception\ContainerException
+     * @throws \Psr\Container\Exception\NotFoundException
      */
     protected function setProperty($data)
     {
@@ -139,8 +139,8 @@ class Resolver implements ResolverInterface
      *
      * @return array
      *
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \Psr\Container\Exception\ContainerException
+     * @throws \Psr\Container\Exception\NotFoundException
      */
     protected function filterArguments(array $data)
     {
@@ -161,8 +161,8 @@ class Resolver implements ResolverInterface
      *
      * @return mixed
      *
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \Psr\Container\Exception\ContainerException
+     * @throws \Psr\Container\Exception\NotFoundException
      */
     protected function filterValue($value)
     {

@@ -10,7 +10,7 @@
 namespace Fixtures;
 
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Slick\Di\ContainerInjectionInterface;
 
 class OtherObject implements ContainerInjectionInterface
