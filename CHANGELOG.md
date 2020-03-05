@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [Unreleased]
 
+## [v2.6.0] - 2020-03-05
+### Adds
+- `psr/container` PSR-11 dependency package
+### fixes
+- sphinx-doc update
+- sphinx-doc template search results link
+### Removes
+- Abandoned `container-interop/container-interop` dependency
+
 ## [v2.5.1] - 2019-03-19
 ### Fixed
 - Behat fixture class named "Object" was breaking the tests
@@ -90,7 +99,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of Di package
 
-[Unreleased]: https://github.com/slickframework/di/compare/v2.5.1...HEAD
+[Unreleased]: https://github.com/slickframework/di/compare/v2.6.0...HEAD
+[v2.6.0]: https://github.com/slickframework/di/compare/v2.5.1...v2.6.0
 [v2.5.1]: https://github.com/slickframework/di/compare/v2.5.0...v2.5.1
 [v2.5.0]: https://github.com/slickframework/di/compare/v2.4.0...v2.5.0
 [v2.4.0]: https://github.com/slickframework/di/compare/v2.3.1...v2.4.0

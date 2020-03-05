@@ -9,16 +9,14 @@
 
 namespace spec\Slick\Di;
 
-use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\NotFoundException;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Slick\Di\Container;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Slick\Di\ContainerInjectionInterface;
 use Slick\Di\Definition\Scope;
 use Slick\Di\DefinitionInterface;
-use Slick\Di\ObjectHydratorAwareInterface;
-use Slick\Di\ObjectHydratorInterface;
 
 /**
  * ContainerSpec
@@ -56,7 +54,7 @@ class ContainerSpec extends ObjectBehavior
 
     function it_throws_a_not_found_exception_for_unregistered_definitions()
     {
-        $this->shouldThrow(NotFoundException::class)
+        $this->shouldThrow(NotFoundExceptionInterface::class)
             ->during('get', ['unknown']);
     }
 
