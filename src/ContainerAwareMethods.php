@@ -9,7 +9,7 @@
 
 namespace Slick\Di;
 
-use Interop\Container\ContainerInterface as InteropContainer;
+use Psr\Container\ContainerInterface as InteropContainer;
 
 /**
  * Implementation methods for ContainerAwareInterface

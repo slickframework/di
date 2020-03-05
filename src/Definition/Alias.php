@@ -9,7 +9,7 @@
 
 namespace Slick\Di\Definition;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Slick\Di\DefinitionInterface;
 use Slick\Di\Exception\ContainerNotSetException;
 use Slick\Di\Exception\NotFoundException;

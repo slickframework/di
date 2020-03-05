@@ -11,7 +11,7 @@ namespace Slick\Di\Exception;
 
 use RuntimeException;
 use Slick\Di\Exception;
-use Interop\Container\Exception\NotFoundException as InteropException;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * NotFoundException
@@ -21,7 +21,7 @@ use Interop\Container\Exception\NotFoundException as InteropException;
  */
 class NotFoundException extends RuntimeException implements
     Exception,
-    InteropException
+    NotFoundExceptionInterface
 {
 
 }

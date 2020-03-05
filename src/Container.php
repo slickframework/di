@@ -9,7 +9,7 @@
 
 namespace Slick\Di;
 
-use Interop\Container\Exception\ContainerException;
+use Psr\Container\Exception\ContainerException;
 use Slick\Di\Definition\Alias;
 use Slick\Di\Definition\Factory;
 use Slick\Di\Definition\ObjectDefinition;
@@ -139,7 +139,7 @@ class Container implements ContainerInterface
      * @return mixed
      *
      * @throws ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \Psr\Container\Exception\NotFoundException
      */
     protected function resolve($name)
     {
