@@ -9,6 +9,7 @@
 
 namespace Slick\Di\Definition;
 
+use ReflectionException;
 use Slick\Di\Definition\Object\DefinitionData;
 use Slick\Di\Definition\Object\Resolver;
 use Slick\Di\Definition\Object\ResolverAwareInterface;
@@ -104,11 +105,12 @@ class ObjectDefinition extends AbstractDefinition implements
     /**
      * Set the arguments for the last defined method call
      *
-     * If no method call was defined yet it will set the constructor argument list
+     * If there are no defined method calls it will set the constructor argument list
      *
-     * @param array ...$arguments Arguments passed to object constructor
+     * @param array|mixed ...$arguments Arguments passed to object constructor
      *
      * @return ObjectDefinition
+     * @throws ReflectionException
      */
     public function with(...$arguments)
     {

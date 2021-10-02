@@ -61,7 +61,7 @@ class ResolverSpec extends ObjectBehavior
 
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'havePropertyEquals' => function(ConstructorObject $subject, $property, $expected) {

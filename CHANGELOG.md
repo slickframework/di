@@ -2,18 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+This file format based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
 
+## [v2.7.0] - 2021-10-02
+### Removed
+- PHP supported versions < 7.4
+### Fixed
+- Deprecation when using PHP >= 8.0
+
 ## [v2.6.0] - 2020-03-05
 ### Adds
 - `psr/container` PSR-11 dependency package
-### fixes
+### Fixed
 - sphinx-doc update
 - sphinx-doc template search results link
-### Removes
+### Removed
 - Abandoned `container-interop/container-interop` dependency
 
 ## [v2.5.1] - 2019-03-19
@@ -99,7 +105,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of Di package
 
-[Unreleased]: https://github.com/slickframework/di/compare/v2.6.0...HEAD
+[Unreleased]: https://github.com/slickframework/di/compare/v2.7.0...HEAD
+[v2.7.0]: https://github.com/slickframework/di/compare/v2.6.0...v2.7.0
 [v2.6.0]: https://github.com/slickframework/di/compare/v2.5.1...v2.6.0
 [v2.5.1]: https://github.com/slickframework/di/compare/v2.5.0...v2.5.1
 [v2.5.0]: https://github.com/slickframework/di/compare/v2.4.0...v2.5.0

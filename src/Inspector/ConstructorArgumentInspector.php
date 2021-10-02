@@ -9,6 +9,8 @@
 
 namespace Slick\Di\Inspector;
 
+use ReflectionClass;
+
 /**
  * ConstructorArgumentInspector
  *
@@ -18,7 +20,7 @@ namespace Slick\Di\Inspector;
 class ConstructorArgumentInspector
 {
     /**
-     * @var \ReflectionClass
+     * @var ReflectionClass
      */
     private $reflectionClass;
 
@@ -30,10 +32,10 @@ class ConstructorArgumentInspector
     /**
      * Creates a ConstructorArgumentInspector
      *
-     * @param \ReflectionClass $reflectionClass
+     * @param ReflectionClass $reflectionClass
      * @param array $override
      */
-    public function __construct(\ReflectionClass $reflectionClass, array $override = [])
+    public function __construct(ReflectionClass $reflectionClass, array $override = [])
     {
         $this->reflectionClass = $reflectionClass;
         $this->override = $override;
@@ -67,12 +69,12 @@ class ConstructorArgumentInspector
         $parameters = $constructor->getParameters();
 
         foreach ($parameters as $parameter) {
-            $class = $parameter->getClass();
+            $class = $parameter->getType();
             if (is_null($class)) {
                 break;
             }
 
-            $arguments[] = "@{$parameter->getClass()->getName()}";
+            $arguments[] = "@{$parameter->getType()->getName()}";
         }
         return $arguments;
     }
