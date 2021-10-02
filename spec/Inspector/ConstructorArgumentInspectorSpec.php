@@ -26,14 +26,14 @@ class ConstructorArgumentInspectorSpec extends ObjectBehavior
         \ReflectionMethod $constructor,
         \ReflectionParameter $parameter,
         \ReflectionParameter $parameter1,
-        \ReflectionClass $typeHinted
+        \ReflectionNamedType $typeHinted
     )
     {
         $reflectionClass->getConstructor()->willReturn($constructor);
         $constructor->getParameters()->willReturn([$parameter1, $parameter]);
 
-        $parameter->getClass()->willReturn($typeHinted);
-        $parameter1->getClass()->willReturn($typeHinted);
+        $parameter->getType()->willReturn($typeHinted);
+        $parameter1->getType()->willReturn($typeHinted);
         $typeHinted->getName()->willReturn(\stdClass::class);
 
         $this->beConstructedWith($reflectionClass, ['@test']);
@@ -45,7 +45,7 @@ class ConstructorArgumentInspectorSpec extends ObjectBehavior
     }
 
     function it_get_the_types_of_all_constructor_arguments(
-        \ReflectionClass $typeHinted
+        \ReflectionNamedType $typeHinted
     )
     {
         $this->arguments()->shouldBeArray();

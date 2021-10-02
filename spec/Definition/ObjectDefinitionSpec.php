@@ -144,7 +144,7 @@ class ObjectDefinitionSpec extends ObjectBehavior
         );
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveArgumentsEquals' => function (DefinitionData $subject, $arguments) {
