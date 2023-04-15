@@ -25,19 +25,19 @@ interface ContainerInterface extends InteropContainer
      * The main application container SHOULD be the first to be created and
      * therefore set any entry that will override the latest containers build.
      *
-     * @param string       $name
-     * @param mixed        $definition
-     * @param Scope|string $scope      Resolving scope
+     * @param string $name
+     * @param mixed|null $definition
+     * @param string|Scope $scope      Resolving scope
      * @param array        $parameters Used if $value is a callable
      *
      * @return Container
      */
     public function register(
-        $name,
-        $definition = null,
-        $scope = Scope::SINGLETON,
-        array $parameters = []
-    );
+        string       $name,
+        mixed        $definition = null,
+        string|Scope $scope = Scope::SINGLETON,
+        array        $parameters = []
+    ): Container;
 
     /**
      * Creates an instance of provided class injecting its dependencies
@@ -47,5 +47,5 @@ interface ContainerInterface extends InteropContainer
      *
      * @return mixed
      */
-    public function make($className, ...$arguments);
+    public function make(string $className, ...$arguments): mixed;
 }

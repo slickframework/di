@@ -6,4 +6,4 @@ default:
         - FeatureContext
         - ContainerContext
       paths:
-        - %paths.base%/features
+        - '%paths.base%/features'
