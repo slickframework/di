@@ -10,7 +10,6 @@
   "minimum-stability": "dev",
   "homepage": "https://github.com/slickframework/di",
   "license": "MIT",
-  "version": "v2.7.0",
   "authors": [
     {
       "name": "Filipe Silva",
@@ -19,12 +18,12 @@
     }
   ],
   "require": {
-    "php": ">=7.4 || >=8.0" ,
-    "psr/container": "^1.0"
+    "php": ">=8.0" ,
+    "psr/container": "^1.0||^2.0"
   },
   "require-dev": {
-    "behat/behat": "3.8.x-dev",
-    "phpspec/phpspec": "8.0.x-dev",
+    "behat/behat": "4.x-dev",
+    "phpspec/phpspec": "^8.0@dev",
     "squizlabs/php_codesniffer": "4.0.x-dev"
   },
   "provide": {

@@ -9,7 +9,8 @@
 
 namespace Slick\Di;
 
-use Psr\Container\Exception\ContainerException;
+use ReflectionClass;
+use ReflectionException;
 use Slick\Di\Definition\Alias;
 use Slick\Di\Definition\Factory;
 use Slick\Di\Definition\ObjectDefinition;
@@ -29,17 +30,17 @@ class Container implements ContainerInterface
     /**
      * @var array
      */
-    protected $definitions = [];
+    protected array $definitions = [];
 
     /**
      * @var array
      */
-    protected static $instances = [];
+    protected static array $instances = [];
 
     /**
      * @var null|ContainerInterface
      */
-    protected $parent;
+    protected mixed $parent;
 
     /**
      * Creates a dependency container
@@ -58,16 +59,15 @@ class Container implements ContainerInterface
      *
      * @param string $id Identifier of the entry to look for.
      *
-     * @throws NotFoundException  No entry was found for this identifier.
-     * @throws ContainerException Error while retrieving the entry.
-     *
      * @return mixed Entry.
+     *@throws NotFoundException  No entry was found for this identifier.
+     *
      */
-    public function get($id)
+    public function get(string $id): mixed
     {
         if (!$this->has($id) && $id !== 'container') {
             throw new NotFoundException(
-                "Dependency container has not found any definition for '{$id}'"
+                "Dependency container has not found any definition for '$id'"
             );
         }
         return $this->resolve($id);
@@ -81,7 +81,7 @@ class Container implements ContainerInterface
      *
      * @return boolean
      */
-    public function has($id)
+    public function has(string $id): bool
     {
         if (!array_key_exists($id, $this->definitions)) {
             return $this->parentHas($id);
@@ -93,19 +93,19 @@ class Container implements ContainerInterface
     /**
      * Adds a definition or a value to the container
      *
-     * @param string       $name
-     * @param mixed        $definition
-     * @param Scope|string $scope      Resolving scope
+     * @param string $name
+     * @param mixed|null $definition
+     * @param string|Scope $scope      Resolving scope
      * @param array        $parameters Used if $value is a callable
      *
      * @return Container
      */
     public function register(
-        $name,
-        $definition = null,
-        $scope = Scope::SINGLETON,
-        array $parameters = []
-    ) {
+        string       $name,
+        mixed        $definition = null,
+        string|Scope $scope = Scope::SINGLETON,
+        array        $parameters = []
+    ): Container {
         if (!$definition instanceof DefinitionInterface) {
             $definition = $this->createDefinition(
                 $definition,
@@ -123,7 +123,7 @@ class Container implements ContainerInterface
      *
      * @return bool
      */
-    protected function parentHas($key)
+    protected function parentHas(string $key): bool
     {
         if (!$this->parent) {
             return false;
@@ -138,10 +138,9 @@ class Container implements ContainerInterface
      *
      * @return mixed
      *
-     * @throws ContainerException
-     * @throws \Psr\Container\Exception\NotFoundException
+     * @throws NotFoundException
      */
-    protected function resolve($name)
+    protected function resolve(string $name): mixed
     {
         if (array_key_exists($name, self::$instances)) {
             return self::$instances[$name];
@@ -158,14 +157,14 @@ class Container implements ContainerInterface
     /**
      * Checks the definition scope to register resolution result
      *
-     * If scope is set to prototype the the resolution result is not
+     * If scope is set to prototype the resolution result is not
      * stores in the container instances.
      *
-     * @param string              $name
+     * @param string $name
      * @param DefinitionInterface $definition
      * @return mixed
      */
-    protected function registerEntry($name, DefinitionInterface $definition)
+    protected function registerEntry(string $name, DefinitionInterface $definition): mixed
     {
         $value = $definition
             ->setContainer($this->container())
@@ -186,12 +185,12 @@ class Container implements ContainerInterface
      * The main application container should be the first to be created and
      * therefore set any entry that will override the latest containers build.
      *
-     * @param string              $name
+     * @param string $name
      * @param DefinitionInterface $definition
      *
      * @return Container
      */
-    protected function add($name, DefinitionInterface $definition)
+    protected function add(string $name, DefinitionInterface $definition): static
     {
         if ($this->has($name)) {
             return $this;
@@ -208,17 +207,17 @@ class Container implements ContainerInterface
      * If value is a callable then the definition is Factory, otherwise
      * it will create a Value definition.
      *
+     * @param callable|mixed $value
+     * @param array $parameters
+     *
+     * @return Value|Alias|Factory
      * @see Factory, Value
      *
-     * @param callable|mixed $value
-     * @param array          $parameters
-     *
-     * @return Factory|Value
      */
     protected function createDefinition(
-        $value,
+        mixed $value,
         array $parameters = []
-    ) {
+    ): Value|Alias|Factory {
         if (is_callable($value)) {
             return new Factory($value, $parameters);
         }
@@ -229,15 +228,15 @@ class Container implements ContainerInterface
      * Creates a definition for provided name and value pair
      *
      * If $value is a string prefixed with '@' it will create an Alias
-     * definition. Otherwise a Value definition will be created.
+     * definition. Otherwise, a Value definition will be created.
      *
      * @param mixed  $value
      *
      * @return Value|Alias
      */
-    protected function createValueDefinition($value)
+    protected function createValueDefinition(mixed $value): Value|Alias
     {
-        if (is_string($value) && strpos($value, '@') !== false) {
+        if (is_string($value) && str_contains($value, '@')) {
             return new Alias($value);
         }
 
@@ -251,8 +250,9 @@ class Container implements ContainerInterface
      * @param array ...$arguments
      *
      * @return mixed
+     * @throws ReflectionException
      */
-    public function make($className, ...$arguments)
+    public function make(string $className, ...$arguments): mixed
     {
         if (is_a($className, ContainerInjectionInterface::class, true)) {
             return call_user_func_array([$className, 'create'], [$this]);
@@ -263,14 +263,13 @@ class Container implements ContainerInterface
         ;
 
         $arguments = (new ConstructorArgumentInspector(
-            new \ReflectionClass($className),
+            new ReflectionClass($className),
             $arguments
         ))
             ->arguments();
 
         call_user_func_array([$definition, 'with'], $arguments);
-        $object = $definition->resolve();
-        return $object;
+        return $definition->resolve();
     }
 
     /**
@@ -278,7 +277,7 @@ class Container implements ContainerInterface
      *
      * @return null|ContainerInterface
      */
-    public function parent()
+    public function parent(): ?ContainerInterface
     {
         return $this->parent;
     }
@@ -288,7 +287,7 @@ class Container implements ContainerInterface
      *
      * @return container
      */
-    private function container()
+    private function container(): Container
     {
         return self::$instances['container'];
     }

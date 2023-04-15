@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [Unreleased]
 
+## [v2.8.0] - 2023-04-15
+### Changed
+- Interface and method signatures changed for PHP 8.0+ support
+### Removed
+- PHP 7.* support
+- Travis build
+
 ## [v2.7.0] - 2021-10-02
 ### Removed
 - PHP supported versions < 7.4
@@ -105,7 +112,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of Di package
 
-[Unreleased]: https://github.com/slickframework/di/compare/v2.7.0...HEAD
+[Unreleased]: https://github.com/slickframework/di/compare/v2.8.0...HEAD
+[v2.8.0]: https://github.com/slickframework/di/compare/v2.7.0...v2.8.0
 [v2.7.0]: https://github.com/slickframework/di/compare/v2.6.0...v2.7.0
 [v2.6.0]: https://github.com/slickframework/di/compare/v2.5.1...v2.6.0
 [v2.5.1]: https://github.com/slickframework/di/compare/v2.5.0...v2.5.1
