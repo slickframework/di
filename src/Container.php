@@ -66,6 +66,12 @@ class Container implements ContainerInterface
     public function get(string $id): mixed
     {
         if (!$this->has($id) && $id !== 'container') {
+            if (class_exists($id)) {
+                $reflectionClass = new ReflectionClass($id);
+                if ($reflectionClass->isInstantiable()) {
+                    return $this->make($id);
+                }
+            }
             throw new NotFoundException(
                 "Dependency container has not found any definition for '$id'"
             );
