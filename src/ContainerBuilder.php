@@ -10,6 +10,7 @@
 namespace Slick\Di;
 
 use Psr\Container\ContainerInterface as InteropContainer;
+use Slick\Di\DefinitionLoader\DirectoryDefinitionLoader;
 use Slick\Di\Exception\InvalidDefinitionsPathException;
 
 /**
@@ -33,7 +34,12 @@ final class ContainerBuilder implements ContainerAwareInterface
 
     public function __construct($definitions = [])
     {
-        $this->definitions = $definitions;
+        if (is_array($definitions)) {
+            $this->definitions = $definitions;
+            return;
+        }
+
+        $this->definitions = (array) (new DirectoryDefinitionLoader($definitions))->getIterator();
     }
 
     /**
@@ -73,47 +79,8 @@ final class ContainerBuilder implements ContainerAwareInterface
      */
     protected function hydrateContainer($definitions)
     {
-        if (!is_array($definitions)) {
-            $this->hydrateFromFile($definitions);
-            return;
-        }
-
         foreach ($definitions as $name => $definition) {
             $this->container->register($name, $definition);
-        }
-    }
-
-    /**
-     * Hydrate the container with definitions from provided file
-     *
-     * @param $definitions
-     */
-    protected function hydrateFromFile($definitions)
-    {
-        if (!is_file($definitions)) {
-            $this->hydrateFromDirectory($definitions);
-            return;
-        }
-
-        $services = require $definitions;
-        $this->hydrateContainer($services);
-    }
-
-    protected function hydrateFromDirectory($definitions)
-    {
-        try {
-            $directory = new \RecursiveDirectoryIterator($definitions);
-        } catch (\Exception $caught) {
-            throw new InvalidDefinitionsPathException(
-                'Provided definitions path is not valid or is not found. '.
-                'Could not create container. Please check '.$definitions
-            );
-        }
-
-        $iterator = new \RecursiveIteratorIterator($directory);
-        $phpFiles = new \RegexIterator($iterator, '/.*\.php$/i');
-        foreach ($phpFiles as $phpFile) {
-            $this->hydrateFromFile($phpFile);
         }
     }
 }
