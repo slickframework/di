@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Psr\Container\ContainerExceptionInterface;
 use Slick\Di\Container;
 use Slick\Di\Exception;
@@ -77,6 +78,14 @@ class ContainerContext extends FeatureContext
         } catch (Exception $caught) {
             $this->lastException = $caught;
         }
+    }
+
+    /**
+     * @When /^I try to get "([^"]*)" from container$/
+     */
+    public function iTryGetFromContainer($definition)
+    {
+        $this->lastValue = $this->container->get($definition);
     }
 
     /**
@@ -288,5 +297,20 @@ class ContainerContext extends FeatureContext
     {
         $file =  __DIR__ . "/{$file}";
         $this->container = (new \Slick\Di\ContainerBuilder($file))->getContainer();
+    }
+
+    /**
+     * @Then exception :name should be thrown
+     */
+    public function exceptionShouldBeThrown(string $name): void
+    {
+        if (!$this->lastException) {
+            throw new \Exception("No exception was thrown...");
+        }
+
+        if (!($this->lastException instanceof $name)) {
+            $type = get_class($this->lastException);
+            throw new \Exception("Unexpected exception type... Type caught was '$type'");
+        }
     }
 }
