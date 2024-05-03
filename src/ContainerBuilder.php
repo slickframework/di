@@ -9,9 +9,8 @@
 
 namespace Slick\Di;
 
-use Psr\Container\ContainerInterface as InteropContainer;
+use Exception;
 use Slick\Di\DefinitionLoader\DirectoryDefinitionLoader;
-use Slick\Di\Exception\InvalidDefinitionsPathException;
 
 /**
  * Container Builder
@@ -22,16 +21,16 @@ use Slick\Di\Exception\InvalidDefinitionsPathException;
 final class ContainerBuilder implements ContainerAwareInterface
 {
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container = null;
 
     /**
      * @var array|string
      */
-    private $definitions;
+    private string|array $definitions = [];
 
+    /**
+     * @throws Exception
+     */
     public function __construct($definitions = [])
     {
         if (is_array($definitions)) {
@@ -39,7 +38,25 @@ final class ContainerBuilder implements ContainerAwareInterface
             return;
         }
 
-        $this->definitions = (array) (new DirectoryDefinitionLoader($definitions))->getIterator();
+        $this->load(new DirectoryDefinitionLoader($definitions));
+    }
+
+    /**
+     * Loads the definitions of a given loader
+     *
+     * @param DefinitionLoaderInterface $loader
+     * @return $this
+     * @throws Exception
+     */
+    public function load(DefinitionLoaderInterface $loader): ContainerBuilder
+    {
+        if ($loader instanceof ContainerAwareInterface) {
+            $loader->setContainer($this->getContainer());
+        }
+        $definitions = (array) $loader->getIterator();
+        $this->definitions = array_merge($this->definitions, $definitions);
+        $this->setContainer(new Container());
+        return $this;
     }
 
     /**
@@ -47,14 +64,13 @@ final class ContainerBuilder implements ContainerAwareInterface
      *
      * If no container was created a new, empty container will be created.
      *
-     * @return ContainerInterface|Container
+     * @return ContainerInterface
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         if (!$this->container) {
             $this->setContainer(new Container());
         }
-        $this->hydrateContainer($this->definitions);
         return $this->container;
     }
 
@@ -62,22 +78,23 @@ final class ContainerBuilder implements ContainerAwareInterface
     /**
      * Set the dependency container
      *
-     * @param InteropContainer $container
+     * @param ContainerInterface $container
      *
      * @return ContainerBuilder
      */
-    public function setContainer(InteropContainer $container)
+    public function setContainer(ContainerInterface $container): ContainerBuilder
     {
         $this->container = $container;
+        $this->hydrateContainer($this->definitions);
         return $this;
     }
 
     /**
      * Hydrates the container with provided definitions
      *
-     * @param string|array $definitions
+     * @param array $definitions
      */
-    protected function hydrateContainer($definitions)
+    protected function hydrateContainer(array $definitions): void
     {
         foreach ($definitions as $name => $definition) {
             $this->container->register($name, $definition);

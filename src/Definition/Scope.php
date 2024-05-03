@@ -23,7 +23,7 @@ class Scope
     const SINGLETON = 'singleton';
     const PROTOTYPE = 'prototype';
 
-    private function __construct($value)
+    public function __construct($value)
     {
         $this->value = $value;
     }

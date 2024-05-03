@@ -300,6 +300,19 @@ class ContainerContext extends FeatureContext
     }
 
     /**
+     * @Given I build a container with autowire loader on :path
+     */
+    public function iBuildAContainerWithAutowireLoaderOn(string $path)
+    {
+        $path =  __DIR__ . "/{$path}";
+        $builder = new \Slick\Di\ContainerBuilder();
+        $loader = new \Slick\Di\DefinitionLoader\AutowireDefinitionLoader($path);
+        $builder->load($loader);
+        $this->container = $builder->getContainer();
+    }
+
+
+    /**
      * @Then exception :name should be thrown
      */
     public function exceptionShouldBeThrown(string $name): void

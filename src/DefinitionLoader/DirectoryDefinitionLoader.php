@@ -25,6 +25,9 @@ class DirectoryDefinitionLoader implements DefinitionLoaderInterface
 {
     private array $definitions = [];
 
+    /**
+     * @throws \Exception
+     */
     public function __construct(string $directory)
     {
         if (is_file($directory)) {

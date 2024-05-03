@@ -115,13 +115,16 @@ class Container implements ContainerInterface
         string|Scope $scope = Scope::SINGLETON,
         array        $parameters = []
     ): Container {
-        if (!$definition instanceof DefinitionInterface) {
-            $definition = $this->createDefinition(
-                $definition,
-                $parameters
-            );
-            $definition->setScope($scope);
+        if ($definition instanceof DefinitionInterface) {
+            return $this->add($name, $definition);
         }
+
+        $definition = $this->createDefinition(
+            $definition,
+            $parameters
+        );
+        $scope = is_string($scope) ? new Scope($scope) : $scope;
+        $definition->setScope($scope);
         return $this->add($name, $definition);
     }
 
@@ -178,7 +181,7 @@ class Container implements ContainerInterface
         $value = $definition
             ->setContainer($this->container())
             ->resolve();
-        if ((string) $definition->getScope() !== Scope::PROTOTYPE) {
+        if ((string) $definition->getScope() === Scope::SINGLETON) {
             self::$instances[$name] = $value;
         }
         return $value;
@@ -221,6 +224,8 @@ class Container implements ContainerInterface
      */
     public function make(string $className, ...$arguments): mixed
     {
+
+
         if (is_a($className, ContainerInjectionInterface::class, true)) {
             return call_user_func_array([$className, 'create'], [$this]);
         }

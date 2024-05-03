@@ -99,10 +99,10 @@ class ContainerSpec extends ObjectBehavior
             return $calls++;
         };
 
-        $this->register('test', $callable, Scope::Prototype());
+        $this->register('test-prototype', $callable, Scope::Prototype());
 
-        $first = $this->get('test');
-        $this->get('test')->shouldNotBe($first);
+        $first = $this->get('test-prototype');
+        $this->get('test-prototype')->shouldNotBe($first);
     }
 
     function it_creates_objects_injecting_its_dependencies()
