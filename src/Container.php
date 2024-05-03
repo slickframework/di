@@ -181,7 +181,7 @@ class Container implements ContainerInterface
         $value = $definition
             ->setContainer($this->container())
             ->resolve();
-        if ((string) $definition->getScope() === Scope::SINGLETON) {
+        if ((string) $definition->getScope() !== Scope::PROTOTYPE) {
             self::$instances[$name] = $value;
         }
         return $value;
