@@ -12,6 +12,7 @@ namespace Slick\Di;
 use ReflectionClass;
 use ReflectionException;
 use Slick\Di\Definition\Alias;
+use Slick\Di\Definition\CreateDefinitionsMethods;
 use Slick\Di\Definition\Factory;
 use Slick\Di\Definition\ObjectDefinition;
 use Slick\Di\Definition\Scope;
@@ -27,6 +28,8 @@ use Slick\Di\Inspector\ConstructorArgumentInspector;
  */
 class Container implements ContainerInterface
 {
+    use CreateDefinitionsMethods;
+
     /**
      * @var array
      */
@@ -112,13 +115,16 @@ class Container implements ContainerInterface
         string|Scope $scope = Scope::SINGLETON,
         array        $parameters = []
     ): Container {
-        if (!$definition instanceof DefinitionInterface) {
-            $definition = $this->createDefinition(
-                $definition,
-                $parameters
-            );
-            $definition->setScope($scope);
+        if ($definition instanceof DefinitionInterface) {
+            return $this->add($name, $definition);
         }
+
+        $definition = $this->createDefinition(
+            $definition,
+            $parameters
+        );
+        $scope = is_string($scope) ? new Scope($scope) : $scope;
+        $definition->setScope($scope);
         return $this->add($name, $definition);
     }
 
@@ -175,7 +181,7 @@ class Container implements ContainerInterface
         $value = $definition
             ->setContainer($this->container())
             ->resolve();
-        if ((string) $definition->getScope() !== Scope::PROTOTYPE) {
+        if ((string) $definition->getScope() === Scope::SINGLETON) {
             self::$instances[$name] = $value;
         }
         return $value;
@@ -208,48 +214,6 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Creates the definition for registered data
-     *
-     * If value is a callable then the definition is Factory, otherwise
-     * it will create a Value definition.
-     *
-     * @param callable|mixed $value
-     * @param array $parameters
-     *
-     * @return Value|Alias|Factory
-     * @see Factory, Value
-     *
-     */
-    protected function createDefinition(
-        mixed $value,
-        array $parameters = []
-    ): Value|Alias|Factory {
-        if (is_callable($value)) {
-            return new Factory($value, $parameters);
-        }
-        return $this->createValueDefinition($value);
-    }
-
-    /**
-     * Creates a definition for provided name and value pair
-     *
-     * If $value is a string prefixed with '@' it will create an Alias
-     * definition. Otherwise, a Value definition will be created.
-     *
-     * @param mixed  $value
-     *
-     * @return Value|Alias
-     */
-    protected function createValueDefinition(mixed $value): Value|Alias
-    {
-        if (is_string($value) && str_contains($value, '@')) {
-            return new Alias($value);
-        }
-
-        return new Value($value);
-    }
-
-    /**
      * Creates an instance of provided class injecting its dependencies
      *
      * @param string $className
@@ -260,6 +224,8 @@ class Container implements ContainerInterface
      */
     public function make(string $className, ...$arguments): mixed
     {
+
+
         if (is_a($className, ContainerInjectionInterface::class, true)) {
             return call_user_func_array([$className, 'create'], [$this]);
         }

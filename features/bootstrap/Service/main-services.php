@@ -25,8 +25,7 @@ $services['callable'] = function () {
     return new \DateTime('now');
 };
 
-// Object definition
-$services['complexObject'] = (new ObjectDefinition(ComplexObject::class))
+$services['complexObject'] = ObjectDefinition::create(ComplexObject::class)
     ->with('@callable')
     ->call('setTest')->with('@environment');
 

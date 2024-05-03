@@ -9,8 +9,8 @@
 
 namespace Slick\Di;
 
-use Psr\Container\ContainerInterface as InteropContainer;
-use Slick\Di\Exception\InvalidDefinitionsPathException;
+use Exception;
+use Slick\Di\DefinitionLoader\DirectoryDefinitionLoader;
 
 /**
  * Container Builder
@@ -21,19 +21,42 @@ use Slick\Di\Exception\InvalidDefinitionsPathException;
 final class ContainerBuilder implements ContainerAwareInterface
 {
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container = null;
 
     /**
      * @var array|string
      */
-    private $definitions;
+    private string|array $definitions = [];
 
+    /**
+     * @throws Exception
+     */
     public function __construct($definitions = [])
     {
-        $this->definitions = $definitions;
+        if (is_array($definitions)) {
+            $this->definitions = $definitions;
+            return;
+        }
+
+        $this->load(new DirectoryDefinitionLoader($definitions));
+    }
+
+    /**
+     * Loads the definitions of a given loader
+     *
+     * @param DefinitionLoaderInterface $loader
+     * @return $this
+     * @throws Exception
+     */
+    public function load(DefinitionLoaderInterface $loader): ContainerBuilder
+    {
+        if ($loader instanceof ContainerAwareInterface) {
+            $loader->setContainer($this->getContainer());
+        }
+        $definitions = (array) $loader->getIterator();
+        $this->definitions = array_merge($this->definitions, $definitions);
+        $this->setContainer(new Container());
+        return $this;
     }
 
     /**
@@ -41,14 +64,13 @@ final class ContainerBuilder implements ContainerAwareInterface
      *
      * If no container was created a new, empty container will be created.
      *
-     * @return ContainerInterface|Container
+     * @return ContainerInterface
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         if (!$this->container) {
             $this->setContainer(new Container());
         }
-        $this->hydrateContainer($this->definitions);
         return $this->container;
     }
 
@@ -56,64 +78,26 @@ final class ContainerBuilder implements ContainerAwareInterface
     /**
      * Set the dependency container
      *
-     * @param InteropContainer $container
+     * @param ContainerInterface $container
      *
      * @return ContainerBuilder
      */
-    public function setContainer(InteropContainer $container)
+    public function setContainer(ContainerInterface $container): ContainerBuilder
     {
         $this->container = $container;
+        $this->hydrateContainer($this->definitions);
         return $this;
     }
 
     /**
      * Hydrates the container with provided definitions
      *
-     * @param string|array $definitions
+     * @param array $definitions
      */
-    protected function hydrateContainer($definitions)
+    protected function hydrateContainer(array $definitions): void
     {
-        if (!is_array($definitions)) {
-            $this->hydrateFromFile($definitions);
-            return;
-        }
-
         foreach ($definitions as $name => $definition) {
             $this->container->register($name, $definition);
-        }
-    }
-
-    /**
-     * Hydrate the container with definitions from provided file
-     *
-     * @param $definitions
-     */
-    protected function hydrateFromFile($definitions)
-    {
-        if (!is_file($definitions)) {
-            $this->hydrateFromDirectory($definitions);
-            return;
-        }
-
-        $services = require $definitions;
-        $this->hydrateContainer($services);
-    }
-
-    protected function hydrateFromDirectory($definitions)
-    {
-        try {
-            $directory = new \RecursiveDirectoryIterator($definitions);
-        } catch (\Exception $caught) {
-            throw new InvalidDefinitionsPathException(
-                'Provided definitions path is not valid or is not found. '.
-                'Could not create container. Please check '.$definitions
-            );
-        }
-
-        $iterator = new \RecursiveIteratorIterator($directory);
-        $phpFiles = new \RegexIterator($iterator, '/.*\.php$/i');
-        foreach ($phpFiles as $phpFile) {
-            $this->hydrateFromFile($phpFile);
         }
     }
 }
