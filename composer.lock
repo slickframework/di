@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b0999179430ff59c4567732424dbea1",
+    "content-hash": "1804516deb74b01facd2b96654a3cd76",
     "packages": [
         {
             "name": "psr/container",
@@ -59,6 +59,68 @@
                 "source": "https://github.com/php-fig/container"
             },
             "time": "2023-09-22T11:11:30+00:00"
+        },
+        {
+            "name": "slick/fswatch",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/slickframework/fswatch.git",
+                "reference": "cf5a21e703420605adcc75b720969fe60b2692df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/slickframework/fswatch/zipball/cf5a21e703420605adcc75b720969fe60b2692df",
+                "reference": "cf5a21e703420605adcc75b720969fe60b2692df",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "dev-master",
+                "phpspec/prophecy": "^1.0@dev",
+                "phpspec/prophecy-phpunit": "^2.0@dev",
+                "phpstan/phpstan": "2.0.x-dev",
+                "phpunit/phpunit": "11.2.x-dev",
+                "squizlabs/php_codesniffer": "4.0.x-dev"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.1-dev",
+                    "dev-develop": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Slick\\FsWatch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Silva",
+                    "email": "silvam.filipe@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "slick/fswatch is a simple library that sums the total size of all files in a given directory allowing you to verify if its contents have changed.",
+            "keywords": [
+                "changes",
+                "file sistem",
+                "slick",
+                "watch changes"
+            ],
+            "support": {
+                "issues": "https://github.com/slickframework/fswatch/issues",
+                "source": "https://github.com/slickframework/fswatch/tree/v0.1.0"
+            },
+            "time": "2024-05-07T00:38:56+00:00"
         }
     ],
     "packages-dev": [

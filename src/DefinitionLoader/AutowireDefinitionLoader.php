@@ -22,6 +22,10 @@ use Slick\Di\DefinitionLoader\AutowireDefinitionLoader\ClassFile;
 use Slick\Di\DefinitionLoaderInterface;
 use Slick\Di\Exception\AmbiguousImplementationException;
 use Slick\Di\Exception\InvalidDefinitionsPathException;
+use Slick\FsWatch\Directory;
+use Slick\FsWatch\Exception\DirectoryNotAccecible;
+use Slick\FsWatch\Exception\DirectoryNotFound;
+use SplFileInfo;
 use Traversable;
 
 /**
@@ -29,10 +33,12 @@ use Traversable;
  *
  * @package Slick\Di\DefinitionLoader
  * @author  Filipe Silva <silvam.filipe@gmail.com>
-*/
+ */
 class AutowireDefinitionLoader implements DefinitionLoaderInterface, ContainerAwareInterface
 {
     private ?ContainerInterface $container = null;
+
+    private const TMP_FILE_NAME = '/_slick_di_autowire';
 
     /**
      * @var array<ClassFile>|ClassFile[]
@@ -41,12 +47,26 @@ class AutowireDefinitionLoader implements DefinitionLoaderInterface, ContainerAw
 
     private array $definitions = [];
 
-    private array $implementations = [];
+    protected array $implementations = [];
+
+    private Directory $directoryWatcher;
 
     public function __construct(string $path)
     {
-        $this->loadFiles($path);
-        $this->organiseImplementations();
+        try {
+            $this->directoryWatcher = new Directory($path);
+        } catch (DirectoryNotFound|DirectoryNotAccecible) {
+            throw new InvalidDefinitionsPathException(
+                'Provided autowire definitions path is not valid or is not found. ' .
+                'Could not create container. Please check ' . $path
+            );
+        }
+
+        if (!$this->loadImplementations()) {
+            $this->loadFiles($path);
+            $this->organiseImplementations();
+        }
+
         $this->createDefinitions();
     }
 
@@ -83,7 +103,7 @@ class AutowireDefinitionLoader implements DefinitionLoaderInterface, ContainerAw
         $iterator = new RecursiveIteratorIterator($directory);
         $phpFiles = new RegexIterator($iterator, '/.*\.php$/i');
 
-        /** @var \SplFileInfo $phpFile */
+        /** @var SplFileInfo $phpFile */
         foreach ($phpFiles as $phpFile) {
             $classFile = new ClassFile($phpFile->getPathname());
             if ($classFile->isAnImplementation()) {
@@ -122,9 +142,42 @@ class AutowireDefinitionLoader implements DefinitionLoaderInterface, ContainerAw
                 $this->implementations[$file->parentClass()] = $entry;
             }
         }
+        $this->saveImplementations();
     }
 
-    private function createDefinitions():void
+    private function saveImplementations(): void
+    {
+        $file = sys_get_temp_dir() . self::TMP_FILE_NAME;
+        if (is_file($file)) {
+            unlink($file);
+        }
+        $data = [
+            'snapshot' => $this->directoryWatcher->snapshot(),
+            'implementations' => $this->implementations,
+        ];
+        file_put_contents($file, serialize($data));
+    }
+
+    private function loadImplementations(): bool
+    {
+        $file = sys_get_temp_dir() . self::TMP_FILE_NAME;
+        if (!file_exists($file)) {
+            return false;
+        }
+
+        $cachedData = unserialize(file_get_contents($file));
+
+        /** @var Directory\Snapshot $snapshot */
+        $snapshot = $cachedData['snapshot'];
+        if ($this->directoryWatcher->hasChanged($snapshot)) {
+            return false;
+        }
+
+        $this->implementations = $cachedData['implementations'];
+        return true;
+    }
+
+    protected function createDefinitions():void
     {
         foreach ($this->implementations as $key => $classes) {
             if ($this->container && $this->container->has($key)) {

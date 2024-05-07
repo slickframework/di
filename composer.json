@@ -19,8 +19,9 @@
     }
   ],
   "require": {
-    "php": ">=8.2" ,
-    "psr/container": "^1.0||^2.0"
+    "php": ">=8.2",
+    "psr/container": "^1.0||^2.0",
+    "slick/fswatch": "^0.1.0@dev"
   },
   "require-dev": {
     "behat/behat": "4.x-dev",
