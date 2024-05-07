@@ -10,14 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Container loader interface to allow any custom definition loading
 - Autowire container loader that tries to create a definition for all classes
   that implement an interface or extend from other classes
-- Attribute container loader to create definitions for attributes on classes:
-  #[Service], #[AsAlias]
+
 ### Changed
 - Container builder now loads a special loader to allow auto wiring
-  of dependencies and defining services by attributes #[Service] and #[AsAlias]
-- Container now is aware of #[UseService]/#[Inject] and #[CallWith] attributes
-  when evaluating the necessary dependencies for a given class construction.
+  of dependencies
 - Scrutinizer image update for php 8.2 support.
+- 
 ### Removed
 - PHP <= 8.1 support
 
