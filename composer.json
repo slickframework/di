@@ -24,7 +24,7 @@
     "slick/fswatch": "^0.1.0@dev"
   },
   "require-dev": {
-    "behat/behat": "4.x-dev",
+    "behat/behat": "dev-master",
     "phpspec/phpspec": "^8.0@dev",
     "squizlabs/php_codesniffer": "4.0.x-dev"
   },
