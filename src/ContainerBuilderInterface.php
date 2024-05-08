@@ -28,5 +28,5 @@ interface ContainerBuilderInterface extends ContainerAwareInterface
      * @return self
      * @throws Exception
      */
-    public function load(DefinitionLoaderInterface $loader): ContainerBuilder;
+    public function load(DefinitionLoaderInterface $loader): ContainerBuilderInterface;
 }
