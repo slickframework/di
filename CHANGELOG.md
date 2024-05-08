@@ -6,6 +6,11 @@ This file format based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
+## [v2.9.1] - 2024-05-08
+### Fixed
+- Scrutinizer pipeline settings.
+
+## [v2.9.0] - 2024-05-08
 ### Added
 - Container loader interface to allow any custom definition loading
 - Autowire container loader that tries to create a definition for all classes
@@ -15,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Container builder now loads a special loader to allow auto wiring
   of dependencies
 - Scrutinizer image update for php 8.2 support.
-- 
+
 ### Removed
 - PHP <= 8.1 support
 
@@ -124,7 +129,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of Di package
 
-[Unreleased]: https://github.com/slickframework/di/compare/v2.8.0...HEAD
+[Unreleased]: https://github.com/slickframework/di/compare/v2.9.1...HEAD
+[v2.9.1]: https://github.com/slickframework/di/compare/v2.9.0...v2.9.1
+[v2.9.0]: https://github.com/slickframework/di/compare/v2.8.0...v2.9.0
 [v2.8.0]: https://github.com/slickframework/di/compare/v2.7.0...v2.8.0
 [v2.7.0]: https://github.com/slickframework/di/compare/v2.6.0...v2.7.0
 [v2.6.0]: https://github.com/slickframework/di/compare/v2.5.1...v2.6.0
