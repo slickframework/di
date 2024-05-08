@@ -59,7 +59,9 @@ Now to build the dependency container we need to use the ``ContainerBuilder`` fa
 use Slick\Di\ContainerBuilder;
 
 $definitionsFile = __DIR__ . '/services.php';
-$container = (new ContainerBuilder($definitionsFile))->getContainer();
+$sources = dirname(__DIR__, 2). '/src';
+$container = (new ContainerBuilder($definitionsFile))
+    withSources($sources)->getContainer();
 ```
 
 With that, we are ready to create and inject dependencies with our container:
@@ -72,8 +74,11 @@ class Car
      */
     protected $engine;
     
-    public function __construct(CarSettings $settings)
-    {
+    
+    public function __construct(
+        #[UserService(id: CarSettings::class)]
+        CarSettings $settings
+    ) {
         // $settings will be injected if created with the Container::make() method.
     }
 
@@ -82,6 +87,7 @@ class Car
      *
      * @return self
      */
+    #[CallWith(service: "engineService")]
     public function setEngine(EngineInterface $engine)
     {
         $this->engine = $engine;

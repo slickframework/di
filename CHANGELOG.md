@@ -6,6 +6,18 @@ This file format based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
+### Added
+- Container loader interface to allow any custom definition loading
+- Autowire container loader that tries to create a definition for all classes
+  that implement an interface or extend from other classes
+
+### Changed
+- Container builder now loads a special loader to allow auto wiring
+  of dependencies
+- Scrutinizer image update for php 8.2 support.
+- 
+### Removed
+- PHP <= 8.1 support
 
 ## [v2.8.0] - 2023-04-15
 ### Changed

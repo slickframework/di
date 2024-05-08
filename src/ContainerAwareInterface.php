@@ -23,11 +23,11 @@ interface ContainerAwareInterface
     /**
      * Set the dependency container
      *
-     * @param InteropContainer $container
+     * @param ContainerInterface $container
      *
-     * @return self|$this|ContainerAwareInterface
+     * @return ContainerAwareInterface
      */
-    public function setContainer(InteropContainer $container);
+    public function setContainer(ContainerInterface $container);
 
     /**
      * Get the dependency container

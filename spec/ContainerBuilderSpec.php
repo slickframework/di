@@ -48,10 +48,10 @@ class ContainerBuilderSpec extends ObjectBehavior
 
     function it_hydrates_a_container_with_all_arrays_form_the_files_within_a_directory(ContainerInterface $container)
     {
-        $container->register(Argument::type('string'), Argument::any())->shouldBeCalledTimes(6);
+        $container->register(Argument::type('string'), Argument::any())->shouldBeCalledTimes(4);
         $this->beConstructedWith(__DIR__ .'/services');
         $this->setContainer($container);
-        $this->getContainer()->shouldBeAnInstanceOf(ContainerInterface::class);
+        $this->getContainer()->shouldBe($container);
     }
 
 }
