@@ -6,7 +6,9 @@ This file format based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
-## [v2.9.1] - 2024-05-08
+## [v2.9.2] - 2024-05-08
+### Added
+- Container builder interface.
 ### Fixed
 - Scrutinizer pipeline settings.
 
@@ -129,8 +131,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of Di package
 
-[Unreleased]: https://github.com/slickframework/di/compare/v2.9.1...HEAD
-[v2.9.1]: https://github.com/slickframework/di/compare/v2.9.0...v2.9.1
+[Unreleased]: https://github.com/slickframework/di/compare/v2.9.2...HEAD
+[v2.9.2]: https://github.com/slickframework/di/compare/v2.9.0...v2.9.2
 [v2.9.0]: https://github.com/slickframework/di/compare/v2.8.0...v2.9.0
 [v2.8.0]: https://github.com/slickframework/di/compare/v2.7.0...v2.8.0
 [v2.7.0]: https://github.com/slickframework/di/compare/v2.6.0...v2.7.0
