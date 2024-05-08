@@ -18,7 +18,7 @@ use Slick\Di\DefinitionLoader\DirectoryDefinitionLoader;
  * @package Slick\Di
  * @author  Filipe Silva <silvam.filipe@gmail.com>
 */
-final class ContainerBuilder implements ContainerAwareInterface
+final class ContainerBuilder implements ContainerBuilderInterface
 {
 
     private ?ContainerInterface $container = null;
@@ -29,7 +29,7 @@ final class ContainerBuilder implements ContainerAwareInterface
     private string|array $definitions = [];
 
     /**
-     * @throws Exception
+     * @throws Exception|\Slick\Di\Exception
      */
     public function __construct($definitions = [])
     {
@@ -42,10 +42,7 @@ final class ContainerBuilder implements ContainerAwareInterface
     }
 
     /**
-     * Loads the definitions of a given loader
-     *
-     * @param DefinitionLoaderInterface $loader
-     * @return $this
+     * @inheritdoc
      * @throws Exception
      */
     public function load(DefinitionLoaderInterface $loader): ContainerBuilder
