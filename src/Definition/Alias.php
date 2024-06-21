@@ -49,7 +49,7 @@ class Alias extends AbstractDefinition implements DefinitionInterface
      * @throws ContainerNotSetException If no container is set before
      *                                  calling resolve().
      */
-    public function resolve()
+    public function resolve(): mixed
     {
         if (!$this->container instanceof ContainerInterface) {
             throw new ContainerNotSetException(

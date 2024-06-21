@@ -75,12 +75,13 @@ class AutowireDefinitionLoader implements DefinitionLoaderInterface, ContainerAw
         return new ArrayObject($this->definitions);
     }
 
-    public function setContainer(ContainerInterface $container): void
+    public function setContainer(ContainerInterface $container): self
     {
         $this->container = $container;
+        return $this;
     }
 
-    public function getContainer(): ?ContainerInterface
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
