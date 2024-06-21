@@ -40,7 +40,7 @@ class Value extends AbstractDefinition implements DefinitionInterface
      *
      * @return mixed
      */
-    public function resolve()
+    public function resolve(): mixed
     {
         return $this->data;
     }

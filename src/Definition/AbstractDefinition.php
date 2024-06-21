@@ -38,7 +38,7 @@ abstract class AbstractDefinition implements DefinitionInterface
      *
      * @return self|$this|AbstractDefinition
      */
-    public function setScope($scope)
+    public function setScope($scope): DefinitionInterface|static
     {
         $this->scope = $scope;
         return $this;
@@ -49,8 +49,11 @@ abstract class AbstractDefinition implements DefinitionInterface
      *
      * @return Scope|string
      */
-    public function getScope()
+    public function getScope(): string|Scope
     {
+        if (!$this->scope) {
+            return Scope::Singleton();
+        }
         return $this->scope;
     }
 }
