@@ -11,12 +11,9 @@ namespace Slick\Di;
 
 use ReflectionClass;
 use ReflectionException;
-use Slick\Di\Definition\Alias;
 use Slick\Di\Definition\CreateDefinitionsMethods;
-use Slick\Di\Definition\Factory;
 use Slick\Di\Definition\ObjectDefinition;
 use Slick\Di\Definition\Scope;
-use Slick\Di\Definition\Value;
 use Slick\Di\Exception\NotFoundException;
 use Slick\Di\Inspector\ConstructorArgumentInspector;
 
