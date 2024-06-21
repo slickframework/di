@@ -9,13 +9,15 @@
 
 namespace Slick\Di;
 
+use Throwable;
+
 /**
  * Exception
  *
  * @package Slick\Di
  * @author  Filipe Silva <silvam.filipe@gmail.com>
  */
-interface Exception
+interface Exception extends Throwable
 {
 
 }
