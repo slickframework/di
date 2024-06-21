@@ -24,7 +24,7 @@ interface DefinitionInterface extends ContainerAwareInterface
      *
      * @return mixed
      */
-    public function resolve();
+    public function resolve(): mixed;
 
     /**
      * Set resolution scope
@@ -33,12 +33,12 @@ interface DefinitionInterface extends ContainerAwareInterface
      *
      * @return self|$this|DefinitionInterface
      */
-    public function setScope($scope);
+    public function setScope($scope): DefinitionInterface|static;
 
     /**
      * Get resolution scope
      *
      * @return Scope|string
      */
-    public function getScope();
+    public function getScope(): string|Scope;
 }

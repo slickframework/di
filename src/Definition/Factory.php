@@ -48,7 +48,7 @@ class Factory extends AbstractDefinition implements DefinitionInterface
      *
      * @return mixed
      */
-    public function resolve()
+    public function resolve(): mixed
     {
         $params = array_replace([$this->container], $this->parameters);
         return call_user_func_array($this->callable, $params);

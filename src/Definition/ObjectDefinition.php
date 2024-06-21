@@ -95,7 +95,7 @@ class ObjectDefinition extends AbstractDefinition implements
      *
      * @return mixed
      */
-    public function resolve()
+    public function resolve(): mixed
     {
         return $this->getResolver()
             ->setContainer($this->getContainer())
