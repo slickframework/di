@@ -6,6 +6,14 @@ This file format based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
+## [v2.9.4] - 2024-06-24
+### Added
+- `FileDefinitionLoader` now accepts an array with definitions or a string with the filename
+  containing and returning an array with definitions.
+
+### Fixes
+- Interface return types for better PHPStan validation.
+
 ## [v2.9.2] - 2024-05-08
 ### Added
 - Container builder interface.
