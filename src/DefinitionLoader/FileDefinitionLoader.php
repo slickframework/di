@@ -27,9 +27,9 @@ class FileDefinitionLoader implements DefinitionLoaderInterface
 
     private array $definitions = [];
 
-    public function __construct(string $fileName)
+    public function __construct(string|array $definitions)
     {
-        $services = require $fileName;
+        $services = is_string($definitions) ? require $definitions : $definitions;
         foreach ($services as $name => $definition) {
             $this->definitions[$name] = $definition instanceof ObjectDefinition
                 ? $definition
