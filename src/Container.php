@@ -3,7 +3,7 @@
 /**
  * This file is part of slick/di package
  *
- * For the full copyright and license information, please view the LICENSE
+ * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
@@ -221,24 +221,11 @@ class Container implements ContainerInterface
      */
     public function make(string $className, ...$arguments): mixed
     {
-
-
         if (is_a($className, ContainerInjectionInterface::class, true)) {
             return call_user_func_array([$className, 'create'], [$this]);
         }
 
-        $definition = (new ObjectDefinition($className))
-            ->setContainer($this->container())
-        ;
-
-        $arguments = (new ConstructorArgumentInspector(
-            new ReflectionClass($className),
-            $arguments
-        ))
-            ->arguments();
-
-        call_user_func_array([$definition, 'with'], $arguments);
-        return $definition->resolve();
+        return $this->createFromClass($className, $this->container(), ...$arguments)->resolve();
     }
 
     /**

@@ -6,6 +6,15 @@ This file format based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
+
+## [v2.10.0] - 2024-08-15
+### Added
+- `#Autowire` attribute on setters will be used on object creation
+- scalar arguments will be search by its name instead of throw not found exception on `string` service, for example
+- nullable arguments that are not found in container will be set to null
+### Removed
+- Old documentation as it will be migrated to github pages
+
 ## [v2.9.4] - 2024-06-24
 ### Added
 - `FileDefinitionLoader` now accepts an array with definitions or a string with the filename
@@ -139,7 +148,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of Di package
 
-[Unreleased]: https://github.com/slickframework/di/compare/v2.9.2...HEAD
+[Unreleased]: https://github.com/slickframework/di/compare/v2.10.0...HEAD
+[v2.10.0]: https://github.com/slickframework/di/compare/v2.9.2...v2.10.0
 [v2.9.2]: https://github.com/slickframework/di/compare/v2.9.0...v2.9.2
 [v2.9.0]: https://github.com/slickframework/di/compare/v2.8.0...v2.9.0
 [v2.8.0]: https://github.com/slickframework/di/compare/v2.7.0...v2.8.0
