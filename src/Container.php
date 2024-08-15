@@ -221,24 +221,11 @@ class Container implements ContainerInterface
      */
     public function make(string $className, ...$arguments): mixed
     {
-
-
         if (is_a($className, ContainerInjectionInterface::class, true)) {
             return call_user_func_array([$className, 'create'], [$this]);
         }
 
-        $definition = (new ObjectDefinition($className))
-            ->setContainer($this->container())
-        ;
-
-        $arguments = (new ConstructorArgumentInspector(
-            new ReflectionClass($className),
-            $arguments
-        ))
-            ->arguments();
-
-        call_user_func_array([$definition, 'with'], $arguments);
-        return $definition->resolve();
+        return $this->createFromClass($className, $this->container(), ...$arguments)->resolve();
     }
 
     /**

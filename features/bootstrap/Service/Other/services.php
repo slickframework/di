@@ -9,10 +9,14 @@
 
 namespace Service\Other;
 
+use Fixtures\SomeObject;
 use Slick\Di\Definition\ObjectDefinition;
 
 $services = [];
 
-$services['otherService'] = ObjectDefinition::create(\Fixtures\SomeObject::class);
+$services['environment'] = 'development';
+
+$services[SomeObject::class] = '@otherService';
+$services['otherService'] = ObjectDefinition::create(SomeObject::class);
 
 return $services;

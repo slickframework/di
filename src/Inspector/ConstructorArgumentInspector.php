@@ -10,6 +10,8 @@
 namespace Slick\Di\Inspector;
 
 use ReflectionClass;
+use ReflectionMethod;
+use Slick\Di\ContainerInterface;
 
 /**
  * ConstructorArgumentInspector
@@ -17,28 +19,20 @@ use ReflectionClass;
  * @package Slick\Di\Inspector
  * @author  Filipe Silva <silvam.filipe@gmail.com>
 */
-class ConstructorArgumentInspector
+final readonly class ConstructorArgumentInspector
 {
-    /**
-     * @var ReflectionClass
-     */
-    private $reflectionClass;
-
-    /**
-     * @var array
-     */
-    private $override;
-
     /**
      * Creates a ConstructorArgumentInspector
      *
      * @param ReflectionClass $reflectionClass
-     * @param array $override
+     * @param ContainerInterface $container
+     * @param array<string|int, mixed> $override
      */
-    public function __construct(ReflectionClass $reflectionClass, array $override = [])
-    {
-        $this->reflectionClass = $reflectionClass;
-        $this->override = $override;
+    public function __construct(
+        private ReflectionClass $reflectionClass,
+        private ContainerInterface $container,
+        private array $override = []
+    ) {
     }
 
     /**
@@ -46,37 +40,17 @@ class ConstructorArgumentInspector
      *
      * @return array
      */
-    public function arguments()
+    public function arguments(): array
     {
-        $arguments = $this->definedArguments();
-        return array_replace($arguments, $this->override);
-    }
-
-    /**
-     * Get the list of arguments from constructor defined parameters
-     *
-     * @return string[]
-     */
-    private function definedArguments()
-    {
-        $arguments = [];
-        $constructor = $this->reflectionClass->getConstructor();
-
-        if (null === $constructor) {
-            return $arguments;
+        $method = $this->reflectionClass->getConstructor();
+        if (!$method instanceof ReflectionMethod) {
+            return [];
         }
 
-        $parameters = $constructor->getParameters();
-
-        foreach ($parameters as $parameter) {
-            $class = $parameter->getType();
-            if (is_null($class)) {
-                break;
-            }
-
-            $arguments[] = "@{$parameter->getType()->getName()}";
-        }
-        return $arguments;
+        return (new MethodArgumentInspector(
+            $method,
+            $this->container,
+            $this->override
+        ))->arguments();
     }
-
 }

@@ -20,6 +20,8 @@ $services['config.env'] = 'development';
 // Alias
 $services['environment'] = '@config.env';
 
+$services['foo.service'] = 'foo';
+
 // Callback
 $services['callable'] = function () {
     return new \DateTime('now');

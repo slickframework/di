@@ -10,6 +10,8 @@
 use Behat\Behat\Tester\Exception\PendingException;
 use Psr\Container\ContainerExceptionInterface;
 use Slick\Di\Container;
+use Slick\Di\ContainerBuilder;
+use Slick\Di\DefinitionLoader\FileDefinitionLoader;
 use Slick\Di\Exception;
 use Behat\Gherkin\Node\TableNode;
 
@@ -56,7 +58,8 @@ class ContainerContext extends FeatureContext
      */
     public function iCreateAContainer()
     {
-        $this->container = new Container();
+        $serviceFile = __DIR__ . '/Service/main-services.php';
+        $this->container = (new ContainerBuilder())->load(new FileDefinitionLoader($serviceFile))->getContainer();
     }
 
     /**
@@ -296,7 +299,7 @@ class ContainerContext extends FeatureContext
     public function iBuildAContainerWith($file)
     {
         $file =  __DIR__ . "/{$file}";
-        $this->container = (new \Slick\Di\ContainerBuilder($file))->getContainer();
+        $this->container = (new ContainerBuilder($file))->getContainer();
     }
 
     /**
@@ -305,7 +308,7 @@ class ContainerContext extends FeatureContext
     public function iBuildAContainerWithAutowireLoaderOn(string $path)
     {
         $path =  __DIR__ . "/{$path}";
-        $builder = new \Slick\Di\ContainerBuilder();
+        $builder = new ContainerBuilder();
         $loader = new \Slick\Di\DefinitionLoader\AutowireDefinitionLoader($path);
         $builder->load($loader);
         $this->container = $builder->getContainer();
@@ -324,6 +327,35 @@ class ContainerContext extends FeatureContext
         if (!($this->lastException instanceof $name)) {
             $type = get_class($this->lastException);
             throw new \Exception("Unexpected exception type... Type caught was '$type'");
+        }
+    }
+
+    /**
+     * @Given calling :method method should not return null
+     */
+    public function callingMethodShouldNotReturnNull(string $method)
+    {
+        if (!method_exists($this->lastValue, $method)) {
+            throw new \Exception("Method $method does not exist.");
+        }
+
+        if ($this->lastValue->$method() === null) {
+            throw new \Exception("Returned value is was null.");
+        }
+    }
+
+    /**
+     * @Given calling :method method should return :value
+     */
+    public function callingMethodShouldReturn(string $method, mixed $value)
+    {
+        if (!method_exists($this->lastValue, $method)) {
+            throw new \Exception("Method $method does not exist.");
+        }
+
+        $returnValue = $this->lastValue->$method();
+        if ($returnValue !== $value) {
+            throw new \Exception("Expected value $value to be returned, but got " .$returnValue);
         }
     }
 }

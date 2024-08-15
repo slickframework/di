@@ -9,6 +9,8 @@
 
 namespace spec\Slick\Di\Inspector;
 
+use Prophecy\Argument;
+use Slick\Di\ContainerInterface;
 use Slick\Di\Inspector\ConstructorArgumentInspector;
 use PhpSpec\ObjectBehavior;
 
@@ -26,17 +28,25 @@ class ConstructorArgumentInspectorSpec extends ObjectBehavior
         \ReflectionMethod $constructor,
         \ReflectionParameter $parameter,
         \ReflectionParameter $parameter1,
-        \ReflectionNamedType $typeHinted
+        \ReflectionNamedType $typeHinted,
+        ContainerInterface $container
     )
     {
         $reflectionClass->getConstructor()->willReturn($constructor);
         $constructor->getParameters()->willReturn([$parameter1, $parameter]);
 
         $parameter->getType()->willReturn($typeHinted);
+        $parameter->getName()->willReturn('argument');
+        $parameter->allowsNull()->willReturn(true);
         $parameter1->getType()->willReturn($typeHinted);
+        $parameter1->getName()->willReturn('argument1');
+        $parameter1->allowsNull()->willReturn(true);
         $typeHinted->getName()->willReturn(\stdClass::class);
+        $container->get(\stdClass::class)->willReturn((object)[]);
+        $container->has(Argument::any())->willReturn(false);
+        $typeHinted->isBuiltin()->willReturn(false);
 
-        $this->beConstructedWith($reflectionClass, ['@test']);
+        $this->beConstructedWith($reflectionClass, $container, ['@test']);
     }
 
     function it_is_initializable()
@@ -49,13 +59,13 @@ class ConstructorArgumentInspectorSpec extends ObjectBehavior
     )
     {
         $this->arguments()->shouldBeArray();
-        $typeHinted->getName()->shouldHaveBeenCalledTimes(2);
+        $typeHinted->getName()->shouldHaveBeenCalledTimes(1);
     }
 
     function it_merges_the_defined_parameters_with_the_custom_ones()
     {
-        $this->arguments()->shouldBe([
-            '@test', "@stdClass"
+        $this->arguments()->shouldBeLike([
+            '@test', (object)[]
         ]);
     }
 }
