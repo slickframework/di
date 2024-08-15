@@ -4,9 +4,4 @@ services:
     volumes:
      - ./:/usr/src/app
     working_dir: /usr/src/app
-  docs:
-    image: nginx
-    ports:
-      - 80
-    volumes:
-      - ./docs/build:/usr/share/nginx/html
+
