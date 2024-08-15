@@ -6,6 +6,13 @@ This file format based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
+### Added
+- `#Autowire` attribute on setters will be used on object creation
+- scalar arguments will be search by its name instead of throw not found exception on `string` service, for example
+- nullable arguments that are not found in container will be set to null
+### Removed
+- Old documentation as it will be migrated to github pages
+
 ## [v2.9.4] - 2024-06-24
 ### Added
 - `FileDefinitionLoader` now accepts an array with definitions or a string with the filename
